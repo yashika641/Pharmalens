@@ -1,0 +1,52 @@
+# Core App & Frontend
+streamlit
+pandas
+numpy
+python-dotenv
+
+# Image Processing & OCR
+pillow
+opencv-python
+pytesseract
+
+# NLP / AI Models
+transformers
+torch
+sentence-transformers
+scikit-learn
+
+# Optional: For using quantized models or accelerating inference
+accelerate
+bitsandbytes
+optimum
+
+# Chatbot & Prompt Engineering
+langchain
+openai
+faiss-cpu
+
+# PDF / Report Generation
+reportlab
+markdown2
+pdfkit
+wkhtmltopdf  # note: install this via system package, not pip
+
+# Voice Input (Optional)
+whisper
+SpeechRecognition
+pyaudio
+
+# Backend (Optional)
+fastapi
+uvicorn
+
+# Drug Matching & Text Utilities
+fuzzywuzzy
+python-Levenshtein
+
+# Misc & Utilities
+matplotlib
+seaborn
+requests
+tqdm
+
