@@ -1,0 +1,551 @@
+drug_name,generic_name,description,dosage_form,strength,category
+Paracetamol,Acetaminophen,Pain relief & fever reducer,Tablet,500mg,Painkiller
+Ibuprofen,Ibuprofen,Anti-inflammatory & pain relief,Tablet,200mg,Painkiller
+Amoxicillin,Amoxicillin,Broad-spectrum antibiotic,Capsule,500mg,Antibiotic
+Cetirizine,Cetirizine hydrochloride,Allergy relief,Tablet,10mg,Antihistamine
+Omeprazole,Omeprazole,Acid reflux treatment,Capsule,20mg,Gastrointestinal
+Metformin,Metformin hydrochloride,Blood sugar control,Tablet,500mg,Antidiabetic
+Atorvastatin,Atorvastatin calcium,Cholesterol management,Tablet,20mg,Cardiovascular
+Lisinopril,Lisinopril,Blood pressure control,Tablet,10mg,Cardiovascular
+Salbutamol,Albuterol sulfate,Asthma relief,Inhaler,100mcg,Respiratory
+Aspirin,Acetylsalicylic acid,Pain relief & blood thinner,Tablet,81mg,Painkiller
+Diphenhydramine,Diphenhydramine hydrochloride,Allergy & sleep aid,Capsule,25mg,Antihistamine
+Prednisone,Prednisone,Anti-inflammatory steroid,Tablet,10mg,Anti-inflammatory
+Hydrochlorothiazide,Hydrochlorothiazide,Blood pressure & fluid control,Tablet,25mg,Cardiovascular
+Simvastatin,Simvastatin,Cholesterol management,Tablet,20mg,Cardiovascular
+Alprazolam,Alprazolam,Anxiety & panic disorder,Tablet,0.5mg,Psychiatric
+Sertraline,Sertraline hydrochloride,Depression & anxiety,Tablet,50mg,Psychiatric
+Fluoxetine,Fluoxetine hydrochloride,Depression treatment,Capsule,20mg,Psychiatric
+Trazodone,Trazodone hydrochloride,Sleep aid & depression,Tablet,50mg,Psychiatric
+Gabapentin,Gabapentin,Nerve pain & seizures,Capsule,300mg,Neurological
+Loratadine,Loratadine,Allergy relief,Tablet,10mg,Antihistamine
+Fexofenadine,Fexofenadine hydrochloride,Allergy relief,Tablet,180mg,Antihistamine
+Montelukast,Montelukast sodium,Asthma & allergy control,Tablet,10mg,Respiratory
+Tiotropium,Tiotropium bromide,COPD & asthma control,Inhaler,18mcg,Respiratory
+Levothyroxine,Levothyroxine sodium,Thyroid hormone replacement,Tablet,50mcg,Endocrine
+Metoprolol,Metoprolol tartrate,Blood pressure control,Tablet,50mg,Cardiovascular
+Amlodipine,Amlodipine besylate,Blood pressure control,Tablet,5mg,Cardiovascular
+Clopidogrel,Clopidogrel bisulfate,Blood thinner & stroke prevention,Tablet,75mg,Cardiovascular
+Warfarin,Warfarin sodium,Blood thinner,Tablet,5mg,Cardiovascular
+Hydrocodone,Hydrocodone bitartrate,Pain relief & cough suppressant,Tablet,5mg,Painkiller
+Oxycodone,Oxycodone hydrochloride,Moderate to severe pain,Tablet,10mg,Painkiller
+Tramadol,Tramadol hydrochloride,Moderate pain relief,Tablet,50mg,Painkiller
+Codeine,Codeine phosphate,Pain relief & cough suppressant,Tablet,30mg,Painkiller
+Morphine,Morphine sulfate,Severe pain relief,Tablet,15mg,Painkiller
+Acetaminophen/Codeine,Acetaminophen & Codeine,Pain relief combination,Tablet,300mg/30mg,Painkiller
+Ibuprofen/Famotidine,Ibuprofen & Famotidine,Pain relief & stomach protection,Tablet,200mg/26.6mg,Painkiller
+Naproxen,Naproxen sodium,Pain & inflammation relief,Tablet,220mg,Painkiller
+Celecoxib,Celecoxib,Arthritis & pain relief,Capsule,200mg,Painkiller
+Meloxicam,Meloxicam,Arthritis & pain relief,Tablet,15mg,Painkiller
+Amoxicillin/Clavulanate,Amoxicillin & Clavulanate,Broad-spectrum antibiotic,Tablet,875mg/125mg,Antibiotic
+Azithromycin,Azithromycin,Respiratory & skin infections,Tablet,250mg,Antibiotic
+Ciprofloxacin,Ciprofloxacin hydrochloride,Urinary & respiratory infections,Tablet,500mg,Antibiotic
+Levofloxacin,Levofloxacin,Respiratory & urinary infections,Tablet,500mg,Antibiotic
+Doxycycline,Doxycycline hyclate,Broad-spectrum antibiotic,Capsule,100mg,Antibiotic
+Clindamycin,Clindamycin hydrochloride,Skin & respiratory infections,Capsule,300mg,Antibiotic
+Metronidazole,Metronidazole,Anaerobic infections,Tablet,500mg,Antibiotic
+Sulfamethoxazole/Trimethoprim,Sulfamethoxazole & Trimethoprim,Urinary tract infections,Tablet,800mg/160mg,Antibiotic
+Nitrofurantoin,Nitrofurantoin,Urinary tract infections,Capsule,100mg,Antibiotic
+Cephalexin,Cephalexin,Skin & respiratory infections,Capsule,500mg,Antibiotic
+Prednisolone,Prednisolone,Inflammation & immune suppression,Tablet,5mg,Anti-inflammatory
+Methylprednisolone,Methylprednisolone,Inflammation & immune suppression,Tablet,4mg,Anti-inflammatory
+Budesonide,Budesonide,Asthma & allergy control,Inhaler,90mcg,Respiratory
+Fluticasone,Fluticasone propionate,Allergy & asthma control,Nasal spray,50mcg,Respiratory
+Hydrocortisone,Hydrocortisone,Skin inflammation & rash,Cream,0.01,Dermatological
+Triamcinolone,Triamcinolone acetonide,Skin inflammation & rash,Cream,0.001,Dermatological
+Betamethasone,Betamethasone dipropionate,Skin inflammation & rash,Cream,0.0005,Dermatological
+Clobetasol,Clobetasol propionate,Severe skin inflammation,Cream,0.0005,Dermatological
+Fluocinonide,Fluocinonide,Skin inflammation & rash,Cream,0.0005,Dermatological
+Hydrocortisone/Pramoxine,Hydrocortisone & Pramoxine,Itching & inflammation,Cream,1%/1%,Dermatological
+Lisinopril/Hydrochlorothiazide,Lisinopril & Hydrochlorothiazide,Blood pressure control,Tablet,10mg/12.5mg,Cardiovascular
+Valsartan,Valsartan,Blood pressure control,Tablet,160mg,Cardiovascular
+Losartan,Losartan potassium,Blood pressure control,Tablet,50mg,Cardiovascular
+Diltiazem,Diltiazem hydrochloride,Blood pressure & heart rate,Tablet,180mg,Cardiovascular
+Verapamil,Verapamil hydrochloride,Blood pressure & heart rate,Tablet,240mg,Cardiovascular
+Digoxin,Digoxin,Heart failure & arrhythmias,Tablet,0.125mg,Cardiovascular
+Furosemide,Furosemide,Fluid retention & blood pressure,Tablet,40mg,Cardiovascular
+Spironolactone,Spironolactone,Fluid retention & blood pressure,Tablet,25mg,Cardiovascular
+Clonidine,Clonidine hydrochloride,Blood pressure control,Tablet,0.1mg,Cardiovascular
+Hydralazine,Hydralazine hydrochloride,Blood pressure control,Tablet,25mg,Cardiovascular
+Insulin Glargine,Insulin glargine,Long-acting blood sugar control,Injection,100 units/ml,Antidiabetic
+Insulin Aspart,Insulin aspart,Rapid-acting blood sugar control,Injection,100 units/ml,Antidiabetic
+Glipizide,Glipizide,Type 2 diabetes control,Tablet,5mg,Antidiabetic
+Glyburide,Glyburide,Type 2 diabetes control,Tablet,5mg,Antidiabetic
+Pioglitazone,Pioglitazone hydrochloride,Type 2 diabetes control,Tablet,15mg,Antidiabetic
+Sitagliptin,Sitagliptin phosphate,Type 2 diabetes control,Tablet,100mg,Antidiabetic
+Canagliflozin,Canagliflozin,Type 2 diabetes control,Tablet,100mg,Antidiabetic
+Dapagliflozin,Dapagliflozin,Type 2 diabetes control,Tablet,5mg,Antidiabetic
+Empagliflozin,Empagliflozin,Type 2 diabetes control,Tablet,10mg,Antidiabetic
+Liraglutide,Liraglutide,Type 2 diabetes control,Injection,18mg/3ml,Antidiabetic
+Alprazolam,Alprazolam,Anxiety & panic disorder,Tablet,0.25mg,Psychiatric
+Diazepam,Diazepam,Anxiety & muscle spasms,Tablet,5mg,Psychiatric
+Lorazepam,Lorazepam,Anxiety & seizures,Tablet,1mg,Psychiatric
+Clonazepam,Clonazepam,Seizures & panic disorder,Tablet,0.5mg,Psychiatric
+Buspirone,Buspirone hydrochloride,Anxiety treatment,Tablet,10mg,Psychiatric
+Propranolol,Propranolol hydrochloride,Anxiety & heart conditions,Tablet,40mg,Psychiatric
+Citalopram,Citalopram hydrobromide,Depression treatment,Tablet,20mg,Psychiatric
+Escitalopram,Escitalopram oxalate,Depression & anxiety,Tablet,10mg,Psychiatric
+Bupropion,Bupropion hydrochloride,Depression & smoking cessation,Tablet,150mg,Psychiatric
+Venlafaxine,Venlafaxine hydrochloride,Depression & anxiety,Tablet,37.5mg,Psychiatric
+Duloxetine,Duloxetine hydrochloride,Depression & nerve pain,Capsule,30mg,Psychiatric
+Mirtazapine,Mirtazapine,Depression treatment,Tablet,15mg,Psychiatric
+Lithium,Lithium carbonate,Bipolar disorder management,Tablet,300mg,Psychiatric
+Topiramate,Topiramate,Seizures & migraine prevention,Tablet,25mg,Neurological
+Lamotrigine,Lamotrigine,Seizures & bipolar disorder,Tablet,25mg,Neurological
+Levetiracetam,Levetiracetam,Seizures treatment,Tablet,500mg,Neurological
+Carbamazepine,Carbamazepine,Seizures & nerve pain,Tablet,200mg,Neurological
+Valproic Acid,Valproic acid,Seizures & bipolar disorder,Tablet,250mg,Neurological
+Phenytoin,Phenytoin sodium,Seizures treatment,Capsule,100mg,Neurological
+Ropinirole,Ropinirole hydrochloride,Parkinson's disease,Tablet,0.5mg,Neurological
+Pramipexole,Pramipexole dihydrochloride,Parkinson's disease,Tablet,0.125mg,Neurological
+Methotrexate,Methotrexate,Rheumatoid arthritis & cancer,Tablet,2.5mg,Anti-inflammatory
+Hydroxychloroquine,Hydroxychloroquine sulfate,Rheumatoid arthritis & lupus,Tablet,200mg,Anti-inflammatory
+Sulfasalazine,Sulfasalazine,Rheumatoid arthritis & ulcerative colitis,Tablet,500mg,Anti-inflammatory
+Leflunomide,Leflunomide,Rheumatoid arthritis,Tablet,20mg,Anti-inflammatory
+Omeprazole/Amoxicillin,Omeprazole & Amoxicillin,H. pylori eradication,Capsule,40mg/500mg,Gastrointestinal
+Calcium Carbonate,Calcium carbonate,Bone health & calcium supplement,Tablet,500mg,Supplement
+Vitamin D3,Cholecalciferol,Bone health & calcium absorption,Tablet,1000 IU,Supplement
+Multivitamin,Various vitamins & minerals,General health support,Tablet,N/A,Supplement
+Vitamin B12,Cyanocobalamin,Energy & nerve health,Tablet,1000mcg,Supplement
+Folic Acid,Folic acid,Pregnancy & anemia prevention,Tablet,400mcg,Supplement
+Iron,Ferrous sulfate,Iron deficiency anemia,Tablet,325mg,Supplement
+Magnesium,Magnesium oxide,Muscle & nerve function,Tablet,250mg,Supplement
+Zinc,Zinc gluconate,Immune support & wound healing,Tablet,50mg,Supplement
+Omega-3,Fish oil,Heart & brain health,Capsule,1000mg,Supplement
+Probiotic,Various strains,Digestive health support,Capsule,10 billion CFU,Supplement
+Ipratropium,Ipratropium bromide,COPD & asthma control,Inhaler,20mcg,Respiratory
+Acetaminophen,Acetaminophen,Pain relief & fever reducer,Tablet,325mg,Painkiller
+Ibuprofen,Ibuprofen,Anti-inflammatory & pain relief,Tablet,400mg,Painkiller
+Naproxen,Naproxen sodium,Pain & inflammation relief,Tablet,500mg,Painkiller
+Aspirin,Acetylsalicylic acid,Pain relief & blood thinner,Tablet,325mg,Painkiller
+Fentanyl,Fentanyl,Severe pain relief,Patch,25mcg/hr,Painkiller
+Methadone,Methadone hydrochloride,Chronic pain management,Tablet,10mg,Painkiller
+Metformin,Metformin hydrochloride,Blood sugar control,Tablet,1000mg,Antidiabetic
+Glipizide,Glipizide,Type 2 diabetes control,Tablet,10mg,Antidiabetic
+Pioglitazone,Pioglitazone hydrochloride,Type 2 diabetes control,Tablet,30mg,Antidiabetic
+Canagliflozin,Canagliflozin,Type 2 diabetes control,Tablet,300mg,Antidiabetic
+Dapagliflozin,Dapagliflozin,Type 2 diabetes control,Tablet,10mg,Antidiabetic
+Empagliflozin,Empagliflozin,Type 2 diabetes control,Tablet,25mg,Antidiabetic
+Insulin,Various types,Blood sugar control,Injection,Varies,Antidiabetic
+Atorvastatin,Atorvastatin calcium,Cholesterol management,Tablet,40mg,Cardiovascular
+Rosuvastatin,Rosuvastatin calcium,Cholesterol management,Tablet,20mg,Cardiovascular
+Pravastatin,Pravastatin sodium,Cholesterol management,Tablet,40mg,Cardiovascular
+Ezetimibe,Ezetimibe,Cholesterol absorption inhibitor,Tablet,10mg,Cardiovascular
+Fenofibrate,Fenofibrate,Triglyceride management,Tablet,145mg,Cardiovascular
+Gemfibrozil,Gemfibrozil,Triglyceride management,Tablet,600mg,Cardiovascular
+Niacin,Nicotinic acid,Cholesterol management,Tablet,500mg,Cardiovascular
+Omega-3,Fish oil,Heart health support,Capsule,1000mg,Supplement
+Coenzyme Q10,Ubiquinone,Heart health support,Capsule,100mg,Supplement
+Lisinopril,Lisinopril,Blood pressure control,Tablet,20mg,Cardiovascular
+Amlodipine,Amlodipine besylate,Blood pressure control,Tablet,10mg,Cardiovascular
+Metoprolol,Metoprolol tartrate,Blood pressure & heart rate,Tablet,50mg,Cardiovascular
+Carvedilol,Carvedilol,Heart failure & blood pressure,Tablet,25mg,Cardiovascular
+Nebivolol,Nebivolol hydrochloride,Blood pressure control,Tablet,5mg,Cardiovascular
+Albuterol,Albuterol sulfate,Asthma relief,Inhaler,90mcg,Respiratory
+Salmeterol,Salmeterol xinafoate,Asthma & COPD control,Inhaler,50mcg,Respiratory
+Formoterol,Formoterol fumarate,Asthma & COPD control,Inhaler,12mcg,Respiratory
+Fluticasone,Fluticasone propionate,Asthma & allergy control,Inhaler,110mcg,Respiratory
+Budesonide,Budesonide,Asthma & allergy control,Inhaler,180mcg,Respiratory
+Theophylline,Theophylline,Asthma & COPD control,Tablet,200mg,Respiratory
+Omalizumab,Omalizumab,Severe asthma control,Injection,150mg,Respiratory
+Pregabalin,Pregabalin,Nerve pain & seizures,Capsule,75mg,Neurological
+Levothyroxine,Levothyroxine sodium,Thyroid hormone replacement,Tablet,100mcg,Endocrine
+Liothyronine,Liothyronine sodium,Thyroid hormone replacement,Tablet,25mcg,Endocrine
+Methimazole,Methimazole,Hyperthyroidism treatment,Tablet,10mg,Endocrine
+Propylthiouracil,Propylthiouracil,Hyperthyroidism treatment,Tablet,50mg,Endocrine
+Hydrocortisone,Hydrocortisone,Adrenal insufficiency,Tablet,20mg,Endocrine
+Fludrocortisone,Fludrocortisone acetate,Adrenal insufficiency,Tablet,0.1mg,Endocrine
+Testosterone,Testosterone,Hormone replacement therapy,Gel,0.01,Endocrine
+Estrogen,Estradiol,Hormone replacement therapy,Tablet,1mg,Endocrine
+Progesterone,Progesterone,Hormone replacement therapy,Capsule,100mg,Endocrine
+Medroxyprogesterone,Medroxyprogesterone acetate,Hormone therapy,Tablet,10mg,Endocrine
+Albuterol/Ipratropium,Albuterol & Ipratropium,COPD & asthma control,Inhaler,90mcg/18mcg,Respiratory
+Fluticasone/Salmeterol,Fluticasone & Salmeterol,Asthma & COPD control,Inhaler,100mcg/50mcg,Respiratory
+Budesonide/Formoterol,Budesonide & Formoterol,Asthma & COPD control,Inhaler,80mcg/4.5mcg,Respiratory
+Tiotropium/Olodaterol,Tiotropium & Olodaterol,COPD control,Inhaler,2.5mcg/2.5mcg,Respiratory
+Umeclidinium/Vilanterol,Umeclidinium & Vilanterol,COPD control,Inhaler,62.5mcg/25mcg,Respiratory
+Ipratropium/Albuterol,Ipratropium & Albuterol,COPD & asthma control,Nebulizer,0.5mg/2.5mg,Respiratory
+Prednisone/Methylprednisolone,Prednisone & Methylprednisolone,Severe inflammation,Tablet,Varies,Anti-inflammatory
+Hydrocortisone/Fludrocortisone,Hydrocortisone & Fludrocortisone,Adrenal insufficiency,Tablet,Varies,Endocrine
+Levothyroxine/Liothyronine,Levothyroxine & Liothyronine,Thyroid hormone replacement,Tablet,Varies,Endocrine
+Estradiol/Progesterone,Estradiol & Progesterone,Hormone replacement therapy,Tablet,Varies,Endocrine
+Omeprazole/NaHCO3,Omeprazole & Sodium Bicarbonate,Acid reflux & heartburn,Tablet,20mg/1100mg,Gastrointestinal
+Esomeprazole/Amoxicillin,Esomeprazole & Amoxicillin,H. pylori eradication,Capsule,40mg/500mg,Gastrointestinal
+Ranitidine/Bismuth,Ranitidine & Bismuth,Ulcer treatment,Tablet,150mg/262.4mg,Gastrointestinal
+Loperamide/Simethicone,Loperamide & Simethicone,Diarrhea & gas relief,Tablet,2mg/125mg,Gastrointestinal
+Docusate/Senna,Docusate & Senna,Stool softener & laxative,Tablet,100mg/8.6mg,Gastrointestinal
+Calcium/Vitamin D,Calcium & Vitamin D,Bone health support,Tablet,600mg/400 IU,Supplement
+Iron/Folic Acid,Ferrous sulfate & Folic Acid,Anemia prevention,Tablet,325mg/1mg,Supplement
+Multivitamin/Mineral,Various vitamins & minerals,General health support,Tablet,N/A,Supplement
+Vitamin B Complex,Various B vitamins,Energy & nerve health,Tablet,N/A,Supplement
+Coenzyme Q10/Vitamin E,Ubiquinone & Vitamin E,Heart health support,Capsule,100mg/30 IU,Supplement
+Acetaminophen/Ibuprofen,Acetaminophen & Ibuprofen,Pain relief combination,Tablet,325mg/200mg,Painkiller
+Hydrocodone/Acetaminophen,Hydrocodone & Acetaminophen,Moderate to severe pain,Tablet,5mg/325mg,Painkiller
+Oxycodone/Acetaminophen,Oxycodone & Acetaminophen,Moderate to severe pain,Tablet,10mg/325mg,Painkiller
+Tramadol/Acetaminophen,Tramadol & Acetaminophen,Moderate pain relief,Tablet,37.5mg/325mg,Painkiller
+Prednisone/Methotrexate,Prednisone & Methotrexate,Rheumatoid arthritis,Tablet,Varies,Anti-inflammatory
+Alprazolam/Clonazepam,Alprazolam & Clonazepam,Anxiety & panic disorder,Tablet,0.25mg/0.5mg,Psychiatric
+Sertraline/Bupropion,Sertraline & Bupropion,Depression treatment,Tablet,50mg/150mg,Psychiatric
+Fluoxetine/Olanzapine,Fluoxetine & Olanzapine,Depression & bipolar disorder,Tablet,20mg/5mg,Psychiatric
+Aripiprazole,Aripiprazole,Schizophrenia & bipolar disorder,Tablet,10mg,Psychiatric
+Quetiapine,Quetiapine fumarate,Schizophrenia & bipolar disorder,Tablet,50mg,Psychiatric
+Risperidone,Risperidone,Schizophrenia & bipolar disorder,Tablet,1mg,Psychiatric
+Olanzapine,Olanzapine,Schizophrenia & bipolar disorder,Tablet,5mg,Psychiatric
+Ziprasidone,Ziprasidone hydrochloride,Schizophrenia & bipolar disorder,Capsule,20mg,Psychiatric
+Clozapine,Clozapine,Treatment-resistant schizophrenia,Tablet,25mg,Psychiatric
+Lithium/Valproate,Lithium & Valproate,Bipolar disorder management,Tablet,Varies,Psychiatric
+Methylprednisolone,Methylprednisolone,Anti-inflammatory steroid,Tablet,4mg,Anti-inflammatory
+Levocetirizine,Levocetirizine dihydrochloride,Allergy relief,Tablet,5mg,Antihistamine
+Hydroxyzine,Hydroxyzine hydrochloride,Allergy & anxiety,Tablet,25mg,Antihistamine
+Chlorpheniramine,Chlorpheniramine maleate,Allergy relief,Tablet,4mg,Antihistamine
+Vitamin D3,Cholecalciferol,Bone health & calcium absorption,Tablet,2000 IU,Supplement
+Calcium Carbonate,Calcium carbonate,Bone health & calcium supplement,Tablet,600mg,Supplement
+Acetaminophen,Acetaminophen,Pain relief & fever reducer,Tablet,500mg,Painkiller
+Rosuvastatin,Rosuvastatin calcium,Cholesterol management,Tablet,10mg,Cardiovascular
+Metoprolol,Metoprolol tartrate,Blood pressure & heart rate,Tablet,25mg,Cardiovascular
+Carvedilol,Carvedilol,Heart failure & blood pressure,Tablet,12.5mg,Cardiovascular
+Nebivolol,Nebivolol hydrochloride,Blood pressure control,Tablet,2.5mg,Cardiovascular
+Hydrochlorothiazide,Hydrochlorothiazide,Blood pressure & fluid control,Tablet,12.5mg,Cardiovascular
+Furosemide,Furosemide,Fluid retention & blood pressure,Tablet,20mg,Cardiovascular
+Sertraline,Sertraline hydrochloride,Depression & anxiety,Tablet,100mg,Psychiatric
+Fluoxetine,Fluoxetine hydrochloride,Depression treatment,Capsule,40mg,Psychiatric
+Citalopram,Citalopram hydrobromide,Depression treatment,Tablet,40mg,Psychiatric
+Escitalopram,Escitalopram oxalate,Depression & anxiety,Tablet,20mg,Psychiatric
+Bupropion,Bupropion hydrochloride,Depression & smoking cessation,Tablet,300mg,Psychiatric
+Venlafaxine,Venlafaxine hydrochloride,Depression & anxiety,Tablet,75mg,Psychiatric
+Duloxetine,Duloxetine hydrochloride,Depression & nerve pain,Capsule,60mg,Psychiatric
+Trazodone,Trazodone hydrochloride,Sleep aid & depression,Tablet,100mg,Psychiatric
+Mirtazapine,Mirtazapine,Depression treatment,Tablet,30mg,Psychiatric
+Lithium,Lithium carbonate,Bipolar disorder management,Tablet,600mg,Psychiatric
+Dextromethorphan,Dextromethorphan hydrobromide,Cough suppressant,Syrup,10mg/5ml,Respiratory
+Guaifenesin,Guaifenesin,Expectorant for cough,Syrup,100mg/5ml,Respiratory
+Benzonatate,Benzonatate,Cough suppressant,Capsule,100mg,Respiratory
+Pseudoephedrine,Pseudoephedrine hydrochloride,Nasal decongestant,Tablet,30mg,Respiratory
+Oxymetazoline,Oxymetazoline hydrochloride,Nasal decongestant,Nasal spray,0.0005,Respiratory
+Phenylephrine,Phenylephrine hydrochloride,Nasal decongestant,Tablet,10mg,Respiratory
+Codeine/Guaifenesin,Codeine & Guaifenesin,Cough suppressant & expectorant,Syrup,10mg/100mg/5ml,Respiratory
+Acetylcysteine,Acetylcysteine,Mucolytic agent,Syrup,200mg/5ml,Respiratory
+Calamine,Calamine,Itching & skin irritation,Lotion,0.08,Dermatological
+Diphenhydramine,Diphenhydramine hydrochloride,Itching & allergic reactions,Cream,0.02,Dermatological
+Clotrimazole,Clotrimazole,Fungal infections,Cream,0.01,Dermatological
+Miconazole,Miconazole nitrate,Fungal infections,Cream,0.02,Dermatological
+Terbinafine,Terbinafine hydrochloride,Fungal infections,Cream,0.01,Dermatological
+Ketoconazole,Ketoconazole,Fungal infections,Shampoo,0.02,Dermatological
+Hydroquinone,Hydroquinone,Skin lightening,Cream,0.04,Dermatological
+Tretinoin,Tretinoin,Acne treatment,Cream,0.0005,Dermatological
+Adapalene,Adapalene,Acne treatment,Gel,0.001,Dermatological
+Benzoyl Peroxide,Benzoyl peroxide,Acne treatment,Gel,0.05,Dermatological
+Salicylic Acid,Salicylic acid,Acne & wart treatment,Solution,0.02,Dermatological
+Isotretinoin,Isotretinoin,Severe acne treatment,Capsule,10mg,Dermatological
+Minoxidil,Minoxidil,Hair loss treatment,Solution,0.05,Dermatological
+Finasteride,Finasteride,Hair loss treatment,Tablet,1mg,Dermatological
+Hydroxyzine,Hydroxyzine hydrochloride,Anxiety & itching,Tablet,25mg,Psychiatric
+Iron/Folic Acid,Iron & Folic Acid,Anemia prevention,Tablet,325mg/1mg,Supplement
+Coenzyme Q10/Vitamin E,Coenzyme Q10 & Vitamin E,Heart health support,Capsule,100mg/30 IU,Supplement
+Albuterol Sulfate,Albuterol sulfate,Asthma relief,Inhaler,90mcg,Respiratory
+Salmeterol Xinafoate,Salmeterol xinafoate,Asthma & COPD control,Inhaler,50mcg,Respiratory
+Formoterol Fumarate,Formoterol fumarate,Asthma & COPD control,Inhaler,12mcg,Respiratory
+Ipratropium Bromide,Ipratropium bromide,COPD & asthma control,Inhaler,20mcg,Respiratory
+Tiotropium Bromide,Tiotropium bromide,COPD & asthma control,Inhaler,18mcg,Respiratory
+Fluticasone Propionate,Fluticasone propionate,Asthma & allergy control,Inhaler,110mcg,Respiratory
+Montelukast Sodium,Montelukast sodium,Asthma & allergy control,Tablet,10mg,Respiratory
+Cetirizine Hydrochloride,Cetirizine hydrochloride,Allergy relief,Tablet,10mg,Antihistamine
+Fexofenadine Hydrochloride,Fexofenadine hydrochloride,Allergy relief,Tablet,180mg,Antihistamine
+Levocetirizine Dihydrochloride,Levocetirizine dihydrochloride,Allergy relief,Tablet,5mg,Antihistamine
+Hydroxyzine Hydrochloride,Hydroxyzine hydrochloride,Allergy & anxiety,Tablet,25mg,Antihistamine
+Chlorpheniramine Maleate,Chlorpheniramine maleate,Allergy relief,Tablet,4mg,Antihistamine
+Diphenhydramine Hydrochloride,Diphenhydramine hydrochloride,Allergy & sleep aid,Capsule,25mg,Antihistamine
+Fluticasone Propionate,Fluticasone propionate,Allergy & asthma control,Nasal spray,50mcg,Respiratory
+Triamcinolone Acetonide,Triamcinolone acetonide,Skin inflammation & rash,Cream,0.001,Dermatological
+Betamethasone Dipropionate,Betamethasone dipropionate,Skin inflammation & rash,Cream,0.0005,Dermatological
+Clobetasol Propionate,Clobetasol propionate,Severe skin inflammation,Cream,0.0005,Dermatological
+Diphenhydramine Hydrochloride,Diphenhydramine hydrochloride,Itching & allergic reactions,Cream,0.02,Dermatological
+Miconazole Nitrate,Miconazole nitrate,Fungal infections,Cream,0.02,Dermatological
+Terbinafine Hydrochloride,Terbinafine hydrochloride,Fungal infections,Cream,0.01,Dermatological
+Hydroxyzine Hydrochloride,Hydroxyzine hydrochloride,Anxiety & itching,Tablet,25mg,Psychiatric
+Buspirone Hydrochloride,Buspirone hydrochloride,Anxiety treatment,Tablet,10mg,Psychiatric
+Propranolol Hydrochloride,Propranolol hydrochloride,Anxiety & heart conditions,Tablet,40mg,Psychiatric
+Sertraline Hydrochloride,Sertraline hydrochloride,Depression & anxiety,Tablet,100mg,Psychiatric
+Fluoxetine Hydrochloride,Fluoxetine hydrochloride,Depression treatment,Capsule,40mg,Psychiatric
+Citalopram Hydrobromide,Citalopram hydrobromide,Depression treatment,Tablet,40mg,Psychiatric
+Escitalopram Oxalate,Escitalopram oxalate,Depression & anxiety,Tablet,20mg,Psychiatric
+Bupropion Hydrochloride,Bupropion hydrochloride,Depression & smoking cessation,Tablet,300mg,Psychiatric
+Atenolol,Atenolol,Blood pressure control,Tablet,50mg,Cardiovascular
+Bisoprolol,Bisoprolol fumarate,Blood pressure control,Tablet,5mg,Cardiovascular
+Metoprolol Succinate,Metoprolol succinate,Blood pressure & heart failure,Tablet,25mg,Cardiovascular
+Labetalol,Labetalol hydrochloride,Blood pressure control,Tablet,100mg,Cardiovascular
+Methyldopa,Methyldopa,Blood pressure control,Tablet,250mg,Cardiovascular
+Minoxidil,Minoxidil,Severe hypertension,Tablet,5mg,Cardiovascular
+Nifedipine,Nifedipine,Blood pressure control,Tablet,30mg,Cardiovascular
+Felodipine,Felodipine,Blood pressure control,Tablet,5mg,Cardiovascular
+Isradipine,Isradipine,Blood pressure control,Capsule,5mg,Cardiovascular
+Nicardipine,Nicardipine,Blood pressure control,Capsule,20mg,Cardiovascular
+Ranolazine,Ranolazine,Angina treatment,Tablet,500mg,Cardiovascular
+Ivabradine,Ivabradine,Heart rate control,Tablet,5mg,Cardiovascular
+Amiodarone,Amiodarone hydrochloride,Arrhythmia treatment,Tablet,200mg,Cardiovascular
+Sotalol,Sotalol hydrochloride,Arrhythmia treatment,Tablet,80mg,Cardiovascular
+Dofetilide,Dofetilide,Arrhythmia treatment,Capsule,500mcg,Cardiovascular
+Dronedarone,Dronedarone hydrochloride,Arrhythmia treatment,Tablet,400mg,Cardiovascular
+Adenosine,Adenosine,Arrhythmia treatment,Injection,6mg/2ml,Cardiovascular
+Apixaban,Apixaban,Blood thinner,Tablet,5mg,Cardiovascular
+Rivaroxaban,Rivaroxaban,Blood thinner,Tablet,20mg,Cardiovascular
+Dabigatran,Dabigatran etexilate,Blood thinner,Capsule,150mg,Cardiovascular
+Edoxaban,Edoxaban,Blood thinner,Tablet,60mg,Cardiovascular
+Heparin,Heparin sodium,Blood thinner,Injection,10000 units/ml,Cardiovascular
+Enoxaparin,Enoxaparin sodium,Blood thinner,Injection,40mg/0.4ml,Cardiovascular
+Fondaparinux,Fondaparinux sodium,Blood thinner,Injection,2.5mg,Cardiovascular
+Ticagrelor,Ticagrelor,Blood thinner & stroke prevention,Tablet,90mg,Cardiovascular
+Prasugrel,Prasugrel hydrochloride,Blood thinner & stroke prevention,Tablet,10mg,Cardiovascular
+Aspirin,Acetylsalicylic acid,Blood thinner & pain relief,Tablet,81mg,Cardiovascular
+Dipyridamole,Dipyridamole,Blood thinner & stroke prevention,Tablet,75mg,Cardiovascular
+Pentoxifylline,Pentoxifylline,Blood flow improvement,Tablet,400mg,Cardiovascular
+Cilostazol,Cilostazol,Peripheral artery disease,Tablet,100mg,Cardiovascular
+Statins,Various statins,Cholesterol management,Tablet,Varies,Cardiovascular
+Omega-3,Fish oil,Heart health support,Capsule,1000mg,Cardiovascular
+Coenzyme Q10,Ubiquinone,Heart health support,Capsule,100mg,Cardiovascular
+L-Carnitine,L-Carnitine,Heart health support,Capsule,500mg,Cardiovascular
+Magnesium,Magnesium citrate,Heart rhythm support,Tablet,250mg,Cardiovascular
+Potassium,Potassium chloride,Electrolyte balance,Tablet,20mEq,Cardiovascular
+Amantadine,Amantadine hydrochloride,Parkinson's disease & flu,Tablet,100mg,Neurological
+Selegiline,Selegiline hydrochloride,Parkinson's disease,Tablet,5mg,Neurological
+Entacapone,Entacapone,Parkinson's disease,Tablet,200mg,Neurological
+Carbidopa/Levodopa,Carbidopa & Levodopa,Parkinson's disease,Tablet,25mg/100mg,Neurological
+Baclofen,Baclofen,Muscle spasticity,Tablet,10mg,Neurological
+Tizanidine,Tizanidine hydrochloride,Muscle spasticity,Tablet,4mg,Neurological
+Cyclobenzaprine,Cyclobenzaprine hydrochloride,Muscle spasms,Tablet,10mg,Neurological
+Methocarbamol,Methocarbamol,Muscle spasms,Tablet,750mg,Neurological
+Carisoprodol,Carisoprodol,Muscle spasms,Tablet,350mg,Neurological
+Dantrolene,Dantrolene sodium,Muscle spasticity,Capsule,25mg,Neurological
+Botulinum Toxin,Botulinum toxin,Muscle spasticity & wrinkles,Injection,Varies,Neurological
+Acetylcholine,Acetylcholine chloride,Glaucoma treatment,Injection,Varies,Neurological
+Pilocarpine,Pilocarpine hydrochloride,Glaucoma treatment,Eye drops,0.04,Neurological
+Brimonidine,Brimonidine tartrate,Glaucoma treatment,Eye drops,0.002,Neurological
+Timolol,Timolol maleate,Glaucoma treatment,Eye drops,0.005,Neurological
+Betaxolol,Betaxolol hydrochloride,Glaucoma treatment,Eye drops,0.0025,Neurological
+Dorzolamide,Dorzolamide hydrochloride,Glaucoma treatment,Eye drops,0.02,Neurological
+Acetazolamide,Acetazolamide,Glaucoma & altitude sickness,Tablet,250mg,Neurological
+Memantine,Memantine hydrochloride,Alzheimer's disease,Tablet,10mg,Neurological
+Donepezil,Donepezil hydrochloride,Alzheimer's disease,Tablet,5mg,Neurological
+Rivastigmine,Rivastigmine tartrate,Alzheimer's disease,Capsule,1.5mg,Neurological
+Galantamine,Galantamine hydrobromide,Alzheimer's disease,Tablet,4mg,Neurological
+Trazodone,Trazodone hydrochloride,Sleep aid & depression,Tablet,50mg,Neurological
+Zolpidem,Zolpidem tartrate,Sleep aid,Tablet,10mg,Neurological
+Eszopiclone,Eszopiclone,Sleep aid,Tablet,3mg,Neurological
+Temazepam,Temazepam,Sleep aid,Capsule,15mg,Neurological
+Clonazepam,Clonazepam,Seizures & panic disorder,Tablet,0.5mg,Neurological
+Lorazepam,Lorazepam,Anxiety & seizures,Tablet,1mg,Neurological
+Diazepam,Diazepam,Anxiety & muscle spasms,Tablet,5mg,Neurological
+Midazolam,Midazolam,Seizures & sedation,Injection,5mg/ml,Neurological
+Phenobarbital,Phenobarbital,Seizures treatment,Tablet,30mg,Neurological
+Primidone,Primidone,Seizures treatment,Tablet,50mg,Neurological
+Valproate Sodium,Valproate sodium,Seizures & bipolar disorder,Tablet,250mg,Neurological
+Oxcarbazepine,Oxcarbazepine,Seizures treatment,Tablet,300mg,Neurological
+Eslicarbazepine,Eslicarbazepine acetate,Seizures treatment,Tablet,200mg,Neurological
+Lacosamide,Lacosamide,Seizures treatment,Tablet,50mg,Neurological
+Perampanel,Perampanel,Seizures treatment,Tablet,2mg,Neurological
+Vigabatrin,Vigabatrin,Seizures treatment,Tablet,500mg,Neurological
+Tiagabine,Tiagabine hydrochloride,Seizures treatment,Tablet,4mg,Neurological
+Omeprazole,Omeprazole,Acid reflux & ulcers,Capsule,20mg,Gastrointestinal
+Pantoprazole,Pantoprazole sodium,Acid reflux & ulcers,Tablet,40mg,Gastrointestinal
+Ranitidine,Ranitidine hydrochloride,Acid reflux & ulcers,Tablet,150mg,Gastrointestinal
+Famotidine,Famotidine,Acid reflux & ulcers,Tablet,20mg,Gastrointestinal
+Esomeprazole,Esomeprazole magnesium,Acid reflux & ulcers,Capsule,40mg,Gastrointestinal
+Loperamide,Loperamide hydrochloride,Diarrhea treatment,Tablet,2mg,Gastrointestinal
+Docusate Sodium,Docusate sodium,Stool softener,Capsule,100mg,Gastrointestinal
+Bisacodyl,Bisacodyl,Constipation relief,Tablet,5mg,Gastrointestinal
+Ondansetron,Ondansetron hydrochloride,Nausea & vomiting,Tablet,4mg,Gastrointestinal
+Metoclopramide,Metoclopramide hydrochloride,Nausea & gastroparesis,Tablet,10mg,Gastrointestinal
+Sucralfate,Sucralfate,Ulcer treatment,Tablet,1g,Gastrointestinal
+Misoprostol,Misoprostol,Ulcer prevention,Tablet,200mcg,Gastrointestinal
+Pancrelipase,Pancrelipase,Pancreatic enzyme replacement,Capsule,10000 units,Gastrointestinal
+Ursodiol,Ursodiol,Gallstone dissolution,Capsule,300mg,Gastrointestinal
+Rifaximin,Rifaximin,Traveler's diarrhea & IBS,Tablet,550mg,Gastrointestinal
+Alosetron,Alosetron hydrochloride,IBS treatment,Tablet,1mg,Gastrointestinal
+Lubiprostone,Lubiprostone,Constipation & IBS,Capsule,24mcg,Gastrointestinal
+Linaclotide,Linaclotide,Constipation & IBS,Capsule,145mcg,Gastrointestinal
+Plecanatide,Plecanatide,Constipation & IBS,Tablet,3mg,Gastrointestinal
+Dicyclomine,Dicyclomine hydrochloride,IBS & abdominal pain,Tablet,20mg,Gastrointestinal
+Hyoscyamine,Hyoscyamine sulfate,IBS & abdominal pain,Tablet,0.125mg,Gastrointestinal
+Scopolamine,Scopolamine hydrobromide,Motion sickness & nausea,Patch,1.5mg,Gastrointestinal
+Meclizine,Meclizine hydrochloride,Motion sickness & vertigo,Tablet,25mg,Gastrointestinal
+Dimenhydrinate,Dimenhydrinate,Motion sickness & nausea,Tablet,50mg,Gastrointestinal
+Promethazine,Promethazine hydrochloride,Nausea & vomiting,Tablet,25mg,Gastrointestinal
+Prochlorperazine,Prochlorperazine,Nausea & vomiting,Tablet,5mg,Gastrointestinal
+Metoclopramide,Metoclopramide hydrochloride,Nausea & gastroparesis,Injection,5mg/ml,Gastrointestinal
+Ondansetron,Ondansetron hydrochloride,Nausea & vomiting,Injection,2mg/ml,Gastrointestinal
+Granisetron,Granisetron hydrochloride,Nausea & vomiting,Injection,1mg/ml,Gastrointestinal
+Aprepitant,Aprepitant,Chemotherapy-induced nausea,Capsule,80mg,Gastrointestinal
+Dronabinol,Dronabinol,Nausea & appetite stimulant,Capsule,2.5mg,Gastrointestinal
+Nabilone,Nabilone,Nausea & vomiting,Capsule,1mg,Gastrointestinal
+Ranitidine,Ranitidine hydrochloride,Acid reflux & ulcers,Injection,25mg/ml,Gastrointestinal
+Famotidine,Famotidine,Acid reflux & ulcers,Injection,10mg/ml,Gastrointestinal
+Cimetidine,Cimetidine,Acid reflux & ulcers,Tablet,400mg,Gastrointestinal
+Magnesium Hydroxide,Magnesium hydroxide,Antacid & laxative,Suspension,400mg/5ml,Gastrointestinal
+Aluminum Hydroxide,Aluminum hydroxide,Antacid,Suspension,200mg/5ml,Gastrointestinal
+Calcium Carbonate,Calcium carbonate,Antacid & calcium supplement,Tablet,500mg,Gastrointestinal
+Sodium Bicarbonate,Sodium bicarbonate,Antacid,Tablet,650mg,Gastrointestinal
+Simethicone,Simethicone,Gas relief,Tablet,80mg,Gastrointestinal
+Activated Charcoal,Activated charcoal,Gas & poisoning treatment,Tablet,250mg,Gastrointestinal
+Bismuth Subsalicylate,Bismuth subsalicylate,Diarrhea & upset stomach,Tablet,262mg,Gastrointestinal
+Psyllium,Psyllium husk,Fiber supplement & laxative,Powder,3.4g,Gastrointestinal
+Methylcellulose,Methylcellulose,Fiber supplement & laxative,Tablet,625mg,Gastrointestinal
+Polyethylene Glycol,Polyethylene glycol,Constipation relief,Powder,17g,Gastrointestinal
+Lactulose,Lactulose,Constipation & hepatic encephalopathy,Solution,10g/15ml,Gastrointestinal
+Sodium Phosphate,Sodium phosphate,Constipation relief,Tablet,45mg,Gastrointestinal
+Magnesium Citrate,Magnesium citrate,Constipation relief,Solution,150mg/5ml,Gastrointestinal
+Bisacodyl,Bisacodyl,Constipation relief,Suppository,10mg,Gastrointestinal
+Senna,Senna glycosides,Constipation relief,Tablet,8.6mg,Gastrointestinal
+Tacrolimus,Tacrolimus,Eczema & dermatitis,Ointment,0.001,Dermatological
+Pimecrolimus,Pimecrolimus,Eczema & dermatitis,Cream,0.01,Dermatological
+Crisaborole,Crisaborole,Eczema treatment,Ointment,0.02,Dermatological
+Calcipotriene,Calcipotriene,Psoriasis treatment,Ointment,0.00005,Dermatological
+Tazarotene,Tazarotene,Psoriasis & acne treatment,Gel,0.001,Dermatological
+Anthralin,Anthralin,Psoriasis treatment,Cream,0.001,Dermatological
+Coal Tar,Coal tar,Psoriasis & dermatitis,Shampoo,0.05,Dermatological
+Salicylic Acid,Salicylic acid,Psoriasis & wart treatment,Ointment,0.06,Dermatological
+Fluocinolone Acetonide,Fluocinolone acetonide,Skin inflammation,Ointment,0.0001,Dermatological
+Diflorasone Diacetate,Diflorasone diacetate,Skin inflammation,Cream,0.0005,Dermatological
+Halobetasol Propionate,Halobetasol propionate,Severe skin inflammation,Cream,0.0005,Dermatological
+Mometasone Furoate,Mometasone furoate,Skin inflammation,Cream,0.001,Dermatological
+Clobetasol Propionate,Clobetasol propionate,Severe skin inflammation,Foam,0.0005,Dermatological
+Betamethasone Valerate,Betamethasone valerate,Skin inflammation,Cream,0.001,Dermatological
+Fluticasone Propionate,Fluticasone propionate,Skin inflammation,Cream,0.0005,Dermatological
+Desonide,Desonide,Mild skin inflammation,Cream,0.0005,Dermatological
+Hydrocortisone,Hydrocortisone,Mild skin inflammation,Cream,0.005,Dermatological
+Alclometasone Dipropionate,Alclometasone dipropionate,Skin inflammation,Cream,0.0005,Dermatological
+Diflorasone Diacetate,Diflorasone diacetate,Skin inflammation,Lotion,0.0005,Dermatological
+Fluocinonide,Fluocinonide,Skin inflammation,Gel,0.0005,Dermatological
+Mometasone Furoate,Mometasone furoate,Skin inflammation,Lotion,0.001,Dermatological
+Triamcinolone Acetonide,Triamcinolone acetonide,Skin inflammation,Ointment,0.001,Dermatological
+Clobetasol Propionate,Clobetasol propionate,Severe skin inflammation,Shampoo,0.0005,Dermatological
+Betamethasone Dipropionate,Betamethasone dipropionate,Skin inflammation,Shampoo,0.0005,Dermatological
+Fluocinolone Acetonide,Fluocinolone acetonide,Skin inflammation,Shampoo,0.0001,Dermatological
+Desoximetasone,Desoximetasone,Skin inflammation,Cream,0.0025,Dermatological
+Diflorasone Diacetate,Diflorasone diacetate,Skin inflammation,Solution,0.0005,Dermatological
+Fluocinonide,Fluocinonide,Skin inflammation,Solution,0.0005,Dermatological
+Mometasone Furoate,Mometasone furoate,Skin inflammation,Spray,0.001,Dermatological
+Clobetasol Propionate,Clobetasol propionate,Severe skin inflammation,Spray,0.0005,Dermatological
+Diclofenac,Diclofenac sodium,Pain & inflammation relief,Tablet,50mg,Painkiller
+Ketorolac,Ketorolac tromethamine,Short-term pain relief,Tablet,10mg,Painkiller
+Indomethacin,Indomethacin,Arthritis & pain relief,Capsule,25mg,Painkiller
+Piroxicam,Piroxicam,Arthritis & pain relief,Capsule,20mg,Painkiller
+Nabumetone,Nabumetone,Arthritis & pain relief,Tablet,500mg,Painkiller
+Sulindac,Sulindac,Arthritis & pain relief,Tablet,150mg,Painkiller
+Tolmetin,Tolmetin sodium,Arthritis & pain relief,Tablet,400mg,Painkiller
+Etodolac,Etodolac,Arthritis & pain relief,Tablet,300mg,Painkiller
+Oxaprozin,Oxaprozin,Arthritis & pain relief,Tablet,600mg,Painkiller
+Salsalate,Salsalate,Arthritis & pain relief,Tablet,500mg,Painkiller
+Diflunisal,Diflunisal,Arthritis & pain relief,Tablet,500mg,Painkiller
+Flurbiprofen,Flurbiprofen sodium,Pain & inflammation relief,Tablet,50mg,Painkiller
+Meclofenamate,Meclofenamate sodium,Pain & inflammation relief,Tablet,50mg,Painkiller
+Mefenamic Acid,Mefenamic acid,Pain & menstrual cramps,Capsule,500mg,Painkiller
+Ibuprofen/Codeine,Ibuprofen & Codeine,Pain relief combination,Tablet,200mg/12.8mg,Painkiller
+Tapentadol,Tapentadol,Moderate to severe pain,Tablet,50mg,Painkiller
+Nalbuphine,Nalbuphine hydrochloride,Moderate to severe pain,Injection,10mg/ml,Painkiller
+Butorphanol,Butorphanol tartrate,Moderate to severe pain,Nasal spray,10mg/ml,Painkiller
+Pentazocine,Pentazocine lactate,Moderate to severe pain,Injection,30mg/ml,Painkiller
+Buprenorphine,Buprenorphine,Chronic pain management,Patch,5mcg/hr,Painkiller
+Naloxone,Naloxone hydrochloride,Opioid overdose reversal,Injection,0.4mg/ml,Painkiller
+Naltrexone,Naltrexone hydrochloride,Opioid dependence treatment,Tablet,50mg,Painkiller
+Acetaminophen/NSAID,Acetaminophen & NSAID,Pain relief combination,Tablet,Varies,Painkiller
+Capsaicin,Capsaicin,Topical pain relief,Cream,0.00025,Painkiller
+Lidocaine,Lidocaine,Topical pain relief,Patch,0.05,Painkiller
+Diclofenac,Diclofenac sodium,Topical pain relief,Gel,0.01,Painkiller
+Menthol,Menthol,Topical pain relief,Cream,0.03,Painkiller
+Camphor,Camphor,Topical pain relief,Cream,0.04,Painkiller
+Methyl Salicylate,Methyl salicylate,Topical pain relief,Cream,0.3,Painkiller
+Trolamine Salicylate,Trolamine salicylate,Topical pain relief,Lotion,0.1,Painkiller
+Iontophoresis,Various medications,Pain relief delivery,Device,Varies,Painkiller
+Transcutaneous Electrical Nerve Stimulation,TENS,Pain relief device,Device,Varies,Painkiller
+Acupuncture,Various techniques,Pain relief therapy,Procedure,N/A,Painkiller
+Physical Therapy,Various exercises,Pain management,Therapy,N/A,Painkiller
+Penicillin V,Penicillin V potassium,Bacterial infections,Tablet,500mg,Antibiotic
+Cefuroxime,Cefuroxime axetil,Respiratory infections,Tablet,250mg,Antibiotic
+Cefdinir,Cefdinir,Respiratory infections,Capsule,300mg,Antibiotic
+Ceftriaxone,Ceftriaxone sodium,Severe infections,Injection,1g,Antibiotic
+Cefazolin,Cefazolin sodium,Surgical prophylaxis,Injection,1g,Antibiotic
+Vancomycin,Vancomycin hydrochloride,Severe infections,Injection,500mg,Antibiotic
+Linezolid,Linezolid,Resistant infections,Tablet,600mg,Antibiotic
+Daptomycin,Daptomycin,Resistant infections,Injection,500mg,Antibiotic
+Tigecycline,Tigecycline,Resistant infections,Injection,50mg,Antibiotic
+Rifampin,Rifampin,Tuberculosis & infections,Capsule,300mg,Antibiotic
+Isoniazid,Isoniazid,Tuberculosis treatment,Tablet,300mg,Antibiotic
+Pyrazinamide,Pyrazinamide,Tuberculosis treatment,Tablet,500mg,Antibiotic
+Ethambutol,Ethambutol hydrochloride,Tuberculosis treatment,Tablet,400mg,Antibiotic
+Clarithromycin,Clarithromycin,Respiratory infections,Tablet,500mg,Antibiotic
+Erythromycin,Erythromycin stearate,Respiratory infections,Tablet,500mg,Antibiotic
+Fidaxomicin,Fidaxomicin,C. difficile infections,Tablet,200mg,Antibiotic
+Ornidazole,Ornidazole,Anaerobic infections,Tablet,500mg,Antibiotic
+Tinidazole,Tinidazole,Anaerobic infections,Tablet,500mg,Antibiotic
+Chloramphenicol,Chloramphenicol sodium succinate,Severe infections,Injection,1g,Antibiotic
+Polymyxin B,Polymyxin B sulfate,Resistant infections,Injection,50000 units,Antibiotic
+Colistin,Colistin sulfate,Resistant infections,Injection,150mg,Antibiotic
+Mupirocin,Mupirocin,Skin infections,Ointment,0.02,Antibiotic
+Neomycin/Polymyxin B/Bacitracin,Neomycin & Polymyxin B & Bacitracin,Skin infections,Ointment,Varies,Antibiotic
+Gentamicin,Gentamicin sulfate,Severe infections,Injection,80mg,Antibiotic
+Tobramycin,Tobramycin sulfate,Severe infections,Injection,40mg,Antibiotic
+Amikacin,Amikacin sulfate,Severe infections,Injection,250mg,Antibiotic
+Streptomycin,Streptomycin sulfate,Tuberculosis treatment,Injection,1g,Antibiotic
+Spectinomycin,Spectinomycin hydrochloride,Gonorrhea treatment,Injection,2g,Antibiotic
+Cefepime,Cefepime hydrochloride,Severe infections,Injection,1g,Antibiotic
+Ceftaroline,Ceftaroline fosamil,Resistant infections,Injection,600mg,Antibiotic
+Ceftazidime,Ceftazidime,Severe infections,Injection,1g,Antibiotic
+Aztreonam,Aztreonam,Severe infections,Injection,1g,Antibiotic
+Imipenem/Cilastatin,Imipenem & Cilastatin,Severe infections,Injection,500mg/500mg,Antibiotic
+Meropenem,Meropenem,Severe infections,Injection,1g,Antibiotic
+Ertapenem,Ertapenem sodium,Severe infections,Injection,1g,Antibiotic
+Doripenem,Doripenem,Severe infections,Injection,500mg,Antibiotic
+Ticarcillin/Clavulanate,Ticarcillin & Clavulanate,Severe infections,Injection,3.1g,Antibiotic
+Piperacillin/Tazobactam,Piperacillin & Tazobactam,Severe infections,Injection,4.5g,Antibiotic
+Tobramycin/Dexamethasone,Tobramycin & Dexamethasone,Eye infections,Eye drops,0.3%/0.1%,Antibiotic
+Acyclovir,Acyclovir,Herpes virus treatment,Tablet,400mg,Antiviral
+Valacyclovir,Valacyclovir hydrochloride,Herpes virus treatment,Tablet,500mg,Antiviral
+Famciclovir,Famciclovir,Herpes virus treatment,Tablet,250mg,Antiviral
+Penciclovir,Penciclovir,Herpes labialis treatment,Cream,0.01,Antiviral
+Ganciclovir,Ganciclovir,CMV infections,Injection,500mg,Antiviral
+Valganciclovir,Valganciclovir hydrochloride,CMV infections,Tablet,450mg,Antiviral
+Foscarnet,Foscarnet sodium,Resistant viral infections,Injection,24mg/ml,Antiviral
+Cidofovir,Cidofovir,CMV infections,Injection,375mg,Antiviral
+Remdesivir,Remdesivir,COVID-19 treatment,Injection,100mg,Antiviral
+Molnupiravir,Molnupiravir,COVID-19 treatment,Capsule,200mg,Antiviral
+Paxlovid,Nirmatrelvir & Ritonavir,COVID-19 treatment,Tablet,150mg/100mg,Antiviral
+Oseltamivir,Oseltamivir phosphate,Influenza treatment,Capsule,75mg,Antiviral
+Zanamivir,Zanamivir,Influenza treatment,Inhaler,5mg,Antiviral
+Peramivir,Peramivir,Influenza treatment,Injection,600mg,Antiviral
+Baloxavir,Baloxavir marboxil,Influenza treatment,Tablet,40mg,Antiviral
+Ribavirin,Ribavirin,Hepatitis C treatment,Capsule,200mg,Antiviral
+Sofosbuvir,Sofosbuvir,Hepatitis C treatment,Tablet,400mg,Antiviral
+Ledipasvir,Ledipasvir,Hepatitis C treatment,Tablet,90mg,Antiviral
+Velpatasvir,Velpatasvir,Hepatitis C treatment,Tablet,100mg,Antiviral
+Glecaprevir,Glecaprevir,Hepatitis C treatment,Tablet,100mg,Antiviral
+Pibrentasvir,Pibrentasvir,Hepatitis C treatment,Tablet,40mg,Antiviral
+Daclatasvir,Daclatasvir,Hepatitis C treatment,Tablet,60mg,Antiviral
+Elbasvir,Elbasvir,Hepatitis C treatment,Tablet,50mg,Antiviral
+Grazoprevir,Grazoprevir,Hepatitis C treatment,Tablet,100mg,Antiviral
+Simeprevir,Simeprevir,Hepatitis C treatment,Capsule,150mg,Antiviral
+Paritaprevir,Paritaprevir,Hepatitis C treatment,Tablet,150mg,Antiviral
+Ombitasvir,Ombitasvir,Hepatitis C treatment,Tablet,12.5mg,Antiviral
+Dasabuvir,Dasabuvir,Hepatitis C treatment,Tablet,250mg,Antiviral
+Telaprevir,Telaprevir,Hepatitis C treatment,Capsule,375mg,Antiviral
+Boceprevir,Boceprevir,Hepatitis C treatment,Capsule,200mg,Antiviral
+Interferon Alfa,Interferon alfa-2b,Hepatitis treatment,Injection,3 million units,Antiviral
+Interferon Beta,Interferon beta-1a,Multiple sclerosis,Injection,30mcg,Antiviral
+Interferon Gamma,Interferon gamma-1b,Chronic granulomatous disease,Injection,50mcg,Antiviral
+Zidovudine,Zidovudine,HIV treatment,Tablet,300mg,Antiviral
+Lamivudine,Lamivudine,HIV & Hepatitis B treatment,Tablet,150mg,Antiviral
+Emtricitabine,Emtricitabine,HIV treatment,Tablet,200mg,Antiviral
+Tenofovir,Tenofovir disoproxil fumarate,HIV & Hepatitis B treatment,Tablet,300mg,Antiviral
+Abacavir,Abacavir sulfate,HIV treatment,Tablet,300mg,Antiviral
+Efavirenz,Efavirenz,HIV treatment,Tablet,600mg,Antiviral
+Nevirapine,Nevirapine,HIV treatment,Tablet,200mg,Antiviral
+Rilpivirine,Rilpivirine hydrochloride,HIV treatment,Tablet,25mg,Antiviral
+Doravirine,Doravirine,HIV treatment,Tablet,100mg,Antiviral
+Etravirine,Etravirine,HIV treatment,Tablet,200mg,Antiviral
+Atazanavir,Atazanavir sulfate,HIV treatment,Capsule,300mg,Antiviral
+Darunavir,Darunavir,HIV treatment,Tablet,800mg,Antiviral
+Lopinavir/Ritonavir,Lopinavir & Ritonavir,HIV treatment,Tablet,200mg/50mg,Antiviral
+Saquinavir,Saquinavir mesylate,HIV treatment,Capsule,500mg,Antiviral
+Indinavir,Indinavir sulfate,HIV treatment,Capsule,400mg,Antiviral
+Nelfinavir,Nelfinavir mesylate,HIV treatment,Tablet,250mg,Antiviral
+Tipranavir,Tipranavir,HIV treatment,Capsule,250mg,Antiviral
+Fosamprenavir,Fosamprenavir,HIV treatment,Tablet,700mg,Antiviral
