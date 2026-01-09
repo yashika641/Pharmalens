@@ -3,12 +3,11 @@ pillow
 fastapi
 uvicorn
 sqlalchemy
-pydantic
-base64
 python-multipart
 aiofiles
-pytest
 requests
-numpy 
+numpy
 pandas
 supabase
+dotenv
+pydantic
