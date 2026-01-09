@@ -193,7 +193,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
     setIsScanning(true);
 
     try {
-      await fetch("http://localhost:8000/scan-image", {
+      await fetch(" https://pharmalens-ie09.onrender.com/scan-image", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

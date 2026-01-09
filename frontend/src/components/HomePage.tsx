@@ -30,7 +30,7 @@ const [profileData, setProfileData] = useState({
   const navigate = useNavigate();
   const handleLogout = async () => {
   try {
-    await fetch("http://localhost:8000/api/auth/logout", {
+    await fetch(" https://pharmalens-ie09.onrender.com/api/auth/logout", {
       method: "POST",
       credentials: "include",
     });
@@ -71,7 +71,7 @@ const handleProfileSubmit = async () => {
       throw new Error("User not authenticated");
     }
 
-    await fetch("http://localhost:8000/user-profile/", {
+    await fetch("https://pharmalens-ie09.onrender.com/api/user-profile/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
