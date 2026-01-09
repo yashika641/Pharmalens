@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { X, Mail, Lock, User, Github } from "lucide-react";
 import { supabase } from "../supabase";
 import { Chrome } from "lucide-react"; // Google icon substitute
+import { setAuthCookie } from "../autocookies";
 
 
 interface AuthModalProps {
@@ -28,38 +29,52 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
     // EMAIL / PASSWORD AUTH
     // =========================
     async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-        try {
-            if (mode === "login") {
-                const { error } = await supabase.auth.signInWithPassword({
-                    email: form.email,
-                    password: form.password,
-                });
-                if (error) throw error;
-            }
+  try {
+    if (mode === "login") {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: form.email,
+        password: form.password,
+      });
 
-            if (mode === "signup") {
-                const { error } = await supabase.auth.signUp({
-                    email: form.email,
-                    password: form.password,
-                    options: {
-                        data: {
-                            full_name: form.name,
-                        },
-                    },
-                });
-                if (error) throw error;
-            }
+      if (error) throw error;
 
-            onClose();
-        } catch (err: any) {
-            alert(err.message);
-        } finally {
-            setLoading(false);
-        }
+      if (!data.session) {
+        throw new Error("Login failed. No session returned.");
+      }
+
+      setAuthCookie(data.session.access_token);
     }
+
+    if (mode === "signup") {
+      const { data, error } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: {
+          data: {
+            full_name: form.name,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      // ⚠️ Signup may NOT return a session (email verification)
+      if (data.session) {
+        setAuthCookie(data.session.access_token);
+      }
+    }
+
+    onClose();
+  } catch (err: any) {
+    alert(err.message);
+  } finally {
+    setLoading(false);
+  }
+}
+
 
     // =========================
     // GITHUB OAUTH
@@ -78,6 +93,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
             options: {
                 redirectTo: `http://localhost:3000/auth/callback?mode=${mode}`,
             },
+            
         });
     }
 
