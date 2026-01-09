@@ -83,7 +83,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
         await supabase.auth.signInWithOAuth({
             provider: "github",
             options: {
-                redirectTo: `http://localhost:3000/auth/callback?mode=${mode}`,
+                redirectTo: `https://pharmalenss.netlify.app/auth/callback?mode=${mode}`,
             },
         });
     }
@@ -91,7 +91,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
         await supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
-                redirectTo: `http://localhost:3000/auth/callback?mode=${mode}`,
+                redirectTo: `https://pharmalenss.netlify.app/auth/callback?mode=${mode}`,
             },
             
         });
