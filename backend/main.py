@@ -23,7 +23,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://1jvc1634-3000.inc1.devtunnels.ms/" # 👈 FRONTEND ORIGIN (EXACT)
+        "https://1jvc1634-3000.inc1.devtunnels.ms/",
+        "https://pharmalenss.netlify.app/",# 👈 FRONTEND ORIGIN (EXACT)
     ],
     allow_credentials=True,      # 👈 REQUIRED FOR COOKIES
     allow_methods=["*"],
