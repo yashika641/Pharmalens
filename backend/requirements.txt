@@ -1,0 +1,14 @@
+streamlit
+pillow
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+base64
+python-multipart
+aiofiles
+pytest
+requests
+numpy 
+pandas
+supabase
