@@ -16,6 +16,9 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+app.include_router(login_routes.router)
+app.include_router(scan_routes.router)
+app.include_router(user_profile_routes.router)
 origins = [
     "http://localhost:3000",
     "http://localhost:5173",
