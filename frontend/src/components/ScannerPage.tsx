@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Camera, Upload, Scan, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -9,36 +9,214 @@ interface ScannerPageProps {
 export function ScannerPage({ onScanComplete }: ScannerPageProps) {
   const [isScanning, setIsScanning] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [cameraFacing, setCameraFacing] = useState<"environment" | "user">(
+    "environment"
+  );
+  const [videoKey, setVideoKey] = useState(0);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const cameraStreamRef = useRef<MediaStream | null>(null);
+  const scanTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showCamera, setShowCamera] = useState(false);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [confirmMode, setConfirmMode] = useState(false);
 
-  const handleScan = () => {
-    setIsScanning(true);
-    
-    // Simulate scanning process
-    setTimeout(() => {
-      setIsScanning(false);
-      onScanComplete({
-        name: "Paracetamol",
-        manufacturer: "PharmaCorp Industries",
-        strength: "500mg",
-        type: "Tablet",
-        confidence: 96,
-      });
-    }, 3000);
+  const stopCamera = () => {
+    cameraStreamRef.current?.getTracks().forEach((t) => t.stop());
+    cameraStreamRef.current = null;
   };
+  useEffect(() => {
+    if (!showCamera) return;
+    if (!videoRef.current) return;
+    if (!cameraStreamRef.current) return;
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragActive(false);
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleScan();
+    const video = videoRef.current;
+
+    // Always reattach stream
+    video.srcObject = cameraStreamRef.current;
+
+    const playVideo = async () => {
+      try {
+        await video.play();
+      } catch (err) {
+        console.error("Video play failed:", err);
+      }
+    };
+
+    // Ensure metadata is loaded
+    if (video.readyState >= 2) {
+      playVideo();
+    } else {
+      video.onloadedmetadata = playVideo;
+    }
+  }, [showCamera, cameraFacing]);
+
+  useEffect(() => {
+    return () => {
+      stopCamera();
+      clearScanTimeout();
+    };
+  }, []);
+
+  const clearScanTimeout = () => {
+    if (scanTimeoutRef.current) {
+      clearTimeout(scanTimeoutRef.current);
+      scanTimeoutRef.current = null;
     }
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleScanWithImage = async (imageBase64: string) => {
+    if (isScanning) return;
+
+    setIsScanning(true);
+    clearScanTimeout();
+
+    try {
+      scanTimeoutRef.current = setTimeout(() => {
+        setIsScanning(false);
+        onScanComplete({
+          name: "Paracetamol",
+          manufacturer: "PharmaCorp Industries",
+          strength: "500mg",
+          type: "Tablet",
+          confidence: 96,
+          image: imageBase64,
+        });
+      }, 2500);
+    } catch (err) {
+      console.error("Scan failed", err);
+      setIsScanning(false);
+      clearScanTimeout();
+    }
+  };
+
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragActive(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const base64 = await fileToBase64(e.dataTransfer.files[0]);
+      handleScanWithImage(base64);
+    }
+  };
+
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      handleScan();
+      const base64 = await fileToBase64(e.target.files[0]);
+      handleScanWithImage(base64);
+    }
+  };
+  const handleScan = async () => {
+    if (isScanning) return;
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: cameraFacing },
+      });
+
+      cameraStreamRef.current = stream;
+      setShowCamera(true);
+    } catch (err) {
+      console.error("Camera access error:", err);
+      stopCamera();
+    }
+  };
+  const switchCamera = async () => {
+    const nextFacing = cameraFacing === "environment" ? "user" : "environment";
+
+    stopCamera();
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: nextFacing },
+      });
+
+      cameraStreamRef.current = stream;
+      setCameraFacing(nextFacing);
+
+      // 🔥 FORCE VIDEO REMOUNT
+      setVideoKey((k) => k + 1);
+      setShowCamera(true);
+    } catch (err) {
+      console.error("Camera switch failed:", err);
+    }
+  };
+
+
+
+
+  const capturePhoto = () => {
+    if (!videoRef.current || !canvasRef.current) return;
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+    ctx?.drawImage(video, 0, 0);
+
+    const imageBase64 = canvas.toDataURL("image/png");
+
+    stopCamera();
+    setShowCamera(false);
+
+    // 👇 store image instead of scanning immediately
+    setCapturedImage(imageBase64);
+    setConfirmMode(true);
+
+  };
+
+
+  const fileToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  const handleRetake = async () => {
+    setCapturedImage(null);
+    setConfirmMode(false);
+    await handleScan(); // reopen camera
+  };
+
+  const handleConfirmUpload = async () => {
+    if (!capturedImage) return;
+
+    setConfirmMode(false);
+    setIsScanning(true);
+
+    try {
+      await fetch("http://localhost:8000/scan-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image: capturedImage,
+        }),
+      });
+
+      // Mock response delay (remove when backend ready)
+      setTimeout(() => {
+        setIsScanning(false);
+        onScanComplete({
+          name: "Paracetamol",
+          manufacturer: "PharmaCorp Industries",
+          strength: "500mg",
+          confidence: 96,
+          image: capturedImage,
+        });
+      }, 2000);
+    } catch (err) {
+      console.error("Upload failed:", err);
+      setIsScanning(false);
     }
   };
 
@@ -57,10 +235,77 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
             Upload or capture an image of your medication for instant identification
           </p>
         </div>
+        {/* CAMERA PREVIEW (MUST BE OUTSIDE SCANNING UI) */}
+        {showCamera && !confirmMode && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="glass-card-strong rounded-3xl p-6 neon-border-cyan mb-6"
+          >
+            <video
+              key={videoKey}   // 🔥 THIS IS CRITICAL
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className={`w-full rounded-2xl aspect-video bg-black mb-4 ${cameraFacing === "user" ? "scale-x-[-1]" : ""
+                }`}
+            />
+
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={switchCamera}
+              className="mb-3 w-full glass-card rounded-2xl p-3 neon-border-blue text-white"
+            >
+              🔄 Switch Camera
+            </motion.button>
+
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={capturePhoto}
+              className="w-full glass-card rounded-2xl p-4 neon-border-cyan text-white"
+            >
+              📸 Capture Photo
+            </motion.button>
+          </motion.div>
+        )}
+        {/* CONFIRM IMAGE PREVIEW */}
+        {confirmMode && capturedImage && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="glass-card-strong rounded-3xl p-6 neon-border-cyan mb-6"
+          >
+            <img
+              src={capturedImage}
+              alt="Captured"
+              className="w-full rounded-2xl mb-4"
+            />
+
+            <div className="grid grid-cols-2 gap-4">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleRetake}
+                className="glass-card rounded-2xl p-4 neon-border-blue text-white"
+              >
+                🔁 Retake
+              </motion.button>
+
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleConfirmUpload}
+                className="glass-card rounded-2xl p-4 neon-border-cyan text-white"
+              >
+                ✅ Confirm & Upload
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
 
         {/* Scanner Interface */}
         <AnimatePresence mode="wait">
-          {!isScanning ? (
+          {!isScanning && !confirmMode ? (
             <motion.div
               key="upload"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -76,11 +321,10 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                 }}
                 onDragLeave={() => setDragActive(false)}
                 onDrop={handleDrop}
-                className={`relative border-2 border-dashed rounded-2xl p-12 mb-6 transition-all duration-300 ${
-                  dragActive
-                    ? "border-[#4fd1c5] bg-[#4fd1c5]/10 neon-glow-cyan"
-                    : "border-[#4fd1c5]/40 hover:border-[#4fd1c5]/70"
-                }`}
+                className={`relative border-2 border-dashed rounded-2xl p-12 mb-6 transition-all duration-300 ${dragActive
+                  ? "border-[#4fd1c5] bg-[#4fd1c5]/10 neon-glow-cyan"
+                  : "border-[#4fd1c5]/40 hover:border-[#4fd1c5]/70"
+                  }`}
               >
                 {/* Corner decorations */}
                 <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-[#4fd1c5]" />
@@ -96,7 +340,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                   >
                     <Upload className="w-12 h-12 text-[#4fd1c5]" />
                   </motion.div>
-                  
+
                   <h3 className="text-xl mb-2 text-white">
                     Drop your medicine image here
                   </h3>
@@ -140,7 +384,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
               {/* Tips */}
               <div className="mt-6 glass-card rounded-2xl p-4">
                 <p className="text-[#8a9ab8] text-sm">
-                  💡 <span className="text-[#4fd1c5]">Tips:</span> Ensure good lighting, 
+                  💡 <span className="text-[#4fd1c5]">Tips:</span> Ensure good lighting,
                   capture the pill strip or bottle clearly, and include any text or codes visible.
                 </p>
               </div>
@@ -257,6 +501,13 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
           )}
         </AnimatePresence>
       </motion.div>
+      {/* Hidden camera elements */}
+
+      <canvas
+        ref={canvasRef}
+        className="hidden"
+      />
+
     </div>
   );
 }

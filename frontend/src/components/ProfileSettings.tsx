@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "../supabase";
+
 import { User, Heart, Calendar, Globe, Bell, Wifi, WifiOff } from "lucide-react";
 import { motion } from "motion/react";
 import { Switch } from "./ui/switch";
@@ -8,13 +10,57 @@ export function ProfileSettings() {
   const [offlineMode, setOfflineMode] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
 
-  const healthInfo = {
-    age: "45",
-    allergies: ["Penicillin", "Sulfa drugs"],
-    conditions: ["Hypertension", "Type 2 Diabetes"],
-  };
+  interface UserProfile {
+  user_id: string;
+  email: string;
+  full_name: string | null;
+  age: number;
+  allergies: string;   // comma-separated
+  conditions: string;  // comma-separated
+}
+
+const [profile, setProfile] = useState<UserProfile | null>(null);
+const [loading, setLoading] = useState(true);
+
 
   const languages = ["English", "Spanish", "French", "German", "Chinese", "Arabic"];
+  const fetchProfile = async () => {
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session?.access_token) {
+      throw new Error("No access token");
+    }
+
+    const res = await fetch("http://localhost:8000/user-profile/details", {
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+      },
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch profile");
+
+    const json = await res.json();
+    setProfile(json.data);
+  } catch (err) {
+    console.error("Failed to load profile", err);
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetchProfile();
+}, []);
+if (loading || !profile) {
+  return (
+    <div className="min-h-screen molecular-bg flex items-center justify-center">
+      <span className="text-[#4fd1c5] text-lg">Loading profile…</span>
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen molecular-bg p-6 pb-24">
@@ -47,8 +93,11 @@ export function ProfileSettings() {
               <User className="w-12 h-12 text-[#4fd1c5]" />
             </motion.div>
             <div>
-              <h3 className="text-2xl text-white mb-1">John Doe</h3>
-              <p className="text-[#8a9ab8]">john.doe@email.com</p>
+              <h3 className="text-2xl text-white mb-1">
+  {profile.full_name ?? "User"}
+</h3>
+<p className="text-[#8a9ab8]">{profile.email}</p>
+
               <button className="mt-2 text-sm text-[#4fd1c5] hover:text-[#34d399] transition-colors">
                 Edit Profile
               </button>
@@ -59,17 +108,24 @@ export function ProfileSettings() {
             <div className="glass-card rounded-2xl p-4">
               <Calendar className="w-6 h-6 text-[#6366f1] mb-2" />
               <p className="text-sm text-[#8a9ab8]">Age</p>
-              <p className="text-xl text-white">{healthInfo.age} years</p>
+              <p className="text-xl text-white">{profile.age} years</p>
+
             </div>
             <div className="glass-card rounded-2xl p-4">
               <Heart className="w-6 h-6 text-[#ef4444] mb-2" />
               <p className="text-sm text-[#8a9ab8]">Allergies</p>
-              <p className="text-xl text-white">{healthInfo.allergies.length}</p>
+              <p className="text-xl text-white">
+  {profile.allergies.split(",").length}
+</p>
+
             </div>
             <div className="glass-card rounded-2xl p-4">
               <Heart className="w-6 h-6 text-[#a78bfa] mb-2" />
               <p className="text-sm text-[#8a9ab8]">Conditions</p>
-              <p className="text-xl text-white">{healthInfo.conditions.length}</p>
+              <p className="text-xl text-white">
+  {profile.conditions.split(",").length}
+</p>
+
             </div>
           </div>
         </motion.div>
@@ -90,7 +146,7 @@ export function ProfileSettings() {
           <div className="mb-6">
             <label className="text-[#8a9ab8] mb-3 block">Known Allergies</label>
             <div className="flex flex-wrap gap-3">
-              {healthInfo.allergies.map((allergy, index) => (
+              {profile.allergies.split(",").map((allergy, index) => (
                 <motion.div
                   key={allergy}
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -116,7 +172,7 @@ export function ProfileSettings() {
           <div>
             <label className="text-[#8a9ab8] mb-3 block">Chronic Conditions</label>
             <div className="flex flex-wrap gap-3">
-              {healthInfo.conditions.map((condition, index) => (
+              {profile.conditions.split(",").map((condition, index) => (
                 <motion.div
                   key={condition}
                   initial={{ opacity: 0, scale: 0.8 }}
