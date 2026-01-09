@@ -34,7 +34,7 @@ const [loading, setLoading] = useState(true);
       throw new Error("No access token");
     }
 
-    const res = await fetch("http://localhost:8000/user-profile/details", {
+    const res = await fetch(" https://pharmalens-ie09.onrender.com/user-profile/details", {
       headers: {
         Authorization: `Bearer ${session.access_token}`,
       },
