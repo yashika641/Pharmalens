@@ -1,46 +1,78 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments, Trainer
+from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, DataCollatorForLanguageModeling
+from datasets import Dataset
 from peft import get_peft_model, LoraConfig, TaskType
-from datasets import load_dataset
+import json
+import torch
 
-model_name = "google/gemma-2b"
-dataset = load_dataset("json", data_files="finetune_dataset.jsonl")
+# ===== Load and format your dataset =====
+def load_dataset(path):
+    with open(path, "r") as f:
+        raw_data = json.load(f)
 
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+    formatted = []
+    for item in raw_data:
+        user_msg = item["messages"][0]["content"]
+        bot_msg = item["messages"][1]["content"]
+        formatted.append({
+            "text": f"<start_of_turn>user\n{user_msg}<end_of_turn>\n<start_of_turn>model\n{bot_msg}<end_of_turn>"
+        })
+    return Dataset.from_list(formatted)
+
+# ===== Load model and tokenizer =====
+model_id = "google/gemma-3n-E2B"
+tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token
 
-def format(example):
-    prompt = f"<start_of_turn>user\n{example['instruction']}<end_of_turn>\n<start_of_turn>model\n{example['output']}<end_of_turn>"
-    tokens = tokenizer(prompt, truncation=True, padding="max_length", max_length=512)
-    tokens["labels"] = tokens["input_ids"].copy()
-    return tokens
+model = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    load_in_8bit=True,
+    torch_dtype=torch.float16,
+    device_map="auto"
+)
 
-dataset = dataset.map(format)
-
-model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=True, device_map="auto")
-lora_config = LoraConfig(task_type=TaskType.CAUSAL_LM, r=8, lora_alpha=16, lora_dropout=0.1)
-
+# ===== Apply LoRA for PEFT (efficient finetuning) =====
+lora_config = LoraConfig(
+    r=8,
+    lora_alpha=16,
+    target_modules=["q_proj", "v_proj"],
+    lora_dropout=0.05,
+    bias="none",
+    task_type=TaskType.CAUSAL_LM
+)
 model = get_peft_model(model, lora_config)
 
+# ===== Prepare dataset =====
+dataset = load_dataset(r"C:\Users\palya\Desktop\pharmalens\Pharmalens\models\training_data\medquad_finetune.jsonl")
+
+def tokenize(batch):
+    return tokenizer(batch["text"], truncation=True, padding="max_length", max_length=512)
+
+tokenized_dataset = dataset.map(tokenize)
+
+# ===== Training arguments =====
 training_args = TrainingArguments(
-    output_dir="./gemma-support-bot",
+    output_dir="./finetuned-gemma",
+    per_device_train_batch_size=1,
     num_train_epochs=3,
-    per_device_train_batch_size=4,
-    gradient_accumulation_steps=2,
     logging_steps=10,
-    save_steps=200,
+    save_strategy="epoch",
     learning_rate=2e-4,
     fp16=True,
-    optim="paged_adamw_8bit",
     report_to="none"
 )
+
+# ===== Trainer =====
+data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
 
 trainer = Trainer(
     model=model,
     args=training_args,
-    train_dataset=dataset["train"],
-    tokenizer=tokenizer
+    train_dataset=tokenized_dataset,
+    data_collator=data_collator,
 )
 
 trainer.train()
-model.save_pretrained("./gemma-support-bot")
-tokenizer.save_pretrained("./gemma-support-bot")
+
+# Save the finetuned model
+model.save_pretrained("finetuned-gemma")
+tokenizer.save_pretrained("finetuned-gemma")
