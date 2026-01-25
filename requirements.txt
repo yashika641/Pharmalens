@@ -50,3 +50,6 @@ seaborn
 requests
 tqdm
 
+google-cloud-vision
+google-genai
+duckdb
