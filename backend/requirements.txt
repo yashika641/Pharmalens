@@ -1,0 +1,13 @@
+streamlit
+pillow
+fastapi
+uvicorn
+sqlalchemy
+python-multipart
+aiofiles
+requests
+numpy
+pandas
+supabase
+dotenv
+pydantic
