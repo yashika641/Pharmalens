@@ -209,3 +209,9 @@ __marimo__/
 C:\Users\palya\Desktop\pharmalens\Pharmalens\medquad.csv
 C:\Users\palya\Desktop\pharmalens\Pharmalens\output.csv
 node_modules
+C:\Users\palya\Desktop\pharmalens\Pharmalens\ocr_debug\
+# Ignore OCR debug folder
+ocr_debug/
+# Large analytics data
+*.parquet
+models/drug_interaction_checker/parquet/
