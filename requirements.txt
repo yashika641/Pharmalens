@@ -8,7 +8,7 @@ python-dotenv
 pillow
 opencv-python
 pytesseract
-
+supabase
 # NLP / AI Models
 transformers
 torch
