@@ -69,7 +69,7 @@ const getSessionAndToken = async () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
+  console.log("Messages:", messages);
   const handleSend = async () => {
     if (!inputValue.trim()) return;
 
