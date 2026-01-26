@@ -13,23 +13,22 @@ interface Drug {
   id: string;
   name: string;
 }
+interface EvidenceInteraction {
+  severity: "mild" | "moderate" | "severe";
+  prr_bucket: string;
+  frequency_bucket: string;
+}
 
-interface Interaction {
-  drug1: string;
-  drug2: string;
-  severity: "severe" | "moderate" | "safe" | "mild";
-  description: string;
-  clinical_advice?: string;
+interface AIAnalysis {
+  short_answer: string;
+  long_answer: string;
+  confidence: "low" | "medium" | "high";
 }
 
 interface InteractionResult {
-  interactions: Interaction[];
-  safe_combinations?: string[][];
-  llm_validation?: {
-    confirmed: boolean;
-    summary: string;
-    additional_risks: string[];
-  };
+  input_drugs: string[];
+  ai_analysis: AIAnalysis;
+  interactions: EvidenceInteraction[];
 }
 
 interface DrugInteractionCheckerProps {
@@ -46,6 +45,7 @@ export function DrugInteractionChecker({
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<InteractionResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showDetails, setShowDetails] = useState(false);
 
   // Initialize with provided drugs
   useEffect(() => {
@@ -88,7 +88,7 @@ export function DrugInteractionChecker({
 
     try {
       const response = await fetch(
-        "https://pharmalens-ie09.onrender.com/drug-interactions/check",
+        "http://localhost:8000/drug-interactions/check",
         {
           method: "POST",
           headers: {
@@ -219,76 +219,64 @@ export function DrugInteractionChecker({
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="space-y-4"
+              className="glass-card-strong rounded-3xl p-6 neon-border-cyan"
             >
-              {results.interactions.map((interaction, index) => {
-                const colors = getSeverityColor(interaction.severity);
-                return (
-                  <div
-                    key={index}
-                    className={`glass-card-strong rounded-3xl p-6 border ${colors.border} ${colors.bg}`}
+              {/* DRUG PAIR */}
+              <h3 className="text-white text-lg mb-2">
+                {results.input_drugs.join(" + ")}
+              </h3>
+
+              {/* SHORT ANSWER */}
+              <p className="text-[#8a9ab8]">
+                {results.ai_analysis.short_answer}
+              </p>
+              {/* VIEW DETAILS BUTTON */}
+              <button
+                onClick={() => setShowDetails((prev) => !prev)}
+                className="mt-3 text-sm text-[#a78bfa] hover:underline"
+              >
+                {showDetails ? "Hide details" : "View details"}
+              </button>
+
+              {/* DETAILS SECTION */}
+              <AnimatePresence>
+                {showDetails && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mt-4 space-y-4"
                   >
-                    <div className="flex items-start gap-4">
-                      <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center ${colors.bg} ${colors.glow}`}
-                      >
-                        {interaction.severity === "severe" ? (
-                          <AlertTriangle className={`w-6 h-6 ${colors.text}`} />
-                        ) : (
-                          <AlertCircle className={`w-6 h-6 ${colors.text}`} />
-                        )}
-                      </div>
-
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-white">{interaction.drug1}</span>
-                          <span className="text-[#8a9ab8]">+</span>
-                          <span className="text-white">{interaction.drug2}</span>
-                          <span
-                            className={`ml-auto px-3 py-1 rounded-full text-sm ${colors.text}`}
-                          >
-                            {interaction.severity}
-                          </span>
-                        </div>
-                        <p className="text-[#8a9ab8]">
-                          {interaction.description}
-                        </p>
-                        {interaction.clinical_advice && (
-                          <p className="text-[#fbbf24] mt-2">
-                            ⚠ {interaction.clinical_advice}
-                          </p>
-                        )}
-                      </div>
+                    {/* LONG ANSWER */}
+                    <div className="text-[#8a9ab8] text-sm leading-relaxed">
+                      {results.ai_analysis.long_answer}
                     </div>
-                  </div>
-                );
-              })}
 
-              {/* AI Validation */}
-              {results.llm_validation && (
-                <div className="glass-card-strong rounded-3xl p-6 neon-border-purple">
-                  <h4 className="text-white mb-2">
-                    AI Safety Validation
-                  </h4>
-                  <p className="text-[#8a9ab8]">
-                    {results.llm_validation.summary}
-                  </p>
-
-                  {results.llm_validation.additional_risks.map(
-                    (risk, idx) => (
-                      <p key={idx} className="text-[#fbbf24] mt-2">
-                        ⚠ {risk}
-                      </p>
-                    )
-                  )}
-                </div>
-              )}
-
-              <p className="text-xs text-[#8a9ab8] text-center mt-6">
-                This tool provides informational analysis only and does not
-                replace professional medical advice.
+                    {/* OBSERVED INTERACTION PATTERNS */}
+                    {results.interactions.length > 0 && (
+                      <div className="text-xs text-[#8a9ab8]">
+                        <p className="mb-1 font-medium">
+                          Observed interaction patterns:
+                        </p>
+                        <ul className="list-disc ml-4 space-y-1">
+                          {results.interactions.map((item, idx) => (
+                            <li key={idx}>
+                              {item.severity} severity • PRR {item.prr_bucket} •{" "}
+                              {item.frequency_bucket.replace("_", " ")} frequency
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              {/* CONFIDENCE */}
+              <p className="text-xs text-[#8a9ab8] mt-4">
+                Confidence level: {results.ai_analysis.confidence}
               </p>
             </motion.div>
+
           )}
         </AnimatePresence>
       </motion.div>

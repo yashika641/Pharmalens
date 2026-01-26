@@ -11,6 +11,7 @@ from backend.routes import login_routes
 from backend.routes import scan_routes 
 from backend.routes import user_profile_routes
 from backend.routes import drug_routes
+from backend.routes import chatbot_routes
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Request, Response
 from fastapi import FastAPI
@@ -21,6 +22,7 @@ app.include_router(login_routes.router)
 app.include_router(scan_routes.router)
 app.include_router(user_profile_routes.router)
 app.include_router(drug_routes.router)
+app.include_router(chatbot_routes.router)
 origins = [
     "http://localhost:3000",
     "http://localhost:3000",
