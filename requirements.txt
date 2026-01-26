@@ -34,7 +34,6 @@ wkhtmltopdf  # note: install this via system package, not pip
 # Voice Input (Optional)
 whisper
 SpeechRecognition
-pyaudio
 
 # Backend (Optional)
 fastapi
