@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Camera, Upload, Scan, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { supabase } from "../supabase";
 
 interface ScannerPageProps {
   onScanComplete: (result: any) => void;
@@ -13,6 +14,8 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
     "environment"
   );
   const [videoKey, setVideoKey] = useState(0);
+  const [imageType, setImageType] = useState<"medicine" | "prescription">("medicine");
+  const [session, setSession] = useState<any>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -54,6 +57,14 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
   }, [showCamera, cameraFacing]);
 
   useEffect(() => {
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+    };
+    getSession();
+  }, []);
+
+  useEffect(() => {
     return () => {
       stopCamera();
       clearScanTimeout();
@@ -92,24 +103,51 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
     }
   };
 
+  const uploadImageFile = async (file: File) => {
+    setIsScanning(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("image_type", imageType);
+
+      await fetch("http://localhost:8000/images/upload", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
+        },
+        body: formData,
+      });
+
+      setTimeout(() => {
+        setIsScanning(false);
+        onScanComplete({
+          imageType,
+          imageUploaded: true,
+        });
+      }, 1500);
+    } catch (err) {
+      console.error("Upload failed:", err);
+      setIsScanning(false);
+    }
+  };
+
 
   const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
     setDragActive(false);
 
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const base64 = await fileToBase64(e.dataTransfer.files[0]);
-      handleScanWithImage(base64);
+      await uploadImageFile(e.dataTransfer.files[0]);
     }
   };
-
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const base64 = await fileToBase64(e.target.files[0]);
-      handleScanWithImage(base64);
+      await uploadImageFile(e.target.files[0]);
     }
   };
+
   const handleScan = async () => {
     if (isScanning) return;
 
@@ -171,19 +209,21 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
     setConfirmMode(true);
 
   };
-
-
-  const fileToBase64 = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
   const handleRetake = async () => {
     setCapturedImage(null);
     setConfirmMode(false);
     await handleScan(); // reopen camera
+  };
+  const dataURLtoFile = (dataUrl: string, filename: string) => {
+    const arr = dataUrl.split(",");
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) u8arr[n] = bstr.charCodeAt(n);
+
+    return new File([u8arr], filename, { type: mime });
   };
 
   const handleConfirmUpload = async () => {
@@ -193,32 +233,34 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
     setIsScanning(true);
 
     try {
-      await fetch(" https://pharmalens-ie09.onrender.com/scan-image", {
+      const file = dataURLtoFile(capturedImage, "capture.png");
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("image_type", imageType); // 🔑 medicine | prescription
+
+      await fetch("http://localhost:8000/images/upload", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.access_token}`,
         },
-        body: JSON.stringify({
-          image: capturedImage,
-        }),
+        body: formData,
       });
 
-      // Mock response delay (remove when backend ready)
-      setTimeout(() => {
-        setIsScanning(false);
-        onScanComplete({
-          name: "Paracetamol",
-          manufacturer: "PharmaCorp Industries",
-          strength: "500mg",
-          confidence: 96,
-          image: capturedImage,
-        });
-      }, 2000);
+      setIsScanning(false);
+
+      // temporary callback until OCR pipeline is ready
+      onScanComplete({
+        imageType,
+        imageUploaded: true,
+        preview: capturedImage,
+      });
     } catch (err) {
       console.error("Upload failed:", err);
       setIsScanning(false);
     }
   };
+  // console.log("SESSION IN COMPONENT:", session);
 
   return (
     <div className="min-h-screen molecular-bg p-6 pb-24">
@@ -229,12 +271,17 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       >
         <div className="text-center mb-8">
           <h2 className="text-4xl mb-3">
-            <span className="neon-text-cyan">Medicine Scanner</span>
+            <span className="neon-text-cyan">
+              {imageType === "medicine" ? "Medicine Scanner" : "Prescription Scanner"}
+            </span>
           </h2>
           <p className="text-[#8a9ab8]">
-            Upload or capture an image of your medication for instant identification
+            {imageType === "medicine"
+              ? "Upload or capture an image of your medication for instant identification"
+              : "Upload or capture an image of a prescription for OCR and safety analysis"}
           </p>
         </div>
+
         {/* CAMERA PREVIEW (MUST BE OUTSIDE SCANNING UI) */}
         {showCamera && !confirmMode && (
           <motion.div
@@ -313,6 +360,25 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
               exit={{ opacity: 0, scale: 0.95 }}
               className="glass-card-strong rounded-3xl p-8 neon-border-cyan"
             >
+              {/* IMAGE TYPE TABS */}
+              <div className="flex justify-center mb-6">
+                <div className="glass-card rounded-2xl p-1 flex gap-1">
+                  {(["medicine", "prescription"] as const).map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => setImageType(type)}
+                      className={`px-6 py-2 rounded-xl text-sm transition-all ${imageType === type
+                        ? "bg-[#4fd1c5] text-black font-semibold neon-glow-cyan"
+                        : "text-[#8a9ab8] hover:text-white"
+                        }`}
+                    >
+                      {type === "medicine" ? "💊 Medicine" : "📝 Prescription"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+
               {/* Drop Zone */}
               <div
                 onDragOver={(e) => {
@@ -341,9 +407,10 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                     <Upload className="w-12 h-12 text-[#4fd1c5]" />
                   </motion.div>
 
-                  <h3 className="text-xl mb-2 text-white">
-                    Drop your medicine image here
+                  <h3>
+                    Drop your {imageType === "medicine" ? "medicine" : "prescription"} image here
                   </h3>
+
                   <p className="text-[#8a9ab8] mb-6">
                     or click below to browse files
                   </p>
