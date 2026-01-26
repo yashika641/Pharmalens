@@ -1,57 +1,15 @@
-# Core App & Frontend
-streamlit
-pandas
-numpy
-python-dotenv
-
-# Image Processing & OCR
-pillow
-opencv-python
-pytesseract
-supabase
-# NLP / AI Models
-transformers
-torch
-sentence-transformers
-scikit-learn
-
-# Optional: For using quantized models or accelerating inference
-accelerate
-bitsandbytes
-optimum
-
-# Chatbot & Prompt Engineering
-langchain
-openai
-faiss-cpu
-
-# PDF / Report Generation
-reportlab
-markdown2
-pdfkit
-wkhtmltopdf  # note: install this via system package, not pip
-
-# Voice Input (Optional)
-whisper
-SpeechRecognition
-
-# Backend (Optional)
-fastapi
-uvicorn
-
-# Drug Matching & Text Utilities
-fuzzywuzzy
-python-Levenshtein
-
-# Misc & Utilities
-matplotlib
-seaborn
-requests
-tqdm
-
-google-cloud-vision
-google-genai
-duckdb
-qdrant-client
-gradio-client
-gradio
+duckdb==1.4.4
+faiss_cpu==1.11.0.post1
+fastapi==0.128.0
+gradio_client==2.0.3
+numpy==2.4.1
+pandas==3.0.0
+Pillow==12.1.0
+protobuf==6.33.4
+pydantic==2.12.5
+python-dotenv==1.2.1
+qdrant_client==1.16.2
+Requests==2.32.5
+sentence_transformers==5.0.0
+streamlit==1.47.0
+tqdm==4.67.1
