@@ -88,7 +88,7 @@ export function DrugInteractionChecker({
 
     try {
       const response = await fetch(
-        "http://localhost:8000/drug-interactions/check",
+        "https://pharmalens-ie09.onrender.com/drug-interactions/check",
         {
           method: "POST",
           headers: {

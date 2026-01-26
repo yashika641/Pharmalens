@@ -11,3 +11,4 @@ pandas
 supabase
 dotenv
 pydantic
+google-genai
