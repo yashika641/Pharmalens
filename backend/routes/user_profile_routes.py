@@ -2,7 +2,7 @@ from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 from typing import Optional, Tuple
-from utils.supabase import supabase
+from backend.utils.supabase import supabase
 
 router = APIRouter(prefix="/user-profile", tags=["User Profile"])
 
@@ -137,8 +137,8 @@ def get_user_details(authorization: Optional[str] = Header(None)):
             "user_id": auth_user["user_id"],
             "email": auth_user["email"],
             "full_name": auth_user["full_name"],
-            "age": profile.get("age") if isinstance(profile, dict) else profile.age,
-            "allergies": profile.get("allergies") if isinstance(profile, dict) else profile.allergies,
-            "conditions": profile.get("conditions") if isinstance(profile, dict) else profile.conditions,
+            "age": profile.get("age") if isinstance(profile, dict) else profile.age, #type: ignore
+            "allergies": profile.get("allergies") if isinstance(profile, dict) else profile.allergies, #type: ignore
+            "conditions": profile.get("conditions") if isinstance(profile, dict) else profile.conditions, #type: ignore
         }
     }
