@@ -71,7 +71,7 @@ const handleProfileSubmit = async () => {
       throw new Error("User not authenticated");
     }
 
-    await fetch("https://pharmalens-ie09.onrender.com/api/user-profile/", {
+    await fetch("https://pharmalens-ie09.onrender.com/user-profile/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
