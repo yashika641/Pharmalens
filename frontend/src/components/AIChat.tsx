@@ -1,6 +1,8 @@
+/// <reference types="vite/client" />
 import { useState, useRef, useEffect } from "react";
 import { Send, Mic, Camera, Loader2, Bot, User } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { supabase } from "../supabase";
 
 interface Message {
   id: string;
@@ -21,55 +23,110 @@ export function AIChat() {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const API_URL = import.meta.env.VITE_API_URL;
+  const streamAIResponse = async (query: string) => {
+    const session = await supabase.auth.getSession();
+    const token = session.data.session?.access_token;
+
+    const eventSource = new EventSource(
+      `${API_URL}/chat/stream?query=${encodeURIComponent(query)}&token=${token}`
+    );
+
+
+    let aiText = "";
+    const aiId = crypto.randomUUID();
+
+    setMessages(prev => [
+      ...prev,
+      { id: aiId, text: "", sender: "ai", timestamp: new Date() },
+    ]);
+
+    eventSource.onmessage = (e) => {
+      aiText += e.data;
+
+      setMessages(prev =>
+        prev.map(m =>
+          m.id === aiId ? { ...m, text: aiText } : m
+        )
+      );
+    };
+
+    eventSource.addEventListener("done", () => {
+      eventSource.close();
+      setIsTyping(false);
+    });
+
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+const getSessionAndToken = async () => {
+  const sessionRes = await supabase.auth.getSession();
+  return sessionRes.data.session?.access_token;
+};
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+  console.log("Messages:", messages);
+  const handleSend = async () => {
+    if (!inputValue.trim()) return;
 
-  const handleSend = () => {
-    if (inputValue.trim()) {
-      const userMessage: Message = {
-        id: Date.now().toString(),
-        text: inputValue,
+    const userMsg: Message = {
+      id: crypto.randomUUID(),
+      text: inputValue,
+      sender: "user",
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, userMsg]);
+    setInputValue("");
+    setIsTyping(true);
+
+    streamAIResponse(userMsg.text);
+  };
+
+useEffect(() => {
+  const loadChatHistory = async () => {
+    const session = await supabase.auth.getSession();
+    const token = session.data.session?.access_token;
+
+    if (!token) return;
+
+    const res = await fetch(`${API_URL}/chat/history`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    const formatted: Message[] = [];
+
+    data.forEach((row: any) => {
+      // User message
+      formatted.push({
+        id: crypto.randomUUID(),
+        text: row.query,
         sender: "user",
-        timestamp: new Date(),
-      };
+        timestamp: new Date(row.timestamp),
+      });
 
-      setMessages([...messages, userMessage]);
-      setInputValue("");
-      setIsTyping(true);
+      // AI response
+      formatted.push({
+        id: crypto.randomUUID(),
+        text: row.response,
+        sender: "ai",
+        timestamp: new Date(row.timestamp),
+      });
+    });
 
-      // Simulate AI response
-      setTimeout(() => {
-        const aiMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          text: generateAIResponse(inputValue),
-          sender: "ai",
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, aiMessage]);
-        setIsTyping(false);
-      }, 2000);
-    }
+    setMessages(formatted);
   };
 
-  const generateAIResponse = (query: string): string => {
-    const lowerQuery = query.toLowerCase();
-    
-    if (lowerQuery.includes("paracetamol") || lowerQuery.includes("acetaminophen")) {
-      return "Paracetamol (Acetaminophen) is a common pain reliever and fever reducer. The typical adult dose is 500-1000mg every 4-6 hours, not exceeding 4000mg per day. Important warnings: Avoid alcohol while taking this medication, and be cautious if you have liver problems. Always consult your doctor if symptoms persist.";
-    } else if (lowerQuery.includes("side effects")) {
-      return "Side effects vary by medication. Common side effects include nausea, drowsiness, headache, and stomach upset. Severe side effects should be reported to your doctor immediately. Would you like information about a specific medication?";
-    } else if (lowerQuery.includes("dosage") || lowerQuery.includes("dose")) {
-      return "Dosage recommendations depend on several factors including age, weight, medical condition, and the specific medication. Always follow your doctor's prescription or the medication label instructions. Never exceed the recommended dose without medical supervision.";
-    } else {
-      return "I understand you're asking about medication. For the most accurate and personalized advice, please consult with your healthcare provider. I can provide general information about medications, their uses, and common precautions. What specific medication would you like to know more about?";
-    }
-  };
+  loadChatHistory();
+}, []);
 
   const quickQuestions = [
     "What is Paracetamol used for?",
@@ -118,17 +175,15 @@ export function AIChat() {
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.3 }}
-                className={`flex gap-3 ${
-                  message.sender === "user" ? "flex-row-reverse" : "flex-row"
-                }`}
+                className={`flex gap-3 ${message.sender === "user" ? "flex-row-reverse" : "flex-row"
+                  }`}
               >
                 {/* Avatar */}
                 <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    message.sender === "ai"
-                      ? "bg-gradient-to-br from-[#4fd1c5]/20 to-[#6366f1]/20 neon-border-cyan"
-                      : "bg-gradient-to-br from-[#a78bfa]/20 to-[#6366f1]/20 neon-border-purple"
-                  }`}
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${message.sender === "ai"
+                    ? "bg-gradient-to-br from-[#4fd1c5]/20 to-[#6366f1]/20 neon-border-cyan"
+                    : "bg-gradient-to-br from-[#a78bfa]/20 to-[#6366f1]/20 neon-border-purple"
+                    }`}
                 >
                   {message.sender === "ai" ? (
                     <Bot className="w-5 h-5 text-[#4fd1c5]" />
@@ -139,13 +194,11 @@ export function AIChat() {
 
                 {/* Message Bubble */}
                 <div
-                  className={`glass-card rounded-2xl p-4 max-w-[70%] ${
-                    message.sender === "ai" ? "rounded-tl-none" : "rounded-tr-none"
-                  } ${
-                    message.sender === "ai"
+                  className={`glass-card rounded-2xl p-4 max-w-[70%] ${message.sender === "ai" ? "rounded-tl-none" : "rounded-tr-none"
+                    } ${message.sender === "ai"
                       ? "border border-[#4fd1c5]/30"
                       : "border border-[#a78bfa]/30"
-                  }`}
+                    }`}
                 >
                   <p className="text-[#e8f0ff] leading-relaxed">{message.text}</p>
                   <p className="text-xs text-[#8a9ab8] mt-2">
