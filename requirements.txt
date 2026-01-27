@@ -15,3 +15,5 @@ google-genai
 gradio-client
 gradio
 qdrant-client
+google-genai
+duckdb
