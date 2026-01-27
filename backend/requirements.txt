@@ -1,7 +1,7 @@
 streamlit
 pillow
 fastapi
-uvicorn
+uvicorn[standard]
 sqlalchemy
 python-multipart
 aiofiles
@@ -9,5 +9,5 @@ requests
 numpy
 pandas
 supabase
-dotenv
+python-dotenv
 pydantic
