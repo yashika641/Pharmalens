@@ -1,48 +1,67 @@
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-import base64
-import os
-from datetime import datetime
-from PIL import Image
-from io import BytesIO
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Header
+from backend.utils.supabase import supabase
+import uuid
+from models.ocr.main import run_latest_image_ocr_pipeline
 
-router = APIRouter()
+router = APIRouter(prefix="/images", tags=["Images"])
 
-TEMP_DIR = "temp_images"
-os.makedirs(TEMP_DIR, exist_ok=True)
+@router.post("/upload")
+async def upload_image(
+    file: UploadFile = File(...),
+    image_type: str = Form(...),
+    authorization: str = Header(None)
+):
+    print("[AUTH] Authorization header:", authorization)
 
+    # 🔐 Auth
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing authorization token")
 
-class ImagePayload(BaseModel):
-    image: str  # base64 image
+    token = authorization.replace("Bearer ", "")
+    user_response = supabase.auth.get_user(token)
 
+    if not user_response or not user_response.user:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
 
-@router.post("/scan-image")
-def scan_image(payload: ImagePayload):
-    try:
-        image_data = payload.image
+    user_id = user_response.user.id
 
-        # Remove base64 header if present
-        if "," in image_data:
-            image_data = image_data.split(",")[1]
+    # ✅ Validate image type
+    if image_type not in ("medicine", "prescription"):
+        raise HTTPException(status_code=400, detail="Invalid image type")
 
-        # Decode image
-        image_bytes = base64.b64decode(image_data)
-        image = Image.open(BytesIO(image_bytes))
+    # ✅ Validate file type
+    if not file.content_type or not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="Invalid file type")
 
-        # Generate unique filename
-        filename = f"scan_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-        filepath = os.path.join(TEMP_DIR, filename)
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="Invalid filename")
 
-        # Save image
-        image.save(filepath)
+    ext = file.filename.split(".")[-1]
+    filename = f"{user_id}/{image_type}/{uuid.uuid4()}.{ext}"
 
-        print(f"✅ Image saved: {filepath}")
+    file_bytes = await file.read()
 
-        return {
-            "status": "success",
-            "filename": filename
-        }
+    # ☁️ Upload
+    supabase.storage.from_("pharmalens").upload(
+        path=filename,
+        file=file_bytes,
+        file_options={"content-type": file.content_type}
+    )
 
-    except Exception as e:
-        print("❌ Error saving image:", e)
-        raise HTTPException(status_code=400, detail="Invalid image data")
+    public_url = supabase.storage.from_("pharmalens").get_public_url(filename)
+
+    # 🗄️ Save metadata
+    supabase.table("images").insert({
+        "user_id": user_id,
+        "image_url": public_url,
+        "image_type": image_type
+    }).execute()
+    
+    # 🚀 Trigger OCR pipeline
+    run_latest_image_ocr_pipeline(user_id=user_id)
+
+    return {
+        "success": True,
+        "image_url": public_url,
+        "image_type": image_type
+    }
