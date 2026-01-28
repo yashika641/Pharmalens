@@ -1,26 +1,30 @@
 import os
+from typing import Dict, Optional
 from google import genai
-import dotenv
-from typing import Dict
 
-# --------------------------------------------------
-# Environment & Client Setup
-# --------------------------------------------------
+# ==================================================
+# Lazy Gemini Client (singleton)
+# ==================================================
+_client: Optional[genai.Client] = None
 
-dotenv.load_dotenv(
-    os.path.join(os.path.dirname(__file__), "../../backend/.env")
-)
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+def get_gemini_client() -> genai.Client:
+    global _client
 
-# --------------------------------------------------
-# Gemini Response Parsing
-# --------------------------------------------------
+    if _client is None:
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise RuntimeError("GEMINI_API_KEY not set")
 
+        _client = genai.Client(api_key=api_key)
+
+    return _client
+
+
+# ==================================================
+# Gemini Response Parsing (PURE FUNCTION)
+# ==================================================
 def parse_gemini_response(text: str) -> Dict[str, str]:
-    """
-    Parses Gemini output into short + long answers.
-    """
     if not text:
         return {
             "short_answer": "AI explanation unavailable.",
@@ -34,24 +38,20 @@ def parse_gemini_response(text: str) -> Dict[str, str]:
             "long_answer": long.strip()
         }
 
-    # fallback
     sentences = text.replace("\n", " ").split(". ")
     return {
         "short_answer": ". ".join(sentences[:2]).strip() + ".",
         "long_answer": text
     }
 
-# --------------------------------------------------
-# Core Gemini Explanation Function
-# --------------------------------------------------
 
+# ==================================================
+# Core Gemini Explanation (lazy + safe)
+# ==================================================
 def explain_interaction_with_gemini(payload: Dict) -> Dict:
     """
-    Uses Gemini ONLY to explain:
-    - Statistical summary
-    - Deduplicated interaction patterns
-
-    Database + rules engine remains authoritative.
+    Gemini is used ONLY for explanation.
+    Statistical engine remains authoritative.
     """
 
     if not payload:
@@ -65,7 +65,8 @@ def explain_interaction_with_gemini(payload: Dict) -> Dict:
     unique_rows = payload["unique_interactions"]
 
     evidence_text = "\n".join(
-        f"- Severity: {r['severity']}, PRR range: {r['prr_bucket']}, Reporting frequency: {r['frequency_bucket']}"
+        f"- Severity: {r['severity']}, PRR range: {r['prr_bucket']}, "
+        f"Reporting frequency: {r['frequency_bucket']}"
         for r in unique_rows
     )
 
@@ -113,6 +114,8 @@ LONG_ANSWER:
 """
 
     try:
+        client = get_gemini_client()
+
         response = client.models.generate_content(
             model="models/gemini-flash-latest",
             contents=prompt
@@ -126,79 +129,35 @@ LONG_ANSWER:
             "confidence": "medium"
         }
 
-    except Exception as e:
+    except Exception:
         return {
             "short_answer": "AI explanation unavailable due to a temporary issue.",
             "long_answer": "",
             "confidence": "low"
         }
 
-# --------------------------------------------------
-# Local Test
-# --------------------------------------------------
 
+# ==================================================
+# Local Test (dotenv ONLY here)
+# ==================================================
 if __name__ == "__main__":
+    from dotenv import load_dotenv
+    load_dotenv()
 
-    drugs = ["warfarin", "aspirin"]
-
-    interactions = [
-        {
-            "drug_a": "warfarin",
-            "drug_b": "aspirin",
-            "severity": "severe",
-            "prr": 12.4
-        },
-        {
-            "drug_a": "aspirin",
-            "drug_b": "warfarin",
-            "severity": "moderate",
-            "prr": 9.1
-        }
-    ]
     payload = {
-    "drug_pair": "warfarin + aspirin",
-
-    "summary": {
-        "data_severity": "severe",
-        "evidence_count": 4090,
-        "risk_level": "High risk interaction – consistent severe safety signal",
-        "signal_density": 0.48,
-        "prr_weighted_mean": 10.4,
-        "prr_mean": 4.0,
-        "prr_max": 10.0,
-        "severity_consistency": "mixed-but-concerning",
-        "mean_reporting_frequency": 0.00151
-    },
-
-    "unique_interactions": [
-        {
-            "severity": "severe",
-            "prr_bucket": ">=50",
-            "frequency_bucket": "low"
+        "drug_pair": "warfarin + aspirin",
+        "summary": {
+            "data_severity": "severe",
+            "evidence_count": 4090,
+            "risk_level": "High risk interaction – consistent severe safety signal",
+            "signal_density": 0.48,
+            "prr_weighted_mean": 10.4,
         },
-        {
-            "severity": "severe",
-            "prr_bucket": "10–20",
-            "frequency_bucket": "low"
-        },
-        {
-            "severity": "moderate",
-            "prr_bucket": "5–10",
-            "frequency_bucket": "very_low"
-        },
-        {
-            "severity": "mild",
-            "prr_bucket": "<5",
-            "frequency_bucket": "low"
-        }
-    ]
-}
-
+        "unique_interactions": [
+            {"severity": "severe", "prr_bucket": ">=50", "frequency_bucket": "low"},
+            {"severity": "moderate", "prr_bucket": "5–10", "frequency_bucket": "very_low"},
+        ],
+    }
 
     result = explain_interaction_with_gemini(payload)
-
-    print("\n=== ANALYSIS RESULT ===")
     print(result)
-
-    # print("\n=== SHORT SUMMARY ===")
-    # print(result["summary"])

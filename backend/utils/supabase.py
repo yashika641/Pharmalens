@@ -1,13 +1,26 @@
 import os
-from supabase import create_client
+from supabase import create_client, Client
+from typing import Optional
 
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+_supabase: Optional[Client] = None
 
-if not SUPABASE_URL or not SUPABASE_KEY:
-    raise RuntimeError(
-        "SUPABASE_URL or SUPABASE_SERVICE_KEY is not set in environment variables"
-    )
 
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-print("✅ Supabase client initialized")
+def get_supabase() -> Client:
+    """
+    Lazy-load and cache Supabase client.
+    Initializes only on first call.
+    """
+    global _supabase
+
+    if _supabase is None:
+        supabase_url = os.getenv("SUPABASE_URL")
+        supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
+
+        if not supabase_url or not supabase_key:
+            raise RuntimeError(
+                "SUPABASE_URL or SUPABASE_SERVICE_KEY is not set"
+            )
+
+        _supabase = create_client(supabase_url, supabase_key)
+
+    return _supabase

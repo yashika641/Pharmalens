@@ -2,7 +2,7 @@ from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 from typing import Optional, Tuple
-from backend.utils.supabase import supabase
+from backend.utils.supabase import get_supabase
 
 router = APIRouter(prefix="/user-profile", tags=["User Profile"])
 
@@ -24,6 +24,7 @@ class UserProfilePayload(BaseModel):
 def get_user_from_authorization(
     authorization: Optional[str],
 ) -> Tuple[str, Optional[str], Optional[str]]:
+    supabase = get_supabase()
     if not authorization:
         raise HTTPException(status_code=401, detail="Missing Authorization header")
 
@@ -60,6 +61,7 @@ def save_user_profile(
     payload: UserProfilePayload,
     authorization: Optional[str] = Header(None),
 ):
+    supabase = get_supabase()
     user_id, email, full_name = get_user_from_authorization(authorization)
 
     data = {
@@ -89,6 +91,7 @@ def save_user_profile(
     }
 
 def get_user_from_auth(authorization: Optional[str]):
+    supabase = get_supabase()
     if not authorization:
         raise HTTPException(status_code=401, detail="Missing Authorization header")
 
@@ -112,6 +115,7 @@ def get_user_from_auth(authorization: Optional[str]):
     
 @router.get("/details")
 def get_user_details(authorization: Optional[str] = Header(None)):
+    supabase = get_supabase()
     # 1️⃣ Get auth user
     auth_user = get_user_from_auth(authorization)
 

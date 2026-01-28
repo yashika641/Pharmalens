@@ -1,9 +1,22 @@
 from fastapi import APIRouter, Header, HTTPException
+"""
+    The provided code defines API endpoints for a chatbot service, including functions to retrieve chat
+    history and stream chatbot responses using Server-Sent Events (SSE).
+    
+    :param authorization: The `authorization` parameter is used to authenticate the user making the
+    request. It is typically passed in the headers of the HTTP request as a Bearer token. This token is
+    used to identify and authorize the user before accessing certain endpoints or resources
+    :type authorization: Optional[str]
+    :return: The code defines an API router for a chatbot functionality with endpoints for retrieving
+    chat history and streaming chatbot responses using Server-Sent Events (SSE).
+    """
 from fastapi.responses import StreamingResponse
 from typing import Optional
 
-from backend.utils.supabase import supabase
-from backend.utils.llm import llm
+from backend.utils.supabase import get_supabase
+from backend.utils.llm import get_gemini_llm
+# supabase = get_supabase()
+# llm = get_gemini_llm()
 from models.chatbot.semantic_search import semantic_search
 from models.chatbot.rag_prompt import build_rag_prompt
 from datetime import datetime
@@ -14,6 +27,7 @@ router = APIRouter(prefix="/chat", tags=["Chatbot"])
 # 🔐 Auth helper
 # =====================================================
 def get_user_from_authorization(authorization: Optional[str]) -> str:
+    supabase= get_supabase()
     print("Authorization header:", authorization)
     if not authorization:
         raise HTTPException(status_code=401, detail="Missing Authorization header")
@@ -32,6 +46,7 @@ def get_user_from_authorization(authorization: Optional[str]) -> str:
 
 # For SSE (EventSource)
 def get_user_from_query_token(token: str) -> str:
+    supabase= get_supabase()
     user_response = supabase.auth.get_user(token)
 
     if not user_response or not user_response.user:
@@ -46,6 +61,7 @@ def get_chat_history(
     limit: int = 10,
     authorization: Optional[str] = Header(None),
 ):
+    supabase= get_supabase()
     user_id = get_user_from_authorization(authorization)
 
     response = (
@@ -69,6 +85,8 @@ async def chatbot_stream(
     query: str,
     token: str,  # ✅ token via query param
 ):
+    supabase= get_supabase()
+    llm = get_gemini_llm()
     user_id = get_user_from_query_token(token)
 
     # 1️⃣ Semantic search (RAG)
