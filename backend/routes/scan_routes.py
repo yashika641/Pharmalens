@@ -1,5 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Header
-from backend.utils.supabase import supabase
+from backend.utils.supabase import get_supabase
 import uuid
 from models.ocr.main import run_latest_image_ocr_pipeline
 
@@ -11,6 +11,7 @@ async def upload_image(
     image_type: str = Form(...),
     authorization: str = Header(None)
 ):
+    supabase = get_supabase()
     print("[AUTH] Authorization header:", authorization)
 
     # 🔐 Auth

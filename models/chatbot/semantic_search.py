@@ -1,62 +1,71 @@
 import os
-from typing import List, Dict, Any
-from pathlib import Path
+from typing import List, Dict, Any, Optional
 
-import dotenv
-from qdrant_client import QdrantClient
-from sentence_transformers import SentenceTransformer
+# =====================================================
+# SINGLETONS (lazy)
+# =====================================================
+_qdrant = None
+_embedding_model = None
 
-# -------------------------------------------------
-# Load environment variables
-# -------------------------------------------------
-ENV_PATH = Path(__file__).resolve().parents[2] / "backend" / ".env"
-dotenv.load_dotenv(ENV_PATH)
 
-QDRANT_URL = os.getenv("QDRANT_URL")
-QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
+def get_qdrant_client():
+    global _qdrant
 
-if not QDRANT_URL or not QDRANT_API_KEY:
-    raise RuntimeError("❌ QDRANT_URL or QDRANT_API_KEY not found in .env")
+    if _qdrant is None:
+        from qdrant_client import QdrantClient
 
-# -------------------------------------------------
-# Initialize Qdrant client (HTTP)
-# -------------------------------------------------
-qdrant = QdrantClient(
-    url=QDRANT_URL,
-    api_key=QDRANT_API_KEY,
-    prefer_grpc=False,
-    timeout=30, 
-)
+        url = os.getenv("QDRANT_URL")
+        api_key = os.getenv("QDRANT_API_KEY")
 
-# Sanity check
-collections = qdrant.get_collections()
-print("✅ Qdrant connected. Collections:", [c.name for c in collections.collections])
+        if not url or not api_key:
+            raise RuntimeError("QDRANT_URL or QDRANT_API_KEY not set")
 
-# -------------------------------------------------
-# Load embedding model (singleton)
-# -------------------------------------------------
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+        _qdrant = QdrantClient(
+            url=url,
+            api_key=api_key,
+            prefer_grpc=False,
+            timeout=30,
+        )
 
-# -------------------------------------------------
-# Semantic search function (CORRECT API)
-# -------------------------------------------------
+    return _qdrant
+
+
+def get_embedding_model():
+    global _embedding_model
+
+    if _embedding_model is None:
+        from sentence_transformers import SentenceTransformer
+
+        _embedding_model = SentenceTransformer(
+            "sentence-transformers/all-MiniLM-L6-v2"
+        )
+
+    return _embedding_model
+
+
+# =====================================================
+# SEMANTIC SEARCH (lazy + safe)
+# =====================================================
 def semantic_search(
     query: str,
     collection_name: str,
     top_k: int = 5,
-    score_threshold: float | None = None,
+    score_threshold: Optional[float] = None,
 ) -> List[Dict[str, Any]]:
 
-    if not query.strip():
+    if not query or not query.strip():
         return []
 
+    qdrant = get_qdrant_client()
+    model = get_embedding_model()
+
     # 1️⃣ Embed query
-    query_vector = embedding_model.encode(
+    query_vector = model.encode(
         query,
         normalize_embeddings=True,
     ).tolist()
 
-    # 2️⃣ Query Qdrant (NEW API)
+    # 2️⃣ Query Qdrant
     results = qdrant.query_points(
         collection_name=collection_name,
         query=query_vector,
@@ -74,9 +83,10 @@ def semantic_search(
         for point in results.points
     ]
 
-# -------------------------------------------------
-# Local test
-# -------------------------------------------------
+
+# =====================================================
+# LOCAL TEST (SAFE)
+# =====================================================
 if __name__ == "__main__":
     test_query = "What are the side effects of ibuprofen?"
 

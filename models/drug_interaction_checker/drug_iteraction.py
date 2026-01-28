@@ -12,9 +12,14 @@ PARQUET_PATH = (
     "models/drug_interaction_checker/parquet/"
     "drug_interactions/**/*.parquet"
 )
+_con = None
 
-# In-memory DuckDB (query engine only)
-_con = duckdb.connect(database=":memory:")
+def get_duckdb_connection():
+    global _con
+    if _con is None:
+        _con = duckdb.connect(database=":memory:")
+    return _con
+
 
 
 # -------------------------------
@@ -26,6 +31,7 @@ def check_drug_interactions(drugs: List[str]) -> List[Dict]:
     Fetch raw pharmacovigilance interaction signals
     for all drug pairs from parquet data.
     """
+    _con = get_duckdb_connection()
     drugs = [d.strip().lower() for d in drugs if d.strip()]
     results: List[Dict] = []
 
