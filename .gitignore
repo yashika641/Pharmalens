@@ -213,5 +213,5 @@ C:\Users\palya\Desktop\pharmalens\Pharmalens\ocr_debug\
 # Ignore OCR debug folder
 ocr_debug/
 # Large analytics data
-*.parquet
-models/drug_interaction_checker/parquet/
+# *.parquet
+# models/drug_interaction_checker/parquet/
