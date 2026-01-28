@@ -1,5 +1,5 @@
 from typing import Optional, Dict, Any
-from backend.utils.supabase import supabase
+from backend.utils.supabase import get_supabase
 from models.ocr.exceptions import OCREngineError
 
 
@@ -25,7 +25,7 @@ def save_medicine_ocr_result(
     """
     Save structured medicine OCR data into medicine_ocr_data table.
     """
-
+    supabase = get_supabase()
     try:
         payload = {
             "image_id": image_id,
@@ -64,7 +64,8 @@ def save_prescription_ocr_result(
 ) -> None:
     """
     Save structured prescription OCR data into prescription_ocr_data table.
-    """
+    """ 
+    supabase = get_supabase()
 
     try:
         payload = {
