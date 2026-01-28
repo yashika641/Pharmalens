@@ -29,7 +29,7 @@ export function AIChat() {
     const token = session.data.session?.access_token;
 
     const eventSource = new EventSource(
-      `${API_URL}/chat/stream?query=${encodeURIComponent(query)}&token=${token}`
+      `https://pharmalens-ie09.onrender.com/chat/stream?query=${encodeURIComponent(query)}&token=${token}`
     );
 
 
@@ -94,7 +94,7 @@ useEffect(() => {
 
     if (!token) return;
 
-    const res = await fetch(`${API_URL}/chat/history`, {
+    const res = await fetch(`https://pharmalens-ie09.onrender.com/chat/history`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
