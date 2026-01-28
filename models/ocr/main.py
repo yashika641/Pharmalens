@@ -1,7 +1,7 @@
 import os
 import requests
 
-from backend.utils.supabase import supabase
+from backend.utils.supabase import get_supabase
 
 from models.ocr.paddle_ocr import run_paddle_ocr
 from models.ocr.easy_ocr import run_ocr_space
@@ -50,7 +50,7 @@ def run_latest_image_ocr_pipeline(user_id: str) -> None:
     # 1️⃣ Fetch latest image
     # -------------------------------------------------
     print("[OCR] Fetching latest image from Supabase...")
-
+    supabase = get_supabase()
     resp = (
         supabase
         .table("images")
