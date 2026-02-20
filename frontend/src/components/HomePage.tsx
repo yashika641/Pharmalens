@@ -25,12 +25,12 @@ const [profileData, setProfileData] = useState({
   conditions: "",
   medications: "",
 });
-
+const API_URL = import.meta.env.VITE_API_URL;
   const [authOpen, setAuthOpen] = useState(false);
   const navigate = useNavigate();
   const handleLogout = async () => {
   try {
-    await fetch(" https://pharmalens-ie09.onrender.com/api/auth/logout", {
+    await fetch(`${API_URL}/auth/logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -71,7 +71,7 @@ const handleProfileSubmit = async () => {
       throw new Error("User not authenticated");
     }
 
-    await fetch("https://pharmalens-ie09.onrender.com/user-profile/", {
+    await fetch(`${API_URL}/user-profile/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

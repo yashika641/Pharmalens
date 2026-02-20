@@ -13,22 +13,6 @@ logging.info("🚀 FastAPI app starting...")
 # App
 # -------------------------------------------------
 app = FastAPI()
-
-# -------------------------------------------------
-# Routers (SAFE: no heavy init at import)
-# -------------------------------------------------
-from backend.routes import login_routes
-from backend.routes import scan_routes
-from backend.routes import user_profile_routes
-from backend.routes import drug_routes
-from backend.routes import chatbot_routes
-
-app.include_router(login_routes.router)
-app.include_router(scan_routes.router)
-app.include_router(user_profile_routes.router)
-app.include_router(drug_routes.router)
-app.include_router(chatbot_routes.router)
-
 # -------------------------------------------------
 # CORS
 # -------------------------------------------------
@@ -45,6 +29,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# -------------------------------------------------
+# Routers (SAFE: no heavy init at import)
+# -------------------------------------------------
+from backend.routes import login_routes
+from backend.routes import scan_routes
+from backend.routes import user_profile_routes
+from backend.routes import drug_routes
+from backend.routes import chatbot_routes
+
+app.include_router(login_routes.router)
+app.include_router(scan_routes.router)
+app.include_router(user_profile_routes.router)
+app.include_router(drug_routes.router)
+app.include_router(chatbot_routes.router)
+
+
 
 # -------------------------------------------------
 # Middleware

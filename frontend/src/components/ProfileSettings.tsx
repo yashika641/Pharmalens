@@ -21,7 +21,7 @@ export function ProfileSettings() {
 
 const [profile, setProfile] = useState<UserProfile | null>(null);
 const [loading, setLoading] = useState(true);
-
+const API_URL = import.meta.env.VITE_API_URL;
 
   const languages = ["English", "Spanish", "French", "German", "Chinese", "Arabic"];
   const fetchProfile = async () => {
@@ -34,7 +34,7 @@ const [loading, setLoading] = useState(true);
       throw new Error("No access token");
     }
 
-    const res = await fetch(" https://pharmalens-ie09.onrender.com/user-profile/details", {
+    const res = await fetch(`${API_URL}/user-profile/details`, {
       headers: {
         Authorization: `Bearer ${session.access_token}`,
       },

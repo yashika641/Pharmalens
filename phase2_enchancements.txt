@@ -1,0 +1,4 @@
+enhancements phase-2
+1. speed up ai chat bot 
+2. replace the qdrant db to a better solution
+3. 
