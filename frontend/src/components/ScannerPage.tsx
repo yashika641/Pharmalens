@@ -13,6 +13,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
   const [cameraFacing, setCameraFacing] = useState<"environment" | "user">(
     "environment"
   );
+  const API_URL = import.meta.env.VITE_API_URL;
   const [videoKey, setVideoKey] = useState(0);
   const [imageType, setImageType] = useState<"medicine" | "prescription">("medicine");
   const [session, setSession] = useState<any>(null);
@@ -111,7 +112,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       formData.append("file", file);
       formData.append("image_type", imageType);
 
-      await fetch("http://localhost:8000/images/upload", {
+      await fetch(`${API_URL}/images/upload`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
@@ -239,7 +240,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       formData.append("file", file);
       formData.append("image_type", imageType); // 🔑 medicine | prescription
 
-      await fetch("http://localhost:8000/images/upload", {
+      await fetch(`${API_URL}/images/upload`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session?.access_token}`,

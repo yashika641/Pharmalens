@@ -8,7 +8,7 @@ import {
   Search,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-
+ 
 interface Drug {
   id: string;
   name: string;
@@ -46,7 +46,7 @@ export function DrugInteractionChecker({
   const [results, setResults] = useState<InteractionResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showDetails, setShowDetails] = useState(false);
-
+const API_URL = import.meta.env.VITE_API_URL;
   // Initialize with provided drugs
   useEffect(() => {
     if (initialDrugs.length > 0) {
@@ -88,7 +88,7 @@ export function DrugInteractionChecker({
 
     try {
       const response = await fetch(
-        "https://pharmalens-ie09.onrender.com/drug-interactions/check",
+        `${API_URL}/drug-interactions/check`,
         {
           method: "POST",
           headers: {
