@@ -19,7 +19,7 @@ import { Navigation } from "./components/Navigation";
 import { ProtectedRoute } from "./components/protected";
 import { AuthCallback } from "./components/authcallback";
 import { supabase } from "./supabase";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { Toaster } from "./components/ui/sonner";
 

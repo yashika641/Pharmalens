@@ -1,13 +1,20 @@
 import os
+import sys
 from supabase import create_client, Client
 from typing import Optional
 from dotenv import load_dotenv
 
-load_dotenv("C:\\Users\\palya\\Desktop\\pharmalens\\Pharmalens\\backend\\.env")
+# Go TWO levels up from utils
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
+
+print("Project root:", BASE_DIR)
+
+# Load .env from project root
+load_dotenv(os.path.join(BASE_DIR, ".env"))
+
 
 
 _supabase: Optional[Client] = None
-
 
 def get_supabase() -> Client:
     """

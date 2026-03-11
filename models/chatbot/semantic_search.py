@@ -23,7 +23,7 @@ def get_qdrant_client():
         _qdrant = QdrantClient(
             url=url,
             api_key=api_key,
-            prefer_grpc=False,
+            prefer_grpc=True,
             timeout=30,
         )
 
@@ -49,8 +49,9 @@ def get_embedding_model():
 def semantic_search(
     query: str,
     collection_name: str,
-    top_k: int = 5,
-    score_threshold: Optional[float] = None,
+    top_k: int = 3,
+    score_threshold = 0.45,
+    max_chunk_length = 800
 ) -> List[Dict[str, Any]]:
 
     if not query or not query.strip():

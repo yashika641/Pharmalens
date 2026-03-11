@@ -28,6 +28,7 @@ def parse_medicine(text: str) -> Dict[str, Optional[str]]:
             "expiry_date": None,
             "mfg_date": None,
             "precautions": None,
+            "medicine_type": None,
         }
 
     lower = text.lower()
@@ -73,11 +74,19 @@ def parse_medicine(text: str) -> Dict[str, Optional[str]]:
         (phrase.capitalize() for phrase in precaution_phrases if phrase in lower),
         None,
     )
+    # Medicine type (tablet, syrup, injection)
+    type_match = re.search(
+        r"\b(tablet|cap|syrup|inj|ointment|cream)\b",
+        lower,
+    )
+    medicine_type = type_match[1].capitalize() if type_match else None
+
 
     return {
         "medicine_name": medicine_name,
         "dosage": dosage,
         "composition": composition,
+        "medicine_type": medicine_type,
         "expiry_date": expiry_date,
         "mfg_date": mfg_date,
         "precautions": precautions,
@@ -164,3 +173,61 @@ def parse_prescription(text: str) -> Dict[str, Optional[object]]:
         "medicines": medicines,
         "routes": routes,
     }
+    
+    
+def needs_llm_fallback(parsed: dict) -> bool:
+    required = ["medicine_name", "dosage"]
+
+    return any(parsed.get(field) is None for field in required)
+
+import json
+from backend.utils.llm import get_gemini_llm
+
+
+async def gemini_extract_medicine(raw_text: str) -> dict:
+    llm = get_gemini_llm()
+    print("[LLM] Falling back to Gemini for medicine extraction...")
+    print("[LLM] Raw OCR text for Gemini:", raw_text)
+    prompt = f"""
+Extract medicine information from this OCR text.
+
+Return JSON with fields:
+medicine_name
+dosage
+composition
+expiry_date
+mfg_date
+precautions
+medicine_type (e.g. tablet, syrup,IV)
+OCR TEXT:
+{raw_text}
+
+Return ONLY valid JSON.
+"""
+
+    response = await llm.generate(prompt) #type: ignore
+    print("[LLM] Gemini response:", response)
+    try:
+
+        # remove ```json ``` wrappers
+        cleaned = re.sub(r"```json|```", "", response).strip()
+
+        data = json.loads(cleaned)
+
+        print("GEMINI PARSED:", data)
+
+        return data
+        
+    except Exception:
+        return {}
+    
+    
+def merge_results(parsed, gemini):
+    merged = parsed.copy()
+
+    for k, v in gemini.items():
+        if not merged.get(k) and v:
+            merged[k] = v
+
+    return merged
+

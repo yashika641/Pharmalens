@@ -52,17 +52,30 @@ async def upload_image(
     public_url = supabase.storage.from_("pharmalens").get_public_url(filename)
 
     # 🗄️ Save metadata
-    supabase.table("images").insert({
+    image_insert = supabase.table("images").insert({
         "user_id": user_id,
         "image_url": public_url,
         "image_type": image_type
     }).execute()
+
+    if not image_insert.data or len(image_insert.data) == 0:
+        raise HTTPException(status_code=500, detail="Failed to save image metadata")
     
+    image_id = image_insert.data[0]["id"]
+    print(f"Image metadata saved with ID: {image_id}")
     # 🚀 Trigger OCR pipeline
-    run_latest_image_ocr_pipeline(user_id=user_id)
+    await  run_latest_image_ocr_pipeline(user_id=user_id)
+    result = (
+        supabase
+        .table("medicine_ocr_data")
+        .select("*")
+        .eq("image_id", image_id)
+        .limit(1)
+        .execute()
+    )
 
     return {
-        "success": True,
-        "image_url": public_url,
-        "image_type": image_type
-    }
+            "success": True,
+            "image_url": public_url,
+            "ocr_result": result.data[0] if result.data else None
+        }

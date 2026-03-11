@@ -23,6 +23,16 @@ def _get_client() -> genai.Client:
 
 
 class GeminiLLM:
+    async def generate(self, prompt: str) -> str:
+        client = _get_client()
+
+        response = client.models.generate_content(
+            model=_MODEL_NAME,
+            contents=prompt,
+        )
+
+        return response.text or ""
+    
     async def stream(self, query: str) -> AsyncGenerator[str, None]:
         client = _get_client()
 
