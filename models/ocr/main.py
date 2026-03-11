@@ -1,11 +1,13 @@
+import asyncio
 import os
 import requests
 
 from backend.utils.supabase import get_supabase
+from backend.utils.supabase import get_supabase
 
 from models.ocr.paddle_ocr import run_paddle_ocr
 from models.ocr.easy_ocr import run_ocr_space
-from models.ocr.parsers import parse_medicine, parse_prescription
+from models.ocr.parsers import parse_medicine, parse_prescription, needs_llm_fallback, gemini_extract_medicine, merge_results
 from models.ocr.supabase_databse_update import (
     save_medicine_ocr_result,
     save_prescription_ocr_result,
@@ -42,7 +44,7 @@ def _download_image(image_url: str) -> bytes:
 # ---------------------------------------------------------
 # Main OCR pipeline
 # ---------------------------------------------------------
-def run_latest_image_ocr_pipeline(user_id: str) -> None:
+async def run_latest_image_ocr_pipeline(user_id: str) -> None:
     print("\n================ OCR PIPELINE START ================")
     print(f"[OCR] User ID: {user_id}")
 
@@ -130,7 +132,26 @@ def run_latest_image_ocr_pipeline(user_id: str) -> None:
             final_engine = "easyocr"
         else:
             print("[OCR] PaddleOCR retained")
+    # -------------------------------------------------
+    # 5️⃣ LLM fallback if fields missing
+    # -------------------------------------------------
+    print("[OCR] Checking parsed fields...")
 
+    if image_type == "medicine" and needs_llm_fallback(final_parsed):
+
+        print("[OCR ⚠️] Missing fields detected, running Gemini fallback")
+
+        gemini_data = await gemini_extract_medicine(final_text)
+        print("PRIMARY PARSED:", final_parsed)
+        print("GEMINI PARSED:", gemini_data)
+        final_parsed = merge_results(final_parsed, gemini_data)
+        print("[OCR] Gemini fallback data merged")
+        print("[OCR] Final parsed data after Gemini merge:", final_parsed)
+        fallback_used = True
+
+        final_engine = f"{final_engine}+gemini"
+
+        print("[OCR] Gemini extraction merged")
     # -------------------------------------------------
     # 5️⃣ Persist result
     # -------------------------------------------------

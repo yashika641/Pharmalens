@@ -112,7 +112,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       formData.append("file", file);
       formData.append("image_type", imageType);
 
-      await fetch(`${API_URL}/images/upload`, {
+      const res = await fetch(`${API_URL}/images/upload`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
@@ -120,13 +120,22 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
         body: formData,
       });
 
-      setTimeout(() => {
-        setIsScanning(false);
-        onScanComplete({
-          imageType,
-          imageUploaded: true,
-        });
-      }, 1500);
+      const data = await res.json();
+      console.log("Upload response:", data);
+
+      setIsScanning(false);
+
+      // 🔥 SEND BACKEND DATA TO FRONTEND
+      const medicineData = {
+        medicine_name: data.ocr_result?.medicine_name || "Unknown Medicine",
+        manufacturer: data.ocr_result?.composition || "Unknown",
+        strength: data.ocr_result?.dosage || "N/A",
+        type: data.ocr_result?.type || "Tablet",
+        exp_date: data.ocr_result?.expiry_date || "N/A",
+        confidence: data.ocr_result?.confidence || 90
+      };
+
+      onScanComplete(medicineData);
     } catch (err) {
       console.error("Upload failed:", err);
       setIsScanning(false);
@@ -240,7 +249,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       formData.append("file", file);
       formData.append("image_type", imageType); // 🔑 medicine | prescription
 
-      await fetch(`${API_URL}/images/upload`, {
+      const res = await fetch(`${API_URL}/images/upload`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
@@ -248,14 +257,22 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
         body: formData,
       });
 
+      const data = await res.json();
+      console.log("OCR RESULT:", data.ocr_result);
       setIsScanning(false);
 
       // temporary callback until OCR pipeline is ready
-      onScanComplete({
-        imageType,
-        imageUploaded: true,
-        preview: capturedImage,
-      });
+      const medicineData = {
+        medicine_name: data.ocr_result?.medicine_name || "Unknown Medicine",
+        manufacturer: data.ocr_result?.composition || "Unknown",
+        strength: data.ocr_result?.dosage || "N/A",
+        type: data.ocr_result?.type || "Tablet",
+        exp_date: data.ocr_result?.expiry_date || "N/A",
+        precautions: data.ocr_result?.precautions || [],
+        confidence: data.ocr_result?.confidence || 90
+      };
+
+      onScanComplete(medicineData);
     } catch (err) {
       console.error("Upload failed:", err);
       setIsScanning(false);

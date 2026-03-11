@@ -1,9 +1,9 @@
 from typing import List, Dict
 
-
+import asyncio
 def build_rag_prompt(query: str, docs: List[Dict]) -> str:
     context = "\n\n".join(
-        f"- {d['payload']['text']}"
+        f"- {d['payload']['text'][:800]}"
         for d in docs
         if d.get("payload") and "text" in d["payload"]
     )

@@ -35,6 +35,7 @@ def save_medicine_ocr_result(
             "expiry_date": parsed_data.get("expiry_date"),
             "mfg_date": parsed_data.get("mfg_date"),
             "precautions": parsed_data.get("precautions"),
+            "medicine_type": parsed_data.get("medicine_type"),
             "raw_text": raw_text,
             "confidence": confidence,
             "ocr_engine": ocr_engine,

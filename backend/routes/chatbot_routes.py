@@ -1,3 +1,5 @@
+import asyncio
+
 from fastapi import APIRouter, Header, HTTPException
 """
     The provided code defines API endpoints for a chatbot service, including functions to retrieve chat
@@ -22,12 +24,13 @@ from models.chatbot.rag_prompt import build_rag_prompt
 from datetime import datetime
 router = APIRouter(prefix="/chat", tags=["Chatbot"])
 
-
+supabase = get_supabase()
+llm = get_gemini_llm()
 # =====================================================
 # 🔐 Auth helper
 # =====================================================
 def get_user_from_authorization(authorization: Optional[str]) -> str:
-    supabase= get_supabase()
+    # supabase= get_supabase()
     print("Authorization header:", authorization)
     if not authorization:
         raise HTTPException(status_code=401, detail="Missing Authorization header")
@@ -46,7 +49,7 @@ def get_user_from_authorization(authorization: Optional[str]) -> str:
 
 # For SSE (EventSource)
 def get_user_from_query_token(token: str) -> str:
-    supabase= get_supabase()
+    # supabase= get_supabase()
     user_response = supabase.auth.get_user(token)
 
     if not user_response or not user_response.user:
@@ -61,7 +64,7 @@ def get_chat_history(
     limit: int = 10,
     authorization: Optional[str] = Header(None),
 ):
-    supabase= get_supabase()
+    # supabase= get_supabase()
     user_id = get_user_from_authorization(authorization)
 
     response = (
@@ -85,15 +88,15 @@ async def chatbot_stream(
     query: str,
     token: str,  # ✅ token via query param
 ):
-    supabase= get_supabase()
-    llm = get_gemini_llm()
+    # supabase= get_supabase()
+    # llm = get_gemini_llm()
     user_id = get_user_from_query_token(token)
 
     # 1️⃣ Semantic search (RAG)
     retrieved_docs = semantic_search(
         query=query,
         collection_name="document_embeddings",
-        top_k=5,
+        top_k=3,
         score_threshold=0.4,
     )
     print("Retrieved docs:", retrieved_docs)
@@ -109,14 +112,18 @@ async def chatbot_stream(
             yield f"data:{token}\n\n"
 
         # 4️⃣ Save chat after streaming ends
-        supabase.table("chatbot_history").insert(
-            {
-                "user_id": user_id,
-                "query": query,
-                "response": full_response,
-                "timestamp": datetime.now().isoformat(),
-            }
-        ).execute()
+        asyncio.create_task(
+            asyncio.to_thread(
+                supabase.table("chatbot_history").insert(
+                    {
+                        "user_id": user_id,
+                        "query": query,
+                        "response": full_response,
+                        "timestamp": datetime.now().isoformat(),
+                    }
+                ).execute
+            )
+        )
 
         # Optional explicit end event
         yield "event: done\ndata: end\n\n"
