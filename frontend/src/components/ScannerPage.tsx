@@ -125,17 +125,40 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
 
       setIsScanning(false);
 
-      // 🔥 SEND BACKEND DATA TO FRONTEND
-      const medicineData = {
-        medicine_name: data.ocr_result?.medicine_name || "Unknown Medicine",
-        manufacturer: data.ocr_result?.composition || "Unknown",
-        strength: data.ocr_result?.dosage || "N/A",
-        type: data.ocr_result?.type || "Tablet",
-        exp_date: data.ocr_result?.expiry_date || "N/A",
-        confidence: data.ocr_result?.confidence || 90
-      };
+      if (imageType === "prescription") {
+        // ADD THIS — matches prescription_ocr_data schema exactly
+        const rawMedicines = data.ocr_result?.medicines || [];
+        const prescriptionData = {
+          type: "prescription",
+          doctor_name: data.ocr_result?.doctor_name || null,
+          prescription_date: data.ocr_result?.prescription_date ||
+            data.ocr_result?.date || null,
+          diagnosis: data.ocr_result?.diagnosis || null,
+          medicines: rawMedicines.map((m: any) =>
+            typeof m === "string" ? { name: m } : m   // normalise strings → objects
+          ),
+          routes: data.ocr_result?.routes || null,
+          raw_text: data.ocr_result?.raw_text || null,
+          confidence: data.ocr_result?.confidence ?? null,
+          ocr_engine: data.ocr_result?.ocr_engine || null,
+          fallback_used: data.ocr_result?.fallback_used ?? false,
+          needs_review: data.ocr_result?.needs_review ?? false,
+          created_at: data.ocr_result?.created_at || new Date().toISOString(),
+        };
+        onScanComplete(prescriptionData);
+      } else {
+        const medicineData = {
+          medicine_name: data.ocr_result?.medicine_name || "Unknown Medicine",
+          manufacturer: data.ocr_result?.composition || "Unknown",
+          strength: data.ocr_result?.dosage || "N/A",
+          type: "medicine",
+          exp_date: data.ocr_result?.expiry_date || "N/A",
+          precautions: data.ocr_result?.precautions || [],
+          confidence: data.ocr_result?.confidence || 90
+        };
+        onScanComplete(medicineData);
+      }
 
-      onScanComplete(medicineData);
     } catch (err) {
       console.error("Upload failed:", err);
       setIsScanning(false);
@@ -247,7 +270,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
 
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("image_type", imageType); // 🔑 medicine | prescription
+      formData.append("image_type", imageType);
 
       const res = await fetch(`${API_URL}/images/upload`, {
         method: "POST",
@@ -261,18 +284,42 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       console.log("OCR RESULT:", data.ocr_result);
       setIsScanning(false);
 
-      // temporary callback until OCR pipeline is ready
-      const medicineData = {
-        medicine_name: data.ocr_result?.medicine_name || "Unknown Medicine",
-        manufacturer: data.ocr_result?.composition || "Unknown",
-        strength: data.ocr_result?.dosage || "N/A",
-        type: data.ocr_result?.type || "Tablet",
-        exp_date: data.ocr_result?.expiry_date || "N/A",
-        precautions: data.ocr_result?.precautions || [],
-        confidence: data.ocr_result?.confidence || 90
-      };
+      if (imageType === "prescription") {
+        // ADD THIS — matches prescription_ocr_data schema exactly
+        const rawMedicines = data.ocr_result?.medicines || [];
+        const prescriptionData = {
+          type: "prescription",
+          doctor_name: data.ocr_result?.doctor_name || null,
+          prescription_date: data.ocr_result?.prescription_date ||
+            data.ocr_result?.date || null,
+          diagnosis: data.ocr_result?.diagnosis || null,
+          medicines: rawMedicines.map((m: any) =>
+            typeof m === "string" ? { name: m } : m   // normalise strings → objects
+          ),
+          routes: data.ocr_result?.routes || null,
+          raw_text: data.ocr_result?.raw_text || null,
+          confidence: data.ocr_result?.confidence != null
+            ? data.ocr_result.confidence / 100   // if API returns 0–100, convert to 0–1
+            : null,
+          ocr_engine: data.ocr_result?.ocr_engine || null,
+          fallback_used: data.ocr_result?.fallback_used ?? false,
+          needs_review: data.ocr_result?.needs_review ?? false,
+          created_at: data.ocr_result?.created_at || new Date().toISOString(),
+        };
+        onScanComplete(prescriptionData);
+      } else {
+        const medicineData = {
+          medicine_name: data.ocr_result?.medicine_name || "Unknown Medicine",
+          manufacturer: data.ocr_result?.composition || "Unknown",
+          strength: data.ocr_result?.dosage || "N/A",
+          type: "medicine",
+          exp_date: data.ocr_result?.expiry_date || "N/A",
+          precautions: data.ocr_result?.precautions || [],
+          confidence: data.ocr_result?.confidence || 90
+        };
+        onScanComplete(medicineData);
+      }
 
-      onScanComplete(medicineData);
     } catch (err) {
       console.error("Upload failed:", err);
       setIsScanning(false);

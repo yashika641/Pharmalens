@@ -65,9 +65,12 @@ async def upload_image(
     print(f"Image metadata saved with ID: {image_id}")
     # 🚀 Trigger OCR pipeline
     await  run_latest_image_ocr_pipeline(user_id=user_id)
+    # ✅ Fetch from correct table based on image_type
+    table_name = "prescription_ocr_data" if image_type == "prescription" else "medicine_ocr_data"
+
     result = (
         supabase
-        .table("medicine_ocr_data")
+        .table(table_name)
         .select("*")
         .eq("image_id", image_id)
         .limit(1)
