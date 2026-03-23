@@ -68,10 +68,10 @@ const getToken = async () => {
 
 const statusStyle = (status?: string) => {
   switch (status) {
-    case "safe":    return { bg: "bg-[#34d399]/10", border: "border-[#34d399]/40", text: "text-[#34d399]", dot: "bg-[#34d399]", Icon: CheckCircle,   label: "Safe"    };
+    case "safe": return { bg: "bg-[#34d399]/10", border: "border-[#34d399]/40", text: "text-[#34d399]", dot: "bg-[#34d399]", Icon: CheckCircle, label: "Safe" };
     case "warning": return { bg: "bg-[#fbbf24]/10", border: "border-[#fbbf24]/40", text: "text-[#fbbf24]", dot: "bg-[#fbbf24]", Icon: AlertTriangle, label: "Warning" };
-    case "danger":  return { bg: "bg-[#ef4444]/10", border: "border-[#ef4444]/40", text: "text-[#ef4444]", dot: "bg-[#ef4444]", Icon: ShieldAlert,   label: "Danger"  };
-    default:        return { bg: "bg-[#4fd1c5]/10", border: "border-[#4fd1c5]/40", text: "text-[#4fd1c5]", dot: "bg-[#4fd1c5]", Icon: CheckCircle,   label: "Safe"    };
+    case "danger": return { bg: "bg-[#ef4444]/10", border: "border-[#ef4444]/40", text: "text-[#ef4444]", dot: "bg-[#ef4444]", Icon: ShieldAlert, label: "Danger" };
+    default: return { bg: "bg-[#4fd1c5]/10", border: "border-[#4fd1c5]/40", text: "text-[#4fd1c5]", dot: "bg-[#4fd1c5]", Icon: CheckCircle, label: "Safe" };
   }
 };
 
@@ -145,7 +145,7 @@ function MedicineModal({ id, onClose }: { id: string; onClose: () => void }) {
         </button>
 
         {loading && <div className="flex justify-center py-16"><Loader2 className="w-8 h-8 text-[#4fd1c5] animate-spin" /></div>}
-        {error   && <p className="py-10 text-center text-[#ef4444] text-sm">{error}</p>}
+        {error && <p className="py-10 text-center text-[#ef4444] text-sm">{error}</p>}
 
         {detail && !loading && (
           <>
@@ -168,7 +168,7 @@ function MedicineModal({ id, onClose }: { id: string; onClose: () => void }) {
               <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{fmtDate(detail.scanned_at)}</span>
               <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{fmtTime(detail.scanned_at)}</span>
               {detail.manufacturer && <span className="flex items-center gap-1.5"><Activity className="w-3.5 h-3.5" />{detail.manufacturer}</span>}
-              {detail.expiry_date  && <span className="flex items-center gap-1.5">Exp: {detail.expiry_date}</span>}
+              {detail.expiry_date && <span className="flex items-center gap-1.5">Exp: {detail.expiry_date}</span>}
               {detail.confidence !== undefined && (
                 <span className="flex items-center gap-1.5">
                   Confidence: <span className={s.text}>{(detail.confidence * 100).toFixed(0)}%</span>
@@ -260,7 +260,7 @@ function PrescriptionModal({ id, onClose }: { id: string; onClose: () => void })
         </button>
 
         {loading && <div className="flex justify-center py-16"><Loader2 className="w-8 h-8 text-[#a78bfa] animate-spin" /></div>}
-        {error   && <p className="py-10 text-center text-[#ef4444] text-sm">{error}</p>}
+        {error && <p className="py-10 text-center text-[#ef4444] text-sm">{error}</p>}
 
         {detail && !loading && (
           <>
@@ -301,9 +301,24 @@ function PrescriptionModal({ id, onClose }: { id: string; onClose: () => void })
               {detail.prescribed_medicines?.length ? (
                 <Section title="Prescribed Medicines" color="cyan">
                   <div className="flex flex-wrap gap-1.5 mt-1">
-                    {detail.prescribed_medicines.map((m) => (
-                      <span key={m} className="px-2 py-0.5 rounded-lg bg-[#4fd1c5]/10 border border-[#4fd1c5]/30 text-[#4fd1c5] text-xs">{m}</span>
-                    ))}
+                    {detail.prescribed_medicines.map((m: any, i: number) => {
+                      // handle both string and object shapes
+                      const name = typeof m === "string" ? m : m?.name ?? "Unknown";
+                      const dosage = typeof m === "object" ? m?.dosage : null;
+                      const freq = typeof m === "object" ? m?.instructions ?? m?.frequency : null;
+
+                      return (
+                        <div
+                          key={i}
+                          className="flex flex-col px-3 py-1.5 rounded-xl
+                 bg-[#4fd1c5]/10 border border-[#4fd1c5]/30"
+                        >
+                          <span className="text-[#4fd1c5] text-xs font-medium">{name}</span>
+                          {dosage && <span className="text-[#8a9ab8] text-[10px]">{dosage}</span>}
+                          {freq && <span className="text-[#8a9ab8] text-[10px]">{freq}</span>}
+                        </div>
+                      );
+                    })}
                   </div>
                 </Section>
               ) : null}
@@ -384,7 +399,7 @@ export function MedicationHistory() {
   const [loading, setLoading] = useState(true);
 
   // Modal state — stores the record id that was clicked
-  const [activeMedicineId,     setActiveMedicineId]     = useState<string | null>(null);
+  const [activeMedicineId, setActiveMedicineId] = useState<string | null>(null);
   const [activePrescriptionId, setActivePrescriptionId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -407,11 +422,11 @@ export function MedicationHistory() {
     })();
   }, []);
 
-  const totalScans        = data?.total_scans        ?? 0;
-  const medicineScanCount = data?.medicine_scans     ?? 0;
-  const rxScanCount       = data?.prescription_scans ?? 0;
-  const medicines         = data?.medicines          ?? [];
-  const prescriptions     = data?.prescriptions      ?? [];
+  const totalScans = data?.total_scans ?? 0;
+  const medicineScanCount = data?.medicine_scans ?? 0;
+  const rxScanCount = data?.prescription_scans ?? 0;
+  const medicines = data?.medicines ?? [];
+  const prescriptions = data?.prescriptions ?? [];
 
   return (
     <div className="min-h-screen molecular-bg p-6 pb-24">
