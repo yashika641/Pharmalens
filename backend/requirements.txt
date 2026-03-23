@@ -1,0 +1,32 @@
+# Web framework
+fastapi
+uvicorn[standard]
+
+# Supabase
+supabase
+
+# Google Gemini
+google-genai
+
+# FAISS + embeddings
+faiss-cpu
+sentence-transformers
+numpy
+pandas
+pyarrow
+
+# OCR
+pillow
+requests
+httpx
+gradio-client
+
+# Drug interaction fallback
+duckdb
+
+# Utils
+python-dotenv
+python-multipart
+pydantic
+aiofiles
+tqdm

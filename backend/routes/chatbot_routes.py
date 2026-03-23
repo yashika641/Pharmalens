@@ -19,8 +19,8 @@ from backend.utils.supabase import get_supabase
 from backend.utils.llm import get_gemini_llm
 # supabase = get_supabase()
 # llm = get_gemini_llm()
-from models.chatbot.semantic_search import semantic_search
-from models.chatbot.rag_prompt import build_rag_prompt
+from backend.models.chatbot.semantic_search import semantic_search
+from backend.models.chatbot.rag_prompt import build_rag_prompt
 from datetime import datetime
 router = APIRouter(prefix="/chat", tags=["Chatbot"])
 

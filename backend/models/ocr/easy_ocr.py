@@ -1,5 +1,5 @@
 import requests
-from models.ocr.exceptions import OCREngineError
+from backend.models.ocr.exceptions import OCREngineError
 
 OCR_SPACE_API_KEY = "K83818984888957"
 OCR_SPACE_URL = "https://api.ocr.space/parse/image"
@@ -43,7 +43,7 @@ def _extracted_from_run_ocr_space_8(image_bytes):
         OCR_SPACE_URL,
         files=files,
         data=data,
-        timeout=30,
+        timeout=(5, 60)
     )
 
     print(f"[OCR.Space] HTTP status code: {response.status_code}")
@@ -93,7 +93,7 @@ def _extracted_from_run_ocr_space_8(image_bytes):
     full_text = "\n".join(text_blocks).strip()
 
     avg_confidence = (
-        sum(confidences) / len(confidences)
+        sum(confidences) / len(confidences)/100
         if confidences else 0.6  # safe default
     )
 

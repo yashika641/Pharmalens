@@ -3,6 +3,7 @@ from typing import AsyncGenerator, Optional
 from google import genai
 
 _MODEL_NAME = "gemini-2.5-flash"
+# _MODEL_NAME = "gemini-2.5-pro"
 
 _client: Optional[genai.Client] = None
 _llm: Optional["GeminiLLM"] = None

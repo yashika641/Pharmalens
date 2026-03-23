@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Header
 from backend.utils.supabase import get_supabase
 import uuid
-from models.ocr.main import run_latest_image_ocr_pipeline
+from backend.models.ocr.main import run_latest_image_ocr_pipeline
 
 router = APIRouter(prefix="/images", tags=["Images"])
 
@@ -58,7 +58,7 @@ async def upload_image(
         "image_type": image_type
     }).execute()
 
-    if not image_insert.data or len(image_insert.data) == 0:
+    if image_insert.data is None or len(image_insert.data) == 0:
         raise HTTPException(status_code=500, detail="Failed to save image metadata")
     
     image_id = image_insert.data[0]["id"]
