@@ -2,7 +2,7 @@ import os
 import logging
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-
+# deployed via github actions
 # -------------------------------------------------
 # Logging
 # -------------------------------------------------
