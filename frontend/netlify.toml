@@ -1,0 +1,15 @@
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "http://204.168.180.30:8000/:splat"
+  status = 200
+  force = true
+```
+
+Then in your `.env`:
+```
+VITE_API_URL=/api
