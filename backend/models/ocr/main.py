@@ -5,14 +5,14 @@ import requests
 from backend.utils.supabase import get_supabase
 from backend.utils.supabase import get_supabase
 
-from models.ocr.paddle_ocr import run_paddle_ocr
-from models.ocr.easy_ocr import run_ocr_space
-from models.ocr.parsers import parse_medicine, parse_prescription, needs_llm_fallback, gemini_extract_medicine, merge_results
-from models.ocr.supabase_databse_update import (
+from backend.models.ocr.paddle_ocr import run_paddle_ocr
+from backend.models.ocr.easy_ocr import run_ocr_space
+from backend.models.ocr.parsers import  compress_image_for_ocr_space,merge_results_prescription,needs_prescription_llm_fallback, parse_medicine, parse_prescription, needs_llm_fallback, gemini_extract_medicine, merge_results , gemini_extract_prescription
+from backend.models.ocr.supabase_databse_update import (
     save_medicine_ocr_result,
     save_prescription_ocr_result,
 )
-from models.ocr.exceptions import OCREngineError
+from backend.models.ocr.exceptions import OCREngineError
 
 
 CONFIDENCE_THRESHOLD = 0.80
@@ -100,22 +100,25 @@ async def run_latest_image_ocr_pipeline(user_id: str) -> None:
     final_confidence = primary_conf
     final_engine = "paddleocr"
     fallback_used = False
-
+    print("primary text ", primary_text)
     # -------------------------------------------------
     # 4️⃣ FALLBACK OCR – EasyOCR
     # -------------------------------------------------
     if primary_conf < CONFIDENCE_THRESHOLD:
-        print(
-            f"[OCR ⚠️] Confidence below threshold "
-            f"({primary_conf:.2f} < {CONFIDENCE_THRESHOLD})"
-        )
-        print("[OCR] Running EasyOCR fallback...")
+    
+        print("[OCR] Running OCR.Space fallback...")
 
         fallback_used = True
 
-        fallback_text, fallback_conf = run_ocr_space(image_bytes)
+        compressed_bytes = compress_image_for_ocr_space(image_bytes)
+        try:
+            fallback_text, fallback_conf = run_ocr_space(compressed_bytes)
+        except Exception as e:
+            print("[OCR ⚠️] OCR.Space failed:", e)
+            fallback_text = ""
+            fallback_conf = 0.0
 
-        print(f"[OCR] OCR.Space confidence: {fallback_conf:.3f}")
+            print(f"[OCR] OCR.Space confidence: {fallback_conf:.3f}")
 
         _save_raw_ocr_locally(image_id, "ocr_space_fallback", fallback_text)
         if fallback_conf > primary_conf:
@@ -152,14 +155,32 @@ async def run_latest_image_ocr_pipeline(user_id: str) -> None:
         final_engine = f"{final_engine}+gemini"
 
         print("[OCR] Gemini extraction merged")
+        
+    elif image_type == "prescription" and needs_prescription_llm_fallback(final_parsed):
+    
+        print("[OCR ⚠️] Missing prescription fields detected, running Gemini fallback")
+
+        gemini_data = await gemini_extract_prescription(final_text)
+
+        print("PRIMARY PARSED:", final_parsed)
+        print("GEMINI PARSED:", gemini_data)
+
+        final_parsed = merge_results_prescription(final_parsed, gemini_data)
+
+        fallback_used = True
+        final_engine = f"{final_engine}+gemini"
+        print("final_parsed after merge:", final_parsed)
+        print("[OCR] Gemini prescription extraction merged")
     # -------------------------------------------------
     # 5️⃣ Persist result
     # -------------------------------------------------
     print("[OCR] Saving OCR result to Supabase...")
 
+        
     if image_type == "medicine":
         save_medicine_ocr_result(
             image_id=image_id,
+            user_id=user_id,        # ✅ add this
             raw_text=final_text,
             parsed_data=final_parsed,
             confidence=final_confidence,
@@ -169,6 +190,7 @@ async def run_latest_image_ocr_pipeline(user_id: str) -> None:
     else:
         save_prescription_ocr_result(
             image_id=image_id,
+            user_id=user_id,        # ✅ add this
             raw_text=final_text,
             parsed_data=final_parsed,
             confidence=final_confidence,

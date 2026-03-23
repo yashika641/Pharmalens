@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from models.drug_interaction_checker.drug_iteraction import build_gemini_payload
-from models.drug_interaction_checker.gemini_checking import explain_interaction_with_gemini
+from backend.models.drug_interaction_checker.drug_iteraction import build_gemini_payload
+from backend.models.drug_interaction_checker.gemini_checking import explain_interaction_with_gemini
 
 router = APIRouter(prefix="/drug-interactions", tags=["Drug Interactions"])
 

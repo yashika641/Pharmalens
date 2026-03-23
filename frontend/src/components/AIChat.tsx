@@ -12,6 +12,8 @@ interface Message {
 }
 
 export function AIChat() {
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -57,14 +59,56 @@ export function AIChat() {
     });
 
   };
+  const startListening = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Your browser doesn't support voice input. Try Chrome or Edge.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognitionRef.current = recognition;
+
+    recognition.lang = "en-US";
+    recognition.interimResults = true;   // show partial results as user speaks
+    recognition.continuous = false;      // stop after first pause
+
+    recognition.onstart = () => setIsListening(true);
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = Array.from(event.results)
+        .map((r) => r[0].transcript)
+        .join("");
+      setInputValue(transcript);         // live-updates the input
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+      recognitionRef.current = null;
+    };
+
+    recognition.onerror = (e) => {
+      console.error("Speech error:", e.error);
+      setIsListening(false);
+    };
+
+    recognition.start();
+  };
+
+  const stopListening = () => {
+    recognitionRef.current?.stop();
+    setIsListening(false);
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-const getSessionAndToken = async () => {
-  const sessionRes = await supabase.auth.getSession();
-  return sessionRes.data.session?.access_token;
-};
+  const getSessionAndToken = async () => {
+    const sessionRes = await supabase.auth.getSession();
+    return sessionRes.data.session?.access_token;
+  };
 
   useEffect(() => {
     scrollToBottom();
@@ -87,46 +131,46 @@ const getSessionAndToken = async () => {
     streamAIResponse(userMsg.text);
   };
 
-useEffect(() => {
-  const loadChatHistory = async () => {
-    const session = await supabase.auth.getSession();
-    const token = session.data.session?.access_token;
+  useEffect(() => {
+    const loadChatHistory = async () => {
+      const session = await supabase.auth.getSession();
+      const token = session.data.session?.access_token;
 
-    if (!token) return;
+      if (!token) return;
 
-    const res = await fetch(`${API_URL}/chat/history`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const data = await res.json();
-
-    const formatted: Message[] = [];
-
-    data.forEach((row: any) => {
-      // User message
-      formatted.push({
-        id: crypto.randomUUID(),
-        text: row.query,
-        sender: "user",
-        timestamp: new Date(row.timestamp),
+      const res = await fetch(`${API_URL}/chat/history`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      // AI response
-      formatted.push({
-        id: crypto.randomUUID(),
-        text: row.response,
-        sender: "ai",
-        timestamp: new Date(row.timestamp),
+      const data = await res.json();
+
+      const formatted: Message[] = [];
+
+      data.forEach((row: any) => {
+        // User message
+        formatted.push({
+          id: crypto.randomUUID(),
+          text: row.query,
+          sender: "user",
+          timestamp: new Date(row.timestamp),
+        });
+
+        // AI response
+        formatted.push({
+          id: crypto.randomUUID(),
+          text: row.response,
+          sender: "ai",
+          timestamp: new Date(row.timestamp),
+        });
       });
-    });
 
-    setMessages(formatted);
-  };
+      setMessages(formatted);
+    };
 
-  loadChatHistory();
-}, []);
+    loadChatHistory();
+  }, []);
 
   const quickQuestions = [
     "What is Paracetamol used for?",
@@ -307,9 +351,13 @@ useEffect(() => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="glass-card rounded-xl p-3 neon-border-purple hover:bg-[#a78bfa]/10 transition-all duration-300"
+              onClick={isListening ? stopListening : startListening}
+              className={`glass-card rounded-xl p-3 transition-all duration-300 ${isListening
+                  ? "neon-border-cyan bg-[#4fd1c5]/20 animate-pulse"
+                  : "neon-border-purple hover:bg-[#a78bfa]/10"
+                }`}
             >
-              <Mic className="w-6 h-6 text-[#a78bfa]" />
+              <Mic className={`w-6 h-6 ${isListening ? "text-[#4fd1c5]" : "text-[#a78bfa]"}`} />
             </motion.button>
 
             {/* Send Button */}

@@ -231,3 +231,132 @@ def merge_results(parsed, gemini):
 
     return merged
 
+
+
+import datetime
+import re
+
+MONTH_MAP = {
+    "JAN":1,"FEB":2,"MAR":3,"APR":4,"MAY":5,"JUN":6,
+    "JUL":7,"AUG":8,"SEP":9,"OCT":10,"NOV":11,"DEC":12
+}
+
+def normalize_expiry_date(text):
+
+    if not text:
+        return None
+
+    text = text.upper().replace(".", "").strip()
+
+    # 1️⃣ Format: SEP 2024
+    match = re.search(r"(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\s*(\d{4})", text)
+    if match:
+        month = MONTH_MAP[match.group(1)]
+        year = int(match.group(2))
+        return datetime.date(year, month, 1).isoformat()
+
+    # 2️⃣ Format: 08/2021 or 08-2021
+    match = re.search(r"(\d{2})[/-](\d{4})", text)
+    if match:
+        month = int(match.group(1))
+        year = int(match.group(2))
+        return datetime.date(year, month, 1).isoformat()
+
+    # 3️⃣ Format: 09/24
+    match = re.search(r"(\d{2})[/-](\d{2})", text)
+    if match:
+        month = int(match.group(1))
+        year = int("20" + match.group(2))
+        return datetime.date(year, month, 1).isoformat()
+
+    return None
+
+async def gemini_extract_prescription(raw_text: str) -> dict:
+    llm = get_gemini_llm()
+
+    print("[LLM] Falling back to Gemini for prescription extraction...")
+    print("[LLM] Raw OCR text for Gemini:", raw_text)
+
+    prompt = f"""
+Extract prescription information from this OCR text.
+also normalize prescription_date to ISO format (YYYY-MM-DD) if possible.and check if the medicines names are legitimate medicine names, find the closest match if the OCR text is slightly off. If you cannot find a confident match, return null for that medicine.
+Return JSON with fields:
+doctor_name
+patient_name
+prescription_date
+diagnosis
+medicines (list of objects with fields: name, dosage, instructions)
+routes (list of administration routes like oral, IV, etc.)
+
+OCR TEXT:
+{raw_text}
+
+Return ONLY valid JSON.
+"""
+
+    response = await llm.generate(prompt)  # type: ignore
+
+    print("[LLM] Gemini response:", response)
+
+    try:
+
+        # remove ```json ``` wrappers
+        cleaned = re.sub(r"```json|```", "", response).strip()
+
+        data = json.loads(cleaned)
+
+        print("GEMINI PRESCRIPTION PARSED:", data)
+
+        return data
+
+    except Exception:
+        return {}
+    
+    
+def needs_prescription_llm_fallback(parsed: dict) -> bool:
+    return (
+        not parsed.get("doctor_name")
+        or not parsed.get("medicines")
+    )
+    
+def merge_results_prescription(primary: dict, gemini: dict) -> dict:
+    
+    result = primary.copy()
+
+    for key, gem_val in gemini.items():
+
+        prim_val = primary.get(key)
+
+        # if primary empty → use gemini
+        if prim_val in [None, "", [], {}]:
+            result[key] = gem_val
+
+        # if both strings → prefer longer (Gemini usually richer)
+        elif isinstance(prim_val, str) and isinstance(gem_val, str):
+            if len(gem_val) > len(prim_val):
+                result[key] = gem_val
+
+        # if primary list empty but gemini has data
+        elif isinstance(prim_val, list) and not prim_val and gem_val:
+            result[key] = gem_val
+
+    return result
+
+from PIL import Image
+import io
+
+def compress_image_for_ocr_space(image_bytes: bytes, max_size_kb=900) -> bytes:
+
+    img = Image.open(io.BytesIO(image_bytes))
+
+    quality = 95
+
+    while True:
+        buffer = io.BytesIO()
+        img.save(buffer, format="JPEG", quality=quality)
+        size_kb = buffer.tell() / 1024
+
+        if size_kb <= max_size_kb or quality <= 30:
+            return buffer.getvalue()
+
+        quality -= 10
