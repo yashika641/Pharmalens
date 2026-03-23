@@ -22,6 +22,8 @@ import { supabase } from "./supabase";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { Toaster } from "./components/ui/sonner";
+// Add this import at the top
+import { PrescriptionDetails } from "./components/PrescriptionDetails";
 
 /* ------------------------------------------
    App Content (Router-aware)
@@ -83,7 +85,8 @@ function AppContent() {
   ------------------------------------------- */
   const handleScanComplete = (result: any) => {
     setScanResult(result);
-    navigate("/medicine");
+    // Route based on type
+    navigate(result.type === "prescription" ? "/prescription" : "/medicine");
   };
 
   const handleSaveToHistory = (medicine: any) => {
@@ -116,19 +119,19 @@ function AppContent() {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route
-  path="/"
-  element={
-    <HomePage
-      onNavigate={handleNavigate}
-      user={user}
-      onLogout={() => setUser(null)}
-    />
-  }
-/>
-<Route
-  path="/auth/callback"
-  element={<AuthCallback setUser={setUser} />}
-/>
+            path="/"
+            element={
+              <HomePage
+                onNavigate={handleNavigate}
+                user={user}
+                onLogout={() => setUser(null)}
+              />
+            }
+          />
+          <Route
+            path="/auth/callback"
+            element={<AuthCallback setUser={setUser} />}
+          />
 
 
           <Route
@@ -140,6 +143,7 @@ function AppContent() {
             }
           />
 
+          // existing /medicine route — stays as is, only reached for medicines now
           <Route
             path="/medicine"
             element={
@@ -149,6 +153,23 @@ function AppContent() {
                     medicine={scanResult}
                     onSaveToHistory={handleSaveToHistory}
                     onCheckInteractions={handleCheckInteractions}
+                  />
+                ) : (
+                  <Navigate to="/" replace />
+                )}
+              </ProtectedRoute>
+            }
+          />
+
+// ADD this new prescription route right below it
+          <Route
+            path="/prescription"
+            element={
+              <ProtectedRoute user={user}>
+                {scanResult ? (
+                  <PrescriptionDetails
+                    prescription={scanResult}
+                    onSaveToHistory={handleSaveToHistory}
                   />
                 ) : (
                   <Navigate to="/" replace />
