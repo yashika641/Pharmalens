@@ -30,7 +30,7 @@ const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const handleLogout = async () => {
   try {
-    await fetch(`${API_URL}/auth/logout`, {
+    await fetch(`${API_URL}/api/auth/logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -71,7 +71,7 @@ const handleProfileSubmit = async () => {
       throw new Error("User not authenticated");
     }
 
-    await fetch(`${API_URL}/user-profile/`, {
+    await fetch(`${API_URL}/api/user-profile/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

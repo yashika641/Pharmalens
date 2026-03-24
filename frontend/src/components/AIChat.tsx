@@ -31,7 +31,7 @@ export function AIChat() {
     const token = session.data.session?.access_token;
 
     const eventSource = new EventSource(
-      `${API_URL}/chat/stream?query=${encodeURIComponent(query)}&token=${token}`
+      `${API_URL}/api/chat/stream?query=${encodeURIComponent(query)}&token=${token}`
     );
 
 
@@ -138,7 +138,7 @@ export function AIChat() {
 
       if (!token) return;
 
-      const res = await fetch(`${API_URL}/chat/history`, {
+      const res = await fetch(`${API_URL}/api/chat/history`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
