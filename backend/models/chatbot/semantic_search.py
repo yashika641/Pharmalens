@@ -7,9 +7,13 @@ from typing import List, Dict, Any
 _embedding_model = None
 _faiss_index = None
 _chunks_df = None
+_qdrant_client = None   # ✅ ADDED
 
 FAISS_INDEX_PATH = os.getenv("FAISS_INDEX_PATH", "/app/faiss_compressed.index")
 CHUNKS_PARQUET_PATH = os.getenv("CHUNKS_PARQUET_PATH", "/app/chunks.parquet")
+
+QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")   # ✅ ADDED
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY", None)              # ✅ ADDED
 
 
 def get_embedding_model():
@@ -44,16 +48,30 @@ def get_chunks_df():
     return _chunks_df
 
 
+# ✅ ADDED QDRANT CLIENT
+def get_qdrant_client():
+    global _qdrant_client
+
+    if _qdrant_client is None:
+        from qdrant_client import QdrantClient
+        _qdrant_client = QdrantClient(
+            url=QDRANT_URL,
+            api_key=QDRANT_API_KEY,
+        )
+
+    return _qdrant_client
+
+
 # =====================================================
-# SEMANTIC SEARCH (drop-in replacement for Qdrant)
+# SEMANTIC SEARCH (FAISS + QDRANT)
 # =====================================================
 def semantic_search(
     query: str,
-    collection_name: str,       # kept for API compatibility, not used
+    collection_name: str,       # used for Qdrant
     top_k: int = 3,
     score_threshold: float = 0.45,
     max_chunk_length: int = 800,
-) -> List[Dict[str, Any]]:
+) -> List[Dict[str, Any]]:  # sourcery skip: low-code-quality
 
     if not query or not query.strip():
         return []
@@ -71,11 +89,10 @@ def semantic_search(
         convert_to_numpy=True,
     ).astype("float32").reshape(1, -1)
 
-    # 2️⃣ Search FAISS — get more candidates then filter by threshold
+    # 2️⃣ FAISS SEARCH (UNCHANGED)
     fetch_k = min(top_k * 10, index.ntotal)
     distances, indices = index.search(query_vector, fetch_k)
 
-    # FAISS inner product on normalized vectors = cosine similarity
     results = []
     for dist, idx in zip(distances[0], indices[0]):
         if idx == -1:
@@ -90,7 +107,6 @@ def semantic_search(
             text = f"{text[:max_chunk_length]}..."
 
         payload = {"text": text}
-        # include any extra columns as payload
         for col in df.columns:
             if col not in ("text", "chunk"):
                 payload[col] = row.get(col, None)
@@ -104,14 +120,67 @@ def semantic_search(
         if len(results) >= top_k:
             break
 
-    return results
+    # =====================================================
+    # 3️⃣ QDRANT SEARCH (ADDED ONLY)
+    # =====================================================
+    qdrant_results = []
+    try:
+        client = get_qdrant_client()
+
+        hits = client.search(
+            collection_name=collection_name,
+            query_vector=query_vector[0].tolist(),
+            limit=top_k * 10,
+            with_payload=True,
+        )
+
+        for hit in hits:
+            if hit.score < score_threshold:
+                continue
+
+            payload = hit.payload or {}
+            text = str(payload.get("text", payload.get("chunk", "")))
+
+            if len(text) > max_chunk_length:
+                text = f"{text[:max_chunk_length]}..."
+
+            payload["text"] = text
+
+            qdrant_results.append({
+                "id": hit.id,
+                "score": float(hit.score),
+                "payload": payload,
+            })
+
+    except Exception as e:
+        print(f"Qdrant search failed: {e}")
+
+    # =====================================================
+    # 4️⃣ MERGE RESULTS (ADDED ONLY)
+    # =====================================================
+    combined_results = results + qdrant_results
+
+    # simple deduplication based on text
+    seen = set()
+    final_results = []
+    for r in combined_results:
+        key = r["payload"].get("text", "")[:100]
+        if key in seen:
+            continue
+        seen.add(key)
+        final_results.append(r)
+
+    # sort by score
+    final_results = sorted(final_results, key=lambda x: x["score"], reverse=True)
+
+    return final_results[:top_k]
 
 
 # =====================================================
 # LOCAL TEST
 # =====================================================
 if __name__ == "__main__":
-    test_query = "What are the side effects of ibuprofen?"
+    test_query = "Who made this website?"
 
     results = semantic_search(
         query=test_query,
