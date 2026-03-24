@@ -217,7 +217,7 @@ export function ProfileSettings() {
     (async () => {
       try {
         const token = await getToken();
-        const res = await fetch(`${API_URL}/user-profile/details`, {
+        const res = await fetch(`${API_URL}/api/user-profile/details`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error();
@@ -232,7 +232,7 @@ export function ProfileSettings() {
 
   const updateField = async (field: keyof UserProfile, value: string) => {
     const token = await getToken();
-    await fetch(`${API_URL}/user-profile/update`, {
+    await fetch(`${API_URL}/api/user-profile/update`, {
       method: "PATCH",
       headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       body: JSON.stringify({ [field]: value }),
@@ -244,7 +244,7 @@ export function ProfileSettings() {
     setAddingAllergy(true);
     try {
       const token = await getToken();
-      const res = await fetch(`${API_URL}/user-profile/add-allergy`, {
+      const res = await fetch(`${API_URL}/api/user-profile/add-allergy`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({ allergy: value }),
@@ -258,7 +258,7 @@ export function ProfileSettings() {
     setRemovingAllergy(value);
     try {
       const token = await getToken();
-      const res = await fetch(`${API_URL}/user-profile/remove-allergy`, {
+      const res = await fetch(`${API_URL}/api/user-profile/remove-allergy`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({ allergy: value }),
@@ -272,7 +272,7 @@ export function ProfileSettings() {
     setAddingCondition(true);
     try {
       const token = await getToken();
-      const res = await fetch(`${API_URL}/user-profile/add-condition`, {
+      const res = await fetch(`${API_URL}/api/user-profile/add-condition`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({ condition: value }),
@@ -286,7 +286,7 @@ export function ProfileSettings() {
     setRemovingCondition(value);
     try {
       const token = await getToken();
-      const res = await fetch(`${API_URL}/user-profile/remove-condition`, {
+      const res = await fetch(`${API_URL}/api/user-profile/remove-condition`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({ condition: value }),

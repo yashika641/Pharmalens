@@ -67,7 +67,7 @@ const API_URL = import.meta.env.VITE_API_URL ?? "";
 async function translateViaBackend(texts: string[], targetLang: string): Promise<string[]> {
   if (!texts.length) return [];
   try {
-    const res = await fetch(`${API_URL}/translate`, {
+    const res = await fetch(`${API_URL}/api/translate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ texts, target: targetLang, source: "en" }),

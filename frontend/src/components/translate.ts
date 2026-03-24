@@ -4,7 +4,7 @@ export async function translateBatch(texts: string[], target: string) {
   if (!texts.length) return texts;
 
   try {
-    const res = await fetch(`${API_URL}/translate`, {
+    const res = await fetch(`${API_URL}/api/translate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
