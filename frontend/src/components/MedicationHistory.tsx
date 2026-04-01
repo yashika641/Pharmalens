@@ -112,7 +112,7 @@ function MedicineModal({ id, onClose }: { id: string; onClose: () => void }) {
     (async () => {
       try {
         const token = await getToken();
-        const res = await fetch(`${API_URL}/api/user/history/medicine/${id}`, {
+        const res = await fetch(`${API_URL}/user/history/medicine/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error(`Error ${res.status}`);
@@ -227,7 +227,7 @@ function PrescriptionModal({ id, onClose }: { id: string; onClose: () => void })
     (async () => {
       try {
         const token = await getToken();
-        const res = await fetch(`${API_URL}/api/user/history/prescription/${id}`, {
+        const res = await fetch(`${API_URL}/user/history/prescription/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error(`Error ${res.status}`);
@@ -406,7 +406,7 @@ export function MedicationHistory() {
     (async () => {
       try {
         const token = await getToken();
-        const res = await fetch(`${API_URL}/api/user/history`, {
+        const res = await fetch(`${API_URL}/user/history`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log("API response status:", res.status);

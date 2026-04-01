@@ -1,0 +1,11 @@
+{
+  "appId": "com.pharmalens.app",
+  "appName": "PharmaLens",
+  "webDir": "build",
+  "android": {
+    "allowMixedContent": true
+  },
+  "server": {
+    "cleartext": true
+  }
+}
