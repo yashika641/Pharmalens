@@ -88,7 +88,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
     try {
       const response = await fetch(
-        `${API_URL}/api/drug-interactions/check`,
+        `${API_URL}/drug-interactions/check`,
         {
           method: "POST",
           headers: {

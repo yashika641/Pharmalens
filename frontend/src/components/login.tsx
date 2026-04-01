@@ -9,9 +9,10 @@ import { setAuthCookie } from "../autocookies";
 interface AuthModalProps {
     open: boolean;
     onClose: () => void;
+    onLogin: (user: any) => void;
 }
 
-export function AuthModal({ open, onClose }: AuthModalProps) {
+export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
     const [mode, setMode] = useState<"login" | "signup">("login");
     const [loading, setLoading] = useState(false);
 
@@ -29,72 +30,80 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
     // EMAIL / PASSWORD AUTH
     // =========================
     async function handleSubmit(e: React.FormEvent) {
-  e.preventDefault();
-  setLoading(true);
+        e.preventDefault();
+        setLoading(true);
 
-  try {
-    if (mode === "login") {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: form.email,
-        password: form.password,
-      });
+        try {
+            if (mode === "login") {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: form.email,
+                    password: form.password,
+                });
 
-      if (error) throw error;
+                if (error) throw error;
 
-      if (!data.session) {
-        throw new Error("Login failed. No session returned.");
-      }
+                if (!data.session) {
+                    throw new Error("Login failed. No session returned.");
+                }
 
-      setAuthCookie(data.session.access_token);
+                setAuthCookie(data.session.access_token);
+                onLogin(data.session.user);
+            }
+
+            if (mode === "signup") {
+                const { data, error } = await supabase.auth.signUp({
+                    email: form.email,
+                    password: form.password,
+                    options: {
+                        data: {
+                            full_name: form.name,
+                        },
+                    },
+                });
+
+                if (error) throw error;
+
+                // ⚠️ Signup may NOT return a session (email verification)
+                if (data.session) {
+                    setAuthCookie(data.session.access_token);
+                    onLogin(data.session.user);
+                }
+            }
+
+            onClose();
+        } catch (err: any) {
+            alert(err.message);
+        } finally {
+            setLoading(false);
+        }
     }
-
-    if (mode === "signup") {
-      const { data, error } = await supabase.auth.signUp({
-        email: form.email,
-        password: form.password,
-        options: {
-          data: {
-            full_name: form.name,
-          },
-        },
-      });
-
-      if (error) throw error;
-
-      // ⚠️ Signup may NOT return a session (email verification)
-      if (data.session) {
-        setAuthCookie(data.session.access_token);
-      }
-    }
-
-    onClose();
-  } catch (err: any) {
-    alert(err.message);
-  } finally {
-    setLoading(false);
-  }
-}
 
 
     // =========================
     // GITHUB OAUTH
     // =========================
     async function handleGithubAuth() {
-        await supabase.auth.signInWithOAuth({
+        const { data, error } = await supabase.auth.signInWithOAuth({
             provider: "github",
             options: {
-                redirectTo: `https://pharmalenss.netlify.app/auth/callback?mode=${mode}`,
+                redirectTo: `pharmalens://auth/callback`,
             },
         });
+
+        if (error) throw error;
+        // Note: OAuth redirects to callback, so onLogin will be handled there
     }
+
     async function handleGoogleAuth() {
-        await supabase.auth.signInWithOAuth({
+        const { data, error } = await supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
-                redirectTo: `https://pharmalenss.netlify.app/auth/callback?mode=${mode}`,
+                redirectTo: `pharmalens://auth/callback`,
             },
-            
         });
+
+        if (error) throw error;
+        // Note: OAuth redirects to callback, so onLogin will be handled there
     }
 
 
@@ -134,8 +143,8 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
                                 <button
                                     onClick={() => setMode("login")}
                                     className={`flex-1 py-2 rounded-l-xl ${mode === "login"
-                                            ? "bg-[#4fd1c5]/20 text-white"
-                                            : "text-[#8a9ab8]"
+                                        ? "bg-[#4fd1c5]/20 text-white"
+                                        : "text-[#8a9ab8]"
                                         }`}
                                 >
                                     Login
@@ -143,8 +152,8 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
                                 <button
                                     onClick={() => setMode("signup")}
                                     className={`flex-1 py-2 rounded-r-xl ${mode === "signup"
-                                            ? "bg-[#a78bfa]/20 text-white"
-                                            : "text-[#8a9ab8]"
+                                        ? "bg-[#a78bfa]/20 text-white"
+                                        : "text-[#8a9ab8]"
                                         }`}
                                 >
                                     Sign Up

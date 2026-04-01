@@ -7,6 +7,7 @@ import {
   useLocation,
   Navigate,
 } from "react-router-dom";
+import { App as CapApp } from '@capacitor/app';  // ADD at top
 
 import { HomePage } from "./components/HomePage";
 import { ScannerPage } from "./components/ScannerPage";
@@ -52,6 +53,32 @@ function AppContent() {
         setUser(session?.user ?? null);
       }
     );
+
+    // ADD THIS — catches the deep link URL on Android
+    CapApp.addListener('appUrlOpen', async ({ url }) => {
+      if (url.includes('pharmalens://auth/callback')) {
+        // Extract the fragment/hash from the URL
+        const hashFragment = url.includes('#') ? url.split('#')[1] : '';
+
+        if (hashFragment) {
+          // Parse the hash fragment to get the session
+          const params = new URLSearchParams(hashFragment);
+          const accessToken = params.get('access_token');
+          const refreshToken = params.get('refresh_token');
+
+          if (accessToken) {
+            const { data, error } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken || '',
+            });
+
+            if (data?.user) {
+              setUser(data.user);
+            }
+          }
+        }
+      }
+    });
 
     return () => {
       listener.subscription.unsubscribe();
@@ -125,6 +152,7 @@ function AppContent() {
                 onNavigate={handleNavigate}
                 user={user}
                 onLogout={() => setUser(null)}
+                onLogin={(user) => setUser(user)}
               />
             }
           />

@@ -9,83 +9,84 @@ interface HomePageProps {
   onNavigate: (page: string) => void;
   user?: any;
   onLogout: () => void;
+  onLogin: (user: any) => void;
 }
 
-export function HomePage({ onNavigate, user, onLogout }: HomePageProps) {
+export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps) {
   const stats = [
     { label: "Daily Scans", value: "247", icon: Scan, color: "cyan" },
     { label: "Detected Risks", value: "12", icon: AlertCircle, color: "yellow" },
     { label: "Saved Alerts", value: "89", icon: ShieldAlert, color: "purple" },
   ];
   const [profileOpen, setProfileOpen] = useState(false);
-const [profileData, setProfileData] = useState({
-  age: "",
-  phone: "",
-  allergies: "",
-  conditions: "",
-  medications: "",
-});
-const API_URL = import.meta.env.VITE_API_URL;
+  const [profileData, setProfileData] = useState({
+    age: "",
+    phone: "",
+    allergies: "",
+    conditions: "",
+    medications: "",
+  });
+  const API_URL = import.meta.env.VITE_API_URL;
   const [authOpen, setAuthOpen] = useState(false);
   const navigate = useNavigate();
   const handleLogout = async () => {
-  try {
-    await fetch(`${API_URL}/api/auth/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
+    try {
+      await fetch(`${API_URL}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
 
-    // Clear frontend storage
-    localStorage.clear();
-    sessionStorage.clear();
+      // Clear frontend storage
+      localStorage.clear();
+      sessionStorage.clear();
 
-    // 🔥 TELL REACT USER IS LOGGED OUT
-    onLogout();
+      // 🔥 TELL REACT USER IS LOGGED OUT
+      onLogout();
 
-    // Redirect
-    navigate("/", { replace: true });
-  } catch (error) {
-    console.error("Logout failed", error);
-  }
+      // Redirect
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
 
   };
 
   const handleProfileChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-) => {
-  setProfileData({
-    ...profileData,
-    [e.target.name]: e.target.value,
-  });
-};
-
-
-const handleProfileSubmit = async () => {
-  try {
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.getSession();
-
-    if (error || !session) {
-      throw new Error("User not authenticated");
-    }
-
-    await fetch(`${API_URL}/api/user-profile/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session.access_token}`,
-      },
-      body: JSON.stringify(profileData),
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setProfileData({
+      ...profileData,
+      [e.target.name]: e.target.value,
     });
+  };
 
-    setProfileOpen(false);
-    console.log("✅ User profile saved");
-  } catch (err) {
-    console.error("❌ Failed to save profile", err);
-  }
-};
+
+  const handleProfileSubmit = async () => {
+    try {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+
+      if (error || !session) {
+        throw new Error("User not authenticated");
+      }
+
+      await fetch(`${API_URL}/user-profile/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify(profileData),
+      });
+
+      setProfileOpen(false);
+      console.log("✅ User profile saved");
+    } catch (err) {
+      console.error("❌ Failed to save profile", err);
+    }
+  };
 
   // now you can safely use `user`
 
@@ -126,30 +127,30 @@ const handleProfileSubmit = async () => {
     <div className="min-h-screen molecular-bg p-6 pb-24">
       {/* Navbar */}
       <nav className="max-w-6xl mx-auto mb-12 flex items-center justify-between">
-  <div className="text-2xl font-bold neon-text-cyan">PharmaLens</div>
+        <div className="text-2xl font-bold neon-text-cyan">PharmaLens</div>
 
-  <div className="flex items-center gap-4">
-    {/* Show Login / Signup only when NOT logged in */}
-    {!user && (
-      <button
-        onClick={() => setAuthOpen(true)}
-        className="text-[#8a9ab8] hover:text-white transition-colors"
-      >
-        Login / Signup
-      </button>
-    )}
+        <div className="flex items-center gap-4">
+          {/* Show Login / Signup only when NOT logged in */}
+          {!user && (
+            <button
+              onClick={() => setAuthOpen(true)}
+              className="text-[#8a9ab8] hover:text-white transition-colors"
+            >
+              Login / Signup
+            </button>
+          )}
 
-    {/* Show Logout only when logged in */}
-    {user && (
-      <button
-        onClick={handleLogout}
-        className="px-4 py-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition"
-      >
-        Logout
-      </button>
-    )}
-  </div>
-</nav>
+          {/* Show Logout only when logged in */}
+          {user && (
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition"
+            >
+              Logout
+            </button>
+          )}
+        </div>
+      </nav>
 
       {/* Hero Section */}
       <motion.div
@@ -342,91 +343,94 @@ const handleProfileSubmit = async () => {
         </motion.div>
       </motion.div>
       <AnimatePresence>
-  {profileOpen && (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
-    >
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        className="glass-card-strong rounded-3xl p-8 neon-border-cyan max-w-md w-full"
-      >
-        <h3 className="text-2xl mb-4 text-white text-center">
-          Let’s Know You Better 💊
-        </h3>
-
-        <div className="space-y-4">
-          <input
-            type="number"
-            name="age"
-            placeholder="Age"
-            value={profileData.age}
-            onChange={handleProfileChange}
-            className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
-          />
-
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Phone Number"
-            value={profileData.phone}
-            onChange={handleProfileChange}
-            className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
-          />
-
-          <textarea
-            name="allergies"
-            placeholder="Known Allergies (e.g. Penicillin, Peanuts)"
-            value={profileData.allergies}
-            onChange={handleProfileChange}
-            className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
-          />
-
-          <textarea
-            name="conditions"
-            placeholder="Medical Conditions (Diabetes, Hypertension, etc.)"
-            value={profileData.conditions}
-            onChange={handleProfileChange}
-            className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
-          />
-
-          <textarea
-            name="medications"
-            placeholder="Current Medications (optional)"
-            value={profileData.medications}
-            onChange={handleProfileChange}
-            className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
-          />
-        </div>
-
-        <div className="mt-6 grid grid-cols-2 gap-4">
-          <button
-            onClick={() => setProfileOpen(false)}
-            className="glass-card rounded-xl p-3 text-white hover:neon-border-blue"
+        {profileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
           >
-            Cancel
-          </button>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="glass-card-strong rounded-3xl p-8 neon-border-cyan max-w-md w-full"
+            >
+              <h3 className="text-2xl mb-4 text-white text-center">
+                Let’s Know You Better 💊
+              </h3>
 
-          <button
-            onClick={handleProfileSubmit}
-            className="glass-card rounded-xl p-3 neon-border-cyan text-white"
-          >
-            Save Profile
-          </button>
-        </div>
-      </motion.div>
-    </motion.div>
-  )}
-</AnimatePresence>
+              <div className="space-y-4">
+                <input
+                  type="number"
+                  name="age"
+                  placeholder="Age"
+                  value={profileData.age}
+                  onChange={handleProfileChange}
+                  className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
+                />
+
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone Number"
+                  value={profileData.phone}
+                  onChange={handleProfileChange}
+                  className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
+                />
+
+                <textarea
+                  name="allergies"
+                  placeholder="Known Allergies (e.g. Penicillin, Peanuts)"
+                  value={profileData.allergies}
+                  onChange={handleProfileChange}
+                  className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
+                />
+
+                <textarea
+                  name="conditions"
+                  placeholder="Medical Conditions (Diabetes, Hypertension, etc.)"
+                  value={profileData.conditions}
+                  onChange={handleProfileChange}
+                  className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
+                />
+
+                <textarea
+                  name="medications"
+                  placeholder="Current Medications (optional)"
+                  value={profileData.medications}
+                  onChange={handleProfileChange}
+                  className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
+                />
+              </div>
+
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => setProfileOpen(false)}
+                  className="glass-card rounded-xl p-3 text-white hover:neon-border-blue"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={handleProfileSubmit}
+                  className="glass-card rounded-xl p-3 neon-border-cyan text-white"
+                >
+                  Save Profile
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Auth Modal */}
       <AuthModal
         open={authOpen}
         onClose={() => setAuthOpen(false)}
+        onLogin={(user: any) => {
+          onLogin(user);
+        }}
       />
     </div>
   );

@@ -112,7 +112,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       formData.append("file", file);
       formData.append("image_type", imageType);
 
-      const res = await fetch(`${API_URL}/api/images/upload`, {
+      const res = await fetch(`${API_URL}/images/upload`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
@@ -272,7 +272,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       formData.append("file", file);
       formData.append("image_type", imageType);
 
-      const res = await fetch(`${API_URL}/api/images/upload`, {
+      const res = await fetch(`${API_URL}/images/upload`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session?.access_token}`,

@@ -7,7 +7,7 @@ class LoginRequest(BaseModel):
     email: str
     password: str
 
-router = APIRouter(prefix="/api/auth", tags=["Auth"])
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.post("/login")
 def login(data: LoginRequest):
