@@ -184,43 +184,7 @@ import json
 from backend.utils.llm import get_gemini_llm
 
 
-async def gemini_extract_medicine(raw_text: str) -> dict:
-    llm = get_gemini_llm()
-    print("[LLM] Falling back to Gemini for medicine extraction...")
-    print("[LLM] Raw OCR text for Gemini:", raw_text)
-    prompt = f"""
-Extract medicine information from this OCR text.
 
-Return JSON with fields:
-medicine_name
-dosage
-composition
-expiry_date
-mfg_date
-precautions
-medicine_type (e.g. tablet, syrup,IV)
-OCR TEXT:
-{raw_text}
-
-Return ONLY valid JSON.
-"""
-
-    response = await llm.generate(prompt) #type: ignore
-    print("[LLM] Gemini response:", response)
-    try:
-
-        # remove ```json ``` wrappers
-        cleaned = re.sub(r"```json|```", "", response).strip()
-
-        data = json.loads(cleaned)
-
-        print("GEMINI PARSED:", data)
-
-        return data
-        
-    except Exception:
-        return {}
-    
     
 def merge_results(parsed, gemini):
     merged = parsed.copy()
@@ -242,76 +206,153 @@ MONTH_MAP = {
 }
 
 def normalize_expiry_date(text):
-
     if not text:
         return None
 
     text = text.upper().replace(".", "").strip()
 
-    # 1️⃣ Format: SEP 2024
-    match = re.search(r"(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\s*(\d{4})", text)
-    if match:
-        month = MONTH_MAP[match.group(1)]
-        year = int(match.group(2))
+    if match := re.search(
+        r"(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\s*(\d{4})", text
+    ):
+        month = MONTH_MAP[match[1]]
+        year = int(match[2])
         return datetime.date(year, month, 1).isoformat()
 
-    # 2️⃣ Format: 08/2021 or 08-2021
-    match = re.search(r"(\d{2})[/-](\d{4})", text)
-    if match:
-        month = int(match.group(1))
-        year = int(match.group(2))
+    if match := re.search(r"(\d{2})[/-](\d{4})", text):
+        month = int(match[1])
+        year = int(match[2])
         return datetime.date(year, month, 1).isoformat()
 
-    # 3️⃣ Format: 09/24
-    match = re.search(r"(\d{2})[/-](\d{2})", text)
-    if match:
-        month = int(match.group(1))
-        year = int("20" + match.group(2))
+    if match := re.search(r"(\d{2})[/-](\d{2})", text):
+        month = int(match[1])
+        year = int(f"20{match[2]}")
         return datetime.date(year, month, 1).isoformat()
 
     return None
 
-async def gemini_extract_prescription(raw_text: str) -> dict:
-    llm = get_gemini_llm()
+# Add/replace these two functions in your parsers.py
+# They now accept image_bytes and use Gemini Vision when OCR text is empty/weak
 
-    print("[LLM] Falling back to Gemini for prescription extraction...")
-    print("[LLM] Raw OCR text for Gemini:", raw_text)
+import base64
+import json
+import re
+import google.generativeai as genai
+from PIL import Image
+import io
 
-    prompt = f"""
-Extract prescription information from this OCR text.
-also normalize prescription_date to ISO format (YYYY-MM-DD) if possible.and check if the medicines names are legitimate medicine names, find the closest match if the OCR text is slightly off. If you cannot find a confident match, return null for that medicine.
-Return JSON with fields:
-doctor_name
-patient_name
-prescription_date
-diagnosis
-medicines (list of objects with fields: name, dosage, instructions)
-routes (list of administration routes like oral, IV, etc.)
+# Configure once at module level (or wherever you set up genai)
+# genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
-OCR TEXT:
-{raw_text}
-
-Return ONLY valid JSON.
+MEDICINE_PROMPT = """
+You are a pharmacy AI. Extract medicine information from this image.
+Return ONLY valid JSON with these exact keys:
+{
+  "medicine_name": "string or null",
+  "dosage": "string or null",
+  "composition": "string or null",
+  "expiry_date": "string or null",
+  "mfg_date": "string or null",
+  "precautions": "string or null",
+  "medicine_type": "string or null"
+}
+No explanation. No markdown. JSON only.
 """
 
-    response = await llm.generate(prompt)  # type: ignore
+PRESCRIPTION_PROMPT = """
+You are a pharmacy AI. Extract prescription information from this image.
+Return ONLY valid JSON with these exact keys (use null for missing fields):
+{
+  "doctor_name": "string or null",
+  "patient_name": "string or null",
+  "date": "string or null",
+  "medicines": ["list of medicine names"],
+  "dosages": ["list of dosages"],
+  "instructions": "string or null",
+  "diagnosis": "string or null"
+}
+No explanation. No markdown. JSON only.
+"""
 
-    print("[LLM] Gemini response:", response)
+
+def _parse_gemini_json(raw: str) -> dict:
+    """Strip markdown fences and parse JSON safely."""
+    cleaned = re.sub(r"```(?:json)?|```", "", raw).strip()
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError:
+        return {}
+
+
+async def gemini_extract_medicine(
+    ocr_text: str = "",
+    image_bytes: bytes | None = None,
+) -> dict:
+    """
+    Extract medicine fields using Gemini.
+
+    Strategy:
+    - If image_bytes provided → use Gemini Vision (image + prompt).
+      This works even when OCR text is empty or garbage.
+    - If only ocr_text → fall back to text-only Gemini call.
+    """
+    print("[LLM] Running Gemini medicine extraction...")
+    model = genai.GenerativeModel("gemini-1.5-flash")
 
     try:
+        if image_bytes:
+            # ✅ Vision path — Gemini reads the image directly
+            print("[LLM] Using Gemini Vision (image_bytes provided)")
+            pil_image = Image.open(io.BytesIO(image_bytes))
+            response = model.generate_content([MEDICINE_PROMPT, pil_image])
+        elif ocr_text.strip():
+            # Fallback: text only
+            print("[LLM] Using Gemini text-only (no image bytes)")
+            prompt = f"{MEDICINE_PROMPT}\n\nOCR Text:\n{ocr_text}"
+            response = model.generate_content(prompt)
+        else:
+            print("[LLM ⚠️] No image bytes and no OCR text — Gemini skipped")
+            return {}
 
-        # remove ```json ``` wrappers
-        cleaned = re.sub(r"```json|```", "", response).strip()
+        raw = response.text
+        print(f"[LLM] Gemini raw response: {raw[:300]}")
+        return _parse_gemini_json(raw)
 
-        data = json.loads(cleaned)
-
-        print("GEMINI PRESCRIPTION PARSED:", data)
-
-        return data
-
-    except Exception:
+    except Exception as e:
+        print(f"[LLM ❌] Gemini medicine extraction failed: {e}")
         return {}
-    
+
+
+async def gemini_extract_prescription(
+    ocr_text: str = "",
+    image_bytes: bytes | None = None,
+) -> dict:
+    """
+    Extract prescription fields using Gemini Vision.
+    Same strategy as gemini_extract_medicine.
+    """
+    print("[LLM] Running Gemini prescription extraction...")
+    model = genai.GenerativeModel("gemini-1.5-flash")
+
+    try:
+        if image_bytes:
+            print("[LLM] Using Gemini Vision (image_bytes provided)")
+            pil_image = Image.open(io.BytesIO(image_bytes))
+            response = model.generate_content([PRESCRIPTION_PROMPT, pil_image])
+        elif ocr_text.strip():
+            print("[LLM] Using Gemini text-only (no image bytes)")
+            prompt = f"{PRESCRIPTION_PROMPT}\n\nOCR Text:\n{ocr_text}"
+            response = model.generate_content(prompt)
+        else:
+            print("[LLM ⚠️] No image bytes and no OCR text — Gemini skipped")
+            return {}
+
+        raw = response.text
+        print(f"[LLM] Gemini raw response: {raw[:300]}")
+        return _parse_gemini_json(raw)
+
+    except Exception as e:
+        print(f"[LLM ❌] Gemini prescription extraction failed: {e}")
+        return {}
     
 def needs_prescription_llm_fallback(parsed: dict) -> bool:
     return (

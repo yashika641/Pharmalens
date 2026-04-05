@@ -19,6 +19,7 @@ import { ProfileSettings } from "./components/ProfileSettings";
 import { Navigation } from "./components/Navigation";
 import { ProtectedRoute } from "./components/protected";
 import { AuthCallback } from "./components/authcallback";
+import { AuthModal } from "./components/login"; // ← ADD THIS IMPORT
 import { supabase } from "./supabase";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -32,6 +33,7 @@ function AppContent() {
   const location = useLocation();
 
   const [user, setUser] = useState<any>(null);
+  const [authOpen, setAuthOpen] = useState(false); // ← ADD THIS
   const [scanResult, setScanResult] = useState<any>(null);
   const [initialDrugsForCheck, setInitialDrugsForCheck] = useState<string[]>([]);
   const [historyItems, setHistoryItems] = useState<any[]>([]);
@@ -76,8 +78,7 @@ function AppContent() {
   }, []);
 
   /* ------------------------------------------
-     ✅ CENTRALIZED logout — used by both
-        Navigation and HomePage
+     Logout
   ------------------------------------------- */
   const handleLogout = async () => {
     try {
@@ -88,7 +89,6 @@ function AppContent() {
     } catch (err) {
       console.error("Backend logout failed (continuing anyway):", err);
     } finally {
-      // Always clear everything regardless of backend success
       await supabase.auth.signOut();
       localStorage.clear();
       sessionStorage.clear();
@@ -98,11 +98,23 @@ function AppContent() {
   };
 
   /* ------------------------------------------
-     Navigation handler
+     Login
+  ------------------------------------------- */
+  const handleLogin = (u: any) => {
+    setUser(u);
+    setAuthOpen(false); // ← close modal after login
+  };
+
+  /* ------------------------------------------
+     Navigation — opens auth modal if logged out
+     and trying to access a protected page
   ------------------------------------------- */
   const handleNavigate = (page: string) => {
     const publicPages = ["home"];
-    if (!user && !publicPages.includes(page)) return;
+    if (!user && !publicPages.includes(page)) {
+      setAuthOpen(true); // ← show login instead of silently ignoring
+      return;
+    }
     const path = page === "home" ? "/" : `/${page}`;
     navigate(path);
   };
@@ -150,8 +162,8 @@ function AppContent() {
               <HomePage
                 onNavigate={handleNavigate}
                 user={user}
-                onLogout={handleLogout}  
-                onLogin={(u) => setUser(u)}
+                onLogout={handleLogout}
+                onLogin={handleLogin}
               />
             }
           />
@@ -233,12 +245,19 @@ function AppContent() {
         </Routes>
       </AnimatePresence>
 
-      {/* ✅ Same centralized handleLogout passed here too */}
       <Navigation
         currentPage={currentPage}
         onNavigate={handleNavigate}
         user={user}
         onLogout={handleLogout}
+        onLoginClick={() => setAuthOpen(true)} // ← ADD THIS PROP
+      />
+
+      {/* AuthModal — one instance for the whole app */}
+      <AuthModal
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        onLogin={handleLogin}
       />
     </div>
   );
