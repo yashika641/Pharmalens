@@ -6,8 +6,44 @@ import {
   ChevronRight, Loader2,
 } from "lucide-react";
 import { supabase } from "../supabase";
+import { useLanguage } from "./language_context";
 
 const API_URL = import.meta.env.VITE_API_URL;
+
+// ── All static strings on this page ───────────────────────────────────────────
+const PAGE_STRINGS = [
+  "Medication History",
+  "Track your scanned medications and safety alerts",
+  "Total Scans",
+  "Medicine Scans",
+  "Prescription Scans",
+  "Medicines",
+  "Prescriptions",
+  "No medicine scans yet",
+  "No prescription scans yet",
+  "No History Yet",
+  "Start scanning medications to build your history timeline",
+  "Medicine scan",
+  "Prescription scan",
+  "Safe",
+  "Warning",
+  "Danger",
+  "Dosage",
+  "Ingredients",
+  "Side Effects",
+  "Interactions",
+  "Warnings",
+  "Scanned Via",
+  "Diagnosis",
+  "Prescribed Medicines",
+  "Instructions",
+  "Follow-up Date",
+  "Today",
+  "Yesterday",
+  "Confidence:",
+  "Exp:",
+  "Rx Date:",
+];
 
 // ─── Types matching exact API response ───────────────────────────────────────
 
@@ -68,21 +104,21 @@ const getToken = async () => {
 
 const statusStyle = (status?: string) => {
   switch (status) {
-    case "safe": return { bg: "bg-[#34d399]/10", border: "border-[#34d399]/40", text: "text-[#34d399]", dot: "bg-[#34d399]", Icon: CheckCircle, label: "Safe" };
+    case "safe":    return { bg: "bg-[#34d399]/10", border: "border-[#34d399]/40", text: "text-[#34d399]", dot: "bg-[#34d399]", Icon: CheckCircle,  label: "Safe" };
     case "warning": return { bg: "bg-[#fbbf24]/10", border: "border-[#fbbf24]/40", text: "text-[#fbbf24]", dot: "bg-[#fbbf24]", Icon: AlertTriangle, label: "Warning" };
-    case "danger": return { bg: "bg-[#ef4444]/10", border: "border-[#ef4444]/40", text: "text-[#ef4444]", dot: "bg-[#ef4444]", Icon: ShieldAlert, label: "Danger" };
-    default: return { bg: "bg-[#4fd1c5]/10", border: "border-[#4fd1c5]/40", text: "text-[#4fd1c5]", dot: "bg-[#4fd1c5]", Icon: CheckCircle, label: "Safe" };
+    case "danger":  return { bg: "bg-[#ef4444]/10", border: "border-[#ef4444]/40", text: "text-[#ef4444]", dot: "bg-[#ef4444]", Icon: ShieldAlert,   label: "Danger" };
+    default:        return { bg: "bg-[#4fd1c5]/10", border: "border-[#4fd1c5]/40", text: "text-[#4fd1c5]", dot: "bg-[#4fd1c5]", Icon: CheckCircle,  label: "Safe" };
   }
 };
 
-const fmtDate = (iso?: string) => {
+const fmtDate = (iso?: string, t?: (s: string) => string) => {
   if (!iso) return "—";
   const d = new Date(iso);
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
-  if (d.toDateString() === today.toDateString()) return "Today";
-  if (d.toDateString() === yesterday.toDateString()) return "Yesterday";
+  if (d.toDateString() === today.toDateString()) return t ? t("Today") : "Today";
+  if (d.toDateString() === yesterday.toDateString()) return t ? t("Yesterday") : "Yesterday";
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 };
 
@@ -104,6 +140,7 @@ function Section({ title, color, children }: { title: string; color: "cyan" | "y
 // ─── Medicine detail modal ────────────────────────────────────────────────────
 
 function MedicineModal({ id, onClose }: { id: string; onClose: () => void }) {
+  const { t } = useLanguage();
   const [detail, setDetail] = useState<MedicineDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -159,19 +196,19 @@ function MedicineModal({ id, onClose }: { id: string; onClose: () => void }) {
                 <p className="text-[#8a9ab8] text-sm">{detail.medicine_type ?? "—"} · {detail.strength ?? "—"}</p>
               </div>
               <span className={`shrink-0 flex items-center gap-1 text-xs px-3 py-1 rounded-full ${s.bg} border ${s.border} ${s.text}`}>
-                <s.Icon className="w-3.5 h-3.5" />{s.label}
+                <s.Icon className="w-3.5 h-3.5" />{t(s.label)}
               </span>
             </div>
 
             {/* Meta row */}
             <div className="flex flex-wrap gap-4 mb-5 text-xs text-[#8a9ab8]">
-              <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{fmtDate(detail.scanned_at)}</span>
+              <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{fmtDate(detail.scanned_at, t)}</span>
               <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{fmtTime(detail.scanned_at)}</span>
               {detail.manufacturer && <span className="flex items-center gap-1.5"><Activity className="w-3.5 h-3.5" />{detail.manufacturer}</span>}
-              {detail.expiry_date && <span className="flex items-center gap-1.5">Exp: {detail.expiry_date}</span>}
+              {detail.expiry_date && <span className="flex items-center gap-1.5">{t("Exp:")} {detail.expiry_date}</span>}
               {detail.confidence !== undefined && (
                 <span className="flex items-center gap-1.5">
-                  Confidence: <span className={s.text}>{(detail.confidence * 100).toFixed(0)}%</span>
+                  {t("Confidence:")} <span className={s.text}>{(detail.confidence * 100).toFixed(0)}%</span>
                 </span>
               )}
             </div>
@@ -179,10 +216,10 @@ function MedicineModal({ id, onClose }: { id: string; onClose: () => void }) {
             {/* Detail sections */}
             <div className="space-y-4 max-h-64 overflow-y-auto pr-1">
               {detail.dosage_instructions && (
-                <Section title="Dosage" color="cyan">{detail.dosage_instructions}</Section>
+                <Section title={t("Dosage")} color="cyan">{detail.dosage_instructions}</Section>
               )}
               {detail.ingredients?.length ? (
-                <Section title="Ingredients" color="cyan">
+                <Section title={t("Ingredients")} color="cyan">
                   <div className="flex flex-wrap gap-1.5 mt-1">
                     {detail.ingredients.map((i) => (
                       <span key={i} className="px-2 py-0.5 rounded-lg bg-[#4fd1c5]/10 border border-[#4fd1c5]/30 text-[#4fd1c5] text-xs">{i}</span>
@@ -191,22 +228,22 @@ function MedicineModal({ id, onClose }: { id: string; onClose: () => void }) {
                 </Section>
               ) : null}
               {detail.side_effects?.length ? (
-                <Section title="Side Effects" color="yellow">
+                <Section title={t("Side Effects")} color="yellow">
                   <ul className="list-disc list-inside space-y-0.5 mt-1">{detail.side_effects.map((s) => <li key={s}>{s}</li>)}</ul>
                 </Section>
               ) : null}
               {detail.interactions?.length ? (
-                <Section title="Interactions" color="red">
+                <Section title={t("Interactions")} color="red">
                   <ul className="list-disc list-inside space-y-0.5 mt-1">{detail.interactions.map((i) => <li key={i}>{i}</li>)}</ul>
                 </Section>
               ) : null}
               {detail.warnings?.length ? (
-                <Section title="Warnings" color="red">
+                <Section title={t("Warnings")} color="red">
                   <ul className="list-disc list-inside space-y-0.5 mt-1">{detail.warnings.map((w) => <li key={w}>{w}</li>)}</ul>
                 </Section>
               ) : null}
               {detail.ocr_engine && (
-                <Section title="Scanned Via" color="cyan">{detail.ocr_engine}</Section>
+                <Section title={t("Scanned Via")} color="cyan">{detail.ocr_engine}</Section>
               )}
             </div>
           </>
@@ -219,6 +256,7 @@ function MedicineModal({ id, onClose }: { id: string; onClose: () => void }) {
 // ─── Prescription detail modal ────────────────────────────────────────────────
 
 function PrescriptionModal({ id, onClose }: { id: string; onClose: () => void }) {
+  const { t } = useLanguage();
   const [detail, setDetail] = useState<PrescriptionDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -277,18 +315,18 @@ function PrescriptionModal({ id, onClose }: { id: string; onClose: () => void })
                 </p>
               </div>
               <span className={`shrink-0 flex items-center gap-1 text-xs px-3 py-1 rounded-full ${s.bg} border ${s.border} ${s.text}`}>
-                <s.Icon className="w-3.5 h-3.5" />{s.label}
+                <s.Icon className="w-3.5 h-3.5" />{t(s.label)}
               </span>
             </div>
 
             {/* Meta row */}
             <div className="flex flex-wrap gap-4 mb-5 text-xs text-[#8a9ab8]">
-              <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{fmtDate(detail.scanned_at)}</span>
+              <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{fmtDate(detail.scanned_at, t)}</span>
               <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{fmtTime(detail.scanned_at)}</span>
-              {detail.prescription_date && <span className="flex items-center gap-1.5">Rx Date: {detail.prescription_date}</span>}
+              {detail.prescription_date && <span className="flex items-center gap-1.5">{t("Rx Date:")} {detail.prescription_date}</span>}
               {detail.confidence !== undefined && (
                 <span className="flex items-center gap-1.5">
-                  Confidence: <span className={s.text}>{(detail.confidence * 100).toFixed(0)}%</span>
+                  {t("Confidence:")} <span className={s.text}>{(detail.confidence * 100).toFixed(0)}%</span>
                 </span>
               )}
             </div>
@@ -296,13 +334,12 @@ function PrescriptionModal({ id, onClose }: { id: string; onClose: () => void })
             {/* Detail sections */}
             <div className="space-y-4 max-h-64 overflow-y-auto pr-1">
               {detail.diagnosis && (
-                <Section title="Diagnosis" color="cyan">{detail.diagnosis}</Section>
+                <Section title={t("Diagnosis")} color="cyan">{detail.diagnosis}</Section>
               )}
               {detail.prescribed_medicines?.length ? (
-                <Section title="Prescribed Medicines" color="cyan">
+                <Section title={t("Prescribed Medicines")} color="cyan">
                   <div className="flex flex-wrap gap-1.5 mt-1">
                     {detail.prescribed_medicines.map((m: any, i: number) => {
-                      // handle both string and object shapes
                       const name = typeof m === "string" ? m : m?.name ?? "Unknown";
                       const dosage = typeof m === "object" ? m?.dosage : null;
                       const freq = typeof m === "object" ? m?.instructions ?? m?.frequency : null;
@@ -310,8 +347,7 @@ function PrescriptionModal({ id, onClose }: { id: string; onClose: () => void })
                       return (
                         <div
                           key={i}
-                          className="flex flex-col px-3 py-1.5 rounded-xl
-                 bg-[#4fd1c5]/10 border border-[#4fd1c5]/30"
+                          className="flex flex-col px-3 py-1.5 rounded-xl bg-[#4fd1c5]/10 border border-[#4fd1c5]/30"
                         >
                           <span className="text-[#4fd1c5] text-xs font-medium">{name}</span>
                           {dosage && <span className="text-[#8a9ab8] text-[10px]">{dosage}</span>}
@@ -323,15 +359,15 @@ function PrescriptionModal({ id, onClose }: { id: string; onClose: () => void })
                 </Section>
               ) : null}
               {detail.instructions && (
-                <Section title="Instructions" color="yellow">{detail.instructions}</Section>
+                <Section title={t("Instructions")} color="yellow">{detail.instructions}</Section>
               )}
               {detail.follow_up_date && (
-                <Section title="Follow-up Date" color="cyan">
+                <Section title={t("Follow-up Date")} color="cyan">
                   {new Date(detail.follow_up_date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
                 </Section>
               )}
               {detail.ocr_engine && (
-                <Section title="Scanned Via" color="cyan">{detail.ocr_engine}</Section>
+                <Section title={t("Scanned Via")} color="cyan">{detail.ocr_engine}</Section>
               )}
             </div>
           </>
@@ -344,6 +380,7 @@ function PrescriptionModal({ id, onClose }: { id: string; onClose: () => void })
 // ─── Clickable row components ─────────────────────────────────────────────────
 
 function MedicineRow({ entry, index, onClick }: { entry: SummaryEntry; index: number; onClick: () => void }) {
+  const { t } = useLanguage();
   return (
     <motion.button
       initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }}
@@ -355,7 +392,7 @@ function MedicineRow({ entry, index, onClick }: { entry: SummaryEntry; index: nu
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-white text-sm font-medium truncate">{entry.name}</p>
-        <p className="text-[#8a9ab8] text-xs">Medicine scan</p>
+        <p className="text-[#8a9ab8] text-xs">{t("Medicine scan")}</p>
       </div>
       <ChevronRight className="w-4 h-4 text-[#8a9ab8] group-hover:text-[#4fd1c5] transition-colors shrink-0" />
     </motion.button>
@@ -363,6 +400,7 @@ function MedicineRow({ entry, index, onClick }: { entry: SummaryEntry; index: nu
 }
 
 function PrescriptionRow({ entry, index, onClick }: { entry: SummaryEntry; index: number; onClick: () => void }) {
+  const { t } = useLanguage();
   return (
     <motion.button
       initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }}
@@ -374,7 +412,7 @@ function PrescriptionRow({ entry, index, onClick }: { entry: SummaryEntry; index
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-white text-sm font-medium truncate">Dr. {entry.name}</p>
-        <p className="text-[#8a9ab8] text-xs">Prescription scan</p>
+        <p className="text-[#8a9ab8] text-xs">{t("Prescription scan")}</p>
       </div>
       <ChevronRight className="w-4 h-4 text-[#8a9ab8] group-hover:text-[#a78bfa] transition-colors shrink-0" />
     </motion.button>
@@ -395,10 +433,18 @@ function EmptyState({ icon: Icon, message }: { icon: React.ElementType; message:
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function MedicationHistory() {
+  const { t, language, prime } = useLanguage();
+
+  // ── Fire API call immediately when language changes ───────────────────────
+  useEffect(() => {
+    if (language !== "English") {
+      prime(PAGE_STRINGS);
+    }
+  }, [language, prime]);
+
   const [data, setData] = useState<HistoryResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Modal state — stores the record id that was clicked
   const [activeMedicineId, setActiveMedicineId] = useState<string | null>(null);
   const [activePrescriptionId, setActivePrescriptionId] = useState<string | null>(null);
 
@@ -422,11 +468,11 @@ export function MedicationHistory() {
     })();
   }, []);
 
-  const totalScans = data?.total_scans ?? 0;
+  const totalScans        = data?.total_scans ?? 0;
   const medicineScanCount = data?.medicine_scans ?? 0;
-  const rxScanCount = data?.prescription_scans ?? 0;
-  const medicines = data?.medicines ?? [];
-  const prescriptions = data?.prescriptions ?? [];
+  const rxScanCount       = data?.prescription_scans ?? 0;
+  const medicines         = data?.medicines ?? [];
+  const prescriptions     = data?.prescriptions ?? [];
 
   return (
     <div className="min-h-screen molecular-bg p-6 pb-24">
@@ -434,8 +480,8 @@ export function MedicationHistory() {
 
         {/* Header */}
         <div className="text-center mb-8">
-          <h2 className="text-4xl mb-3"><span className="neon-text-cyan">Medication History</span></h2>
-          <p className="text-[#8a9ab8]">Track your scanned medications and safety alerts</p>
+          <h2 className="text-4xl mb-3"><span className="neon-text-cyan">{t("Medication History")}</span></h2>
+          <p className="text-[#8a9ab8]">{t("Track your scanned medications and safety alerts")}</p>
         </div>
 
         {/* ── Stats ── */}
@@ -445,7 +491,7 @@ export function MedicationHistory() {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[#8a9ab8] mb-1">Total Scans</p>
+                <p className="text-[#8a9ab8] mb-1">{t("Total Scans")}</p>
                 <p className="text-3xl text-white">{loading ? <Loader2 className="w-6 h-6 animate-spin" /> : totalScans}</p>
               </div>
               <Activity className="w-10 h-10 text-[#4fd1c5]" />
@@ -457,7 +503,7 @@ export function MedicationHistory() {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[#8a9ab8] mb-1">Medicine Scans</p>
+                <p className="text-[#8a9ab8] mb-1">{t("Medicine Scans")}</p>
                 <p className="text-3xl text-[#4fd1c5]">{loading ? "—" : medicineScanCount}</p>
               </div>
               <Pill className="w-10 h-10 text-[#4fd1c5]" />
@@ -469,7 +515,7 @@ export function MedicationHistory() {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[#8a9ab8] mb-1">Prescription Scans</p>
+                <p className="text-[#8a9ab8] mb-1">{t("Prescription Scans")}</p>
                 <p className="text-3xl text-[#a78bfa]">{loading ? "—" : rxScanCount}</p>
               </div>
               <FileText className="w-10 h-10 text-[#a78bfa]" />
@@ -494,14 +540,14 @@ export function MedicationHistory() {
             >
               <div className="flex items-center gap-2 mb-4">
                 <Pill className="w-5 h-5 text-[#4fd1c5]" />
-                <h3 className="text-lg text-white font-medium">Medicines</h3>
+                <h3 className="text-lg text-white font-medium">{t("Medicines")}</h3>
                 <span className="ml-auto text-xs px-2.5 py-0.5 rounded-full bg-[#4fd1c5]/10 border border-[#4fd1c5]/30 text-[#4fd1c5]">
                   {medicineScanCount}
                 </span>
               </div>
 
               {medicines.length === 0
-                ? <EmptyState icon={Pill} message="No medicine scans yet" />
+                ? <EmptyState icon={Pill} message={t("No medicine scans yet")} />
                 : (
                   <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-0.5">
                     {medicines.map((m, i) => (
@@ -518,14 +564,14 @@ export function MedicationHistory() {
             >
               <div className="flex items-center gap-2 mb-4">
                 <FileText className="w-5 h-5 text-[#a78bfa]" />
-                <h3 className="text-lg text-white font-medium">Prescriptions</h3>
+                <h3 className="text-lg text-white font-medium">{t("Prescriptions")}</h3>
                 <span className="ml-auto text-xs px-2.5 py-0.5 rounded-full bg-[#a78bfa]/10 border border-[#a78bfa]/30 text-[#a78bfa]">
                   {rxScanCount}
                 </span>
               </div>
 
               {prescriptions.length === 0
-                ? <EmptyState icon={FileText} message="No prescription scans yet" />
+                ? <EmptyState icon={FileText} message={t("No prescription scans yet")} />
                 : (
                   <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-0.5">
                     {prescriptions.map((p, i) => (
@@ -544,8 +590,8 @@ export function MedicationHistory() {
             className="glass-card-strong rounded-3xl p-12 text-center mt-6"
           >
             <Clock className="w-16 h-16 text-[#4fd1c5] mx-auto mb-4" />
-            <h3 className="text-xl text-white mb-2">No History Yet</h3>
-            <p className="text-[#8a9ab8]">Start scanning medications to build your history timeline</p>
+            <h3 className="text-xl text-white mb-2">{t("No History Yet")}</h3>
+            <p className="text-[#8a9ab8]">{t("Start scanning medications to build your history timeline")}</p>
           </motion.div>
         )}
       </motion.div>

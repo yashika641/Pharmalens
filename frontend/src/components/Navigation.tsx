@@ -5,26 +5,66 @@ import {
   Clock,
   User,
   ShieldAlert,
+  LogIn,
+  LogOut,
 } from "lucide-react";
 import { motion } from "motion/react";
+import { useEffect } from "react";
+import { useLanguage } from "./language_context";
 
 interface NavigationProps {
   currentPage: string;
   onNavigate: (page: string) => void;
-  user?: any; // user exists => logged in
+  user?: any;
+  onLogout: () => void;
 }
 
-const NAV_ITEMS = [
-  { id: "home", label: "Home", icon: Home, public: true },
-  { id: "scanner", label: "Scan", icon: Scan },
-  { id: "interactions", label: "Check", icon: ShieldAlert },
-  { id: "chat", label: "Chat", icon: MessageSquare },
-  { id: "history", label: "History", icon: Clock },
-  { id: "profile", label: "Profile", icon: User },
+// ── All static strings on this page ───────────────────────────────────────────
+const PAGE_STRINGS = [
+  "Scan",
+  "Check",
+  "Chat",
+  "History",
+  "Profile",
+  "Logout",
+  "Login / Signup",
 ];
 
-export function Navigation({ currentPage, onNavigate, user }: NavigationProps) {
+const getNavItems = (user?: any) => {
   const isLoggedIn = Boolean(user);
+
+  const baseItems = [
+    { id: "scanner", label: "Scan", icon: Scan },
+    { id: "interactions", label: "Check", icon: ShieldAlert },
+    { id: "chat", label: "Chat", icon: MessageSquare },
+    { id: "history", label: "History", icon: Clock },
+    { id: "profile", label: "Profile", icon: User },
+  ];
+
+  if (isLoggedIn) {
+    return [
+      { id: "logout", label: "Logout", icon: LogOut, public: false },
+      ...baseItems,
+    ];
+  } else {
+    return [
+      { id: "login", label: "Login / Signup", icon: LogIn, public: true },
+      ...baseItems,
+    ];
+  }
+};
+
+export function Navigation({ currentPage, onNavigate, user, onLogout }: NavigationProps) {
+  const { t, language, prime } = useLanguage();
+  const navItems = getNavItems(user);
+  const isLoggedIn = Boolean(user);
+
+  // ── Fire API call immediately when language changes ───────────────────────
+  useEffect(() => {
+    if (language !== "English") {
+      prime(PAGE_STRINGS);
+    }
+  }, [language, prime]);
 
   return (
     <motion.nav
@@ -34,9 +74,10 @@ export function Navigation({ currentPage, onNavigate, user }: NavigationProps) {
     >
       <div className="mx-auto max-w-6xl px-4 py-3">
         <div className="flex items-center justify-around">
-          {NAV_ITEMS.map(({ id, label, icon: Icon, public: isPublic }, index) => {
-            const isActive = currentPage === id;
-            const isLocked = !isPublic && !isLoggedIn;
+          {navItems.map(({ id, label, icon: Icon, public: isPublic }, index) => {
+            const isAuthItem = id === "login" || id === "logout";
+            const isActive = currentPage === id && !isAuthItem;
+            const isLocked = !isPublic && !isLoggedIn && !isAuthItem;
 
             return (
               <motion.button
@@ -47,7 +88,14 @@ export function Navigation({ currentPage, onNavigate, user }: NavigationProps) {
                 whileHover={!isLocked ? { scale: 1.1 } : undefined}
                 whileTap={!isLocked ? { scale: 0.95 } : undefined}
                 onClick={() => {
-                  if (!isLocked) onNavigate(id);
+                  if (isLocked) return;
+                  if (id === "login") {
+                    onNavigate("home");
+                  } else if (id === "logout") {
+                    onLogout();
+                  } else {
+                    if (!isLocked) onNavigate(id);
+                  }
                 }}
                 disabled={isLocked}
                 className={`relative flex flex-col items-center gap-1 rounded-xl px-3 py-2 transition-all duration-300
@@ -59,8 +107,8 @@ export function Navigation({ currentPage, onNavigate, user }: NavigationProps) {
                       : "text-[#8a9ab8] hover:text-[#4fd1c5]"
                   }`}
               >
-                {/* Active background (only if accessible) */}
-                {isActive && !isLocked && (
+                {/* Active background */}
+                {isActive && !isLocked && !isAuthItem && (
                   <motion.div
                     layoutId="activeTab"
                     transition={{ type: "spring", duration: 0.5 }}
@@ -74,10 +122,10 @@ export function Navigation({ currentPage, onNavigate, user }: NavigationProps) {
                 </div>
 
                 {/* Label */}
-                <span className="relative z-10 text-xs">{label}</span>
+                <span className="relative z-10 text-xs">{t(label)}</span>
 
                 {/* Active glow */}
-                {isActive && !isLocked && (
+                {isActive && !isLocked && !isAuthItem && (
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}

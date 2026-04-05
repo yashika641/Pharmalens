@@ -1,9 +1,10 @@
 import { Scan, ShieldAlert, MessageSquare, TrendingUp, AlertCircle, Clock } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AuthModal } from "./login";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase"; // adjust path if needed
+import { useLanguage } from "./language_context";
 
 interface HomePageProps {
   onNavigate: (page: string) => void;
@@ -12,7 +13,43 @@ interface HomePageProps {
   onLogin: (user: any) => void;
 }
 
+// ── All static strings on this page ───────────────────────────────────────────
+const PAGE_STRINGS = [
+  "Daily Scans",
+  "Detected Risks",
+  "Saved Alerts",
+  "Know You Better",
+  "lets know you better",
+  "Scan Medicine",
+  "AI-powered pill identification",
+  "Drug Interactions",
+  "Check medication conflicts",
+  "AI Pharmacist Chat",
+  "Ask anything about medications",
+  "Smart Medicine Recognition & Safety AI",
+  "Your intelligent companion for medication safety and information",
+  "Medication History",
+  "Health Profile",
+  "Let's Know You Better 💊",
+  "Age",
+  "Phone Number",
+  "Known Allergies (e.g. Penicillin, Peanuts)",
+  "Medical Conditions (Diabetes, Hypertension, etc.)",
+  "Current Medications (optional)",
+  "Cancel",
+  "Save Profile",
+];
+
 export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps) {
+  const { t, language, prime } = useLanguage();
+
+  // ── Fire API call immediately when language changes ───────────────────────
+  useEffect(() => {
+    if (language !== "English") {
+      prime(PAGE_STRINGS);
+    }
+  }, [language, prime]);
+
   const stats = [
     { label: "Daily Scans", value: "247", icon: Scan, color: "cyan" },
     { label: "Detected Risks", value: "12", icon: AlertCircle, color: "yellow" },
@@ -28,28 +65,8 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
   });
   const API_URL = import.meta.env.VITE_API_URL;
   const [authOpen, setAuthOpen] = useState(false);
-  const navigate = useNavigate();
-  const handleLogout = async () => {
-    try {
-      await fetch(`${API_URL}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-
-      // Clear frontend storage
-      localStorage.clear();
-      sessionStorage.clear();
-
-      // 🔥 TELL REACT USER IS LOGGED OUT
-      onLogout();
-
-      // Redirect
-      navigate("/", { replace: true });
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
-
-  };
+  // const navigate = useNavigate();
+  
 
   const handleProfileChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -128,28 +145,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
       {/* Navbar */}
       <nav className="max-w-6xl mx-auto mb-12 flex items-center justify-between">
         <div className="text-2xl font-bold neon-text-cyan">PharmaLens</div>
-
-        <div className="flex items-center gap-4">
-          {/* Show Login / Signup only when NOT logged in */}
-          {!user && (
-            <button
-              onClick={() => setAuthOpen(true)}
-              className="text-[#8a9ab8] hover:text-white transition-colors"
-            >
-              Login / Signup
-            </button>
-          )}
-
-          {/* Show Logout only when logged in */}
-          {user && (
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition"
-            >
-              Logout
-            </button>
-          )}
-        </div>
       </nav>
 
       {/* Hero Section */}
@@ -176,10 +171,10 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
             </div>
           </motion.div>
           <p className="text-[#8a9ab8] text-lg max-w-2xl mx-auto">
-            Smart Medicine Recognition & Safety AI
+            {t("Smart Medicine Recognition & Safety AI")}
           </p>
           <p className="text-[#6b7a99] mt-2">
-            Your intelligent companion for medication safety and information
+            {t("Your intelligent companion for medication safety and information")}
           </p>
         </div>
 
@@ -270,7 +265,7 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                 />
               </div>
               <p className="text-3xl mb-1 text-white">{stat.value}</p>
-              <p className="text-[#8a9ab8]">{stat.label}</p>
+              <p className="text-[#8a9ab8]">{t(stat.label)}</p>
             </motion.div>
           ))}
         </div>
@@ -302,8 +297,8 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                       : "text-[#6366f1]"
                     }`}
                 />
-                <h3 className="text-xl mb-2 text-white">{button.title}</h3>
-                <p className="text-[#8a9ab8]">{button.description}</p>
+                <h3 className="text-xl mb-2 text-white">{t(button.title)}</h3>
+                <p className="text-[#8a9ab8]">{t(button.description)}</p>
               </div>
 
               {/* Hover glow effect */}
@@ -331,14 +326,14 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
             className="glass-card rounded-full px-6 py-3 flex items-center gap-2 hover:neon-border-cyan transition-all duration-300"
           >
             <Clock className="w-5 h-5 text-[#4fd1c5]" />
-            <span className="text-[#e8f0ff]">Medication History</span>
+            <span className="text-[#e8f0ff]">{t("Medication History")}</span>
           </button>
           <button
             onClick={() => onNavigate("profile")}
             className="glass-card rounded-full px-6 py-3 flex items-center gap-2 hover:neon-border-purple transition-all duration-300"
           >
             <TrendingUp className="w-5 h-5 text-[#a78bfa]" />
-            <span className="text-[#e8f0ff]">Health Profile</span>
+            <span className="text-[#e8f0ff]">{t("Health Profile")}</span>
           </button>
         </motion.div>
       </motion.div>
@@ -357,14 +352,14 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
               className="glass-card-strong rounded-3xl p-8 neon-border-cyan max-w-md w-full"
             >
               <h3 className="text-2xl mb-4 text-white text-center">
-                Let’s Know You Better 💊
+                {t("Let's Know You Better 💊")}
               </h3>
 
               <div className="space-y-4">
                 <input
                   type="number"
                   name="age"
-                  placeholder="Age"
+                  placeholder={t("Age")}
                   value={profileData.age}
                   onChange={handleProfileChange}
                   className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
@@ -373,7 +368,7 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                 <input
                   type="tel"
                   name="phone"
-                  placeholder="Phone Number"
+                  placeholder={t("Phone Number")}
                   value={profileData.phone}
                   onChange={handleProfileChange}
                   className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
@@ -381,7 +376,7 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
 
                 <textarea
                   name="allergies"
-                  placeholder="Known Allergies (e.g. Penicillin, Peanuts)"
+                  placeholder={t("Known Allergies (e.g. Penicillin, Peanuts)")}
                   value={profileData.allergies}
                   onChange={handleProfileChange}
                   className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
@@ -389,7 +384,7 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
 
                 <textarea
                   name="conditions"
-                  placeholder="Medical Conditions (Diabetes, Hypertension, etc.)"
+                  placeholder={t("Medical Conditions (Diabetes, Hypertension, etc.)")}
                   value={profileData.conditions}
                   onChange={handleProfileChange}
                   className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
@@ -397,7 +392,7 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
 
                 <textarea
                   name="medications"
-                  placeholder="Current Medications (optional)"
+                  placeholder={t("Current Medications (optional)")}
                   value={profileData.medications}
                   onChange={handleProfileChange}
                   className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
@@ -409,14 +404,14 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                   onClick={() => setProfileOpen(false)}
                   className="glass-card rounded-xl p-3 text-white hover:neon-border-blue"
                 >
-                  Cancel
+                  {t("Cancel")}
                 </button>
 
                 <button
                   onClick={handleProfileSubmit}
                   className="glass-card rounded-xl p-3 neon-border-cyan text-white"
                 >
-                  Save Profile
+                  {t("Save Profile")}
                 </button>
               </div>
             </motion.div>

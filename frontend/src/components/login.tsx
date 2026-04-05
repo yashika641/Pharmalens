@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, Mail, Lock, User, Github } from "lucide-react";
 import { supabase } from "../supabase";
 import { Chrome } from "lucide-react"; // Google icon substitute
 import { setAuthCookie } from "../autocookies";
-
+import { useLanguage } from "./language_context";
 
 interface AuthModalProps {
     open: boolean;
@@ -12,7 +12,36 @@ interface AuthModalProps {
     onLogin: (user: any) => void;
 }
 
+// ── All static strings on this page ───────────────────────────────────────────
+const PAGE_STRINGS = [
+    "Login",
+    "Sign Up",
+    "Welcome Back",
+    "Create Your Account",
+    "Full Name",
+    "Email",
+    "Password",
+    "Please wait...",
+    "Create Account",
+    "Continue with GitHub",
+    "Sign up with GitHub",
+    "Continue with Google",
+    "Sign up with Google",
+    "Don't have an account?",
+    "Sign up",
+    "Already have an account?",
+];
+
 export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
+    const { t, language, prime } = useLanguage();
+
+    // ── Fire API call immediately when language changes ───────────────────────
+    useEffect(() => {
+        if (language !== "English") {
+            prime(PAGE_STRINGS);
+        }
+    }, [language, prime]);
+
     const [mode, setMode] = useState<"login" | "signup">("login");
     const [loading, setLoading] = useState(false);
 
@@ -78,7 +107,6 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
         }
     }
 
-
     // =========================
     // GITHUB OAUTH
     // =========================
@@ -105,7 +133,6 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
         if (error) throw error;
         // Note: OAuth redirects to callback, so onLogin will be handled there
     }
-
 
     return (
         <AnimatePresence>
@@ -147,7 +174,7 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
                                         : "text-[#8a9ab8]"
                                         }`}
                                 >
-                                    Login
+                                    {t("Login")}
                                 </button>
                                 <button
                                     onClick={() => setMode("signup")}
@@ -156,13 +183,13 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
                                         : "text-[#8a9ab8]"
                                         }`}
                                 >
-                                    Sign Up
+                                    {t("Sign Up")}
                                 </button>
                             </div>
 
                             {/* Title */}
                             <h2 className="text-2xl text-white mb-6 text-center">
-                                {mode === "login" ? "Welcome Back" : "Create Your Account"}
+                                {mode === "login" ? t("Welcome Back") : t("Create Your Account")}
                             </h2>
 
                             {/* Form */}
@@ -174,7 +201,7 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
                                             name="name"
                                             value={form.name}
                                             onChange={handleChange}
-                                            placeholder="Full Name"
+                                            placeholder={t("Full Name")}
                                             required
                                             className="w-full pl-10 py-2 rounded-xl bg-black/30 text-white"
                                         />
@@ -188,7 +215,7 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
                                         name="email"
                                         value={form.email}
                                         onChange={handleChange}
-                                        placeholder="Email"
+                                        placeholder={t("Email")}
                                         required
                                         className="w-full pl-10 py-2 rounded-xl bg-black/30 text-white"
                                     />
@@ -201,7 +228,7 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
                                         name="password"
                                         value={form.password}
                                         onChange={handleChange}
-                                        placeholder="Password"
+                                        placeholder={t("Password")}
                                         required
                                         className="w-full pl-10 py-2 rounded-xl bg-black/30 text-white"
                                     />
@@ -216,10 +243,10 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
                              from-[#4fd1c5] to-[#6366f1] text-black font-semibold"
                                 >
                                     {loading
-                                        ? "Please wait..."
+                                        ? t("Please wait...")
                                         : mode === "login"
-                                            ? "Login"
-                                            : "Create Account"}
+                                            ? t("Login")
+                                            : t("Create Account")}
                                 </motion.button>
                             </form>
 
@@ -232,9 +259,11 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
                             >
                                 <Github className="w-5 h-5" />
                                 {mode === "login"
-                                    ? "Continue with GitHub"
-                                    : "Sign up with GitHub"}
+                                    ? t("Continue with GitHub")
+                                    : t("Sign up with GitHub")}
                             </button>
+
+                            {/* Google OAuth */}
                             <button
                                 onClick={handleGoogleAuth}
                                 className="w-full mt-3 flex items-center justify-center gap-3 py-3
@@ -243,30 +272,30 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
                             >
                                 <Chrome className="w-5 h-5" />
                                 {mode === "login"
-                                    ? "Continue with Google"
-                                    : "Sign up with Google"}
+                                    ? t("Continue with Google")
+                                    : t("Sign up with Google")}
                             </button>
 
                             {/* Footer */}
                             <p className="text-center text-[#8a9ab8] text-sm mt-4">
                                 {mode === "login" ? (
                                     <>
-                                        Don’t have an account?{" "}
+                                        {t("Don't have an account?")}{" "}
                                         <span
                                             onClick={() => setMode("signup")}
                                             className="text-[#a78bfa] cursor-pointer"
                                         >
-                                            Sign up
+                                            {t("Sign up")}
                                         </span>
                                     </>
                                 ) : (
                                     <>
-                                        Already have an account?{" "}
+                                        {t("Already have an account?")}{" "}
                                         <span
                                             onClick={() => setMode("login")}
                                             className="text-[#4fd1c5] cursor-pointer"
                                         >
-                                            Login
+                                            {t("Login")}
                                         </span>
                                     </>
                                 )}

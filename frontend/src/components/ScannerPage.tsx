@@ -2,17 +2,52 @@ import { useState, useRef, useEffect } from "react";
 import { Camera, Upload, Scan, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { supabase } from "../supabase";
+import { useLanguage } from "./language_context";
 
 interface ScannerPageProps {
   onScanComplete: (result: any) => void;
 }
 
+// ── All static strings on this page ───────────────────────────────────────────
+const PAGE_STRINGS = [
+  "Medicine Scanner",
+  "Prescription Scanner",
+  "Upload or capture an image of your medication for instant identification",
+  "Upload or capture an image of a prescription for OCR and safety analysis",
+  "💊 Medicine",
+  "📝 Prescription",
+  "Drop your medicine image here",
+  "Drop your prescription image here",
+  "or click below to browse files",
+  "Upload from Gallery",
+  "Use Camera",
+  "💡",
+  "Tips:",
+  "Ensure good lighting, capture the pill strip or bottle clearly, and include any text or codes visible.",
+  "🔄 Switch Camera",
+  "📸 Capture Photo",
+  "🔁 Retake",
+  "✅ Confirm & Upload",
+  "Analyzing medication...",
+  "AI is identifying the medicine and checking for safety information",
+  "OCR Processing",
+  "Database Matching",
+  "Safety Analysis",
+];
+
 export function ScannerPage({ onScanComplete }: ScannerPageProps) {
+  const { t, language, prime } = useLanguage();
+
+  // ── Fire API call immediately when language changes ───────────────────────
+  useEffect(() => {
+    if (language !== "English") {
+      prime(PAGE_STRINGS);
+    }
+  }, [language, prime]);
+
   const [isScanning, setIsScanning] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-  const [cameraFacing, setCameraFacing] = useState<"environment" | "user">(
-    "environment"
-  );
+  const [cameraFacing, setCameraFacing] = useState<"environment" | "user">("environment");
   const API_URL = import.meta.env.VITE_API_URL;
   const [videoKey, setVideoKey] = useState(0);
   const [imageType, setImageType] = useState<"medicine" | "prescription">("medicine");
@@ -31,14 +66,13 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
     cameraStreamRef.current?.getTracks().forEach((t) => t.stop());
     cameraStreamRef.current = null;
   };
+
   useEffect(() => {
     if (!showCamera) return;
     if (!videoRef.current) return;
     if (!cameraStreamRef.current) return;
 
     const video = videoRef.current;
-
-    // Always reattach stream
     video.srcObject = cameraStreamRef.current;
 
     const playVideo = async () => {
@@ -49,7 +83,6 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       }
     };
 
-    // Ensure metadata is loaded
     if (video.readyState >= 2) {
       playVideo();
     } else {
@@ -126,7 +159,6 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       setIsScanning(false);
 
       if (imageType === "prescription") {
-        // ADD THIS — matches prescription_ocr_data schema exactly
         const rawMedicines = data.ocr_result?.medicines || [];
         const prescriptionData = {
           type: "prescription",
@@ -135,7 +167,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
             data.ocr_result?.date || null,
           diagnosis: data.ocr_result?.diagnosis || null,
           medicines: rawMedicines.map((m: any) =>
-            typeof m === "string" ? { name: m } : m   // normalise strings → objects
+            typeof m === "string" ? { name: m } : m
           ),
           routes: data.ocr_result?.routes || null,
           raw_text: data.ocr_result?.raw_text || null,
@@ -154,22 +186,19 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
           type: "medicine",
           exp_date: data.ocr_result?.expiry_date || "N/A",
           precautions: data.ocr_result?.precautions || [],
-          confidence: data.ocr_result?.confidence || 90
+          confidence: data.ocr_result?.confidence || 90,
         };
         onScanComplete(medicineData);
       }
-
     } catch (err) {
       console.error("Upload failed:", err);
       setIsScanning(false);
     }
   };
 
-
   const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
     setDragActive(false);
-
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       await uploadImageFile(e.dataTransfer.files[0]);
     }
@@ -183,12 +212,10 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
 
   const handleScan = async () => {
     if (isScanning) return;
-
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: cameraFacing },
       });
-
       cameraStreamRef.current = stream;
       setShowCamera(true);
     } catch (err) {
@@ -196,29 +223,22 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       stopCamera();
     }
   };
+
   const switchCamera = async () => {
     const nextFacing = cameraFacing === "environment" ? "user" : "environment";
-
     stopCamera();
-
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: nextFacing },
       });
-
       cameraStreamRef.current = stream;
       setCameraFacing(nextFacing);
-
-      // 🔥 FORCE VIDEO REMOUNT
       setVideoKey((k) => k + 1);
       setShowCamera(true);
     } catch (err) {
       console.error("Camera switch failed:", err);
     }
   };
-
-
-
 
   const capturePhoto = () => {
     if (!videoRef.current || !canvasRef.current) return;
@@ -236,26 +256,23 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
 
     stopCamera();
     setShowCamera(false);
-
-    // 👇 store image instead of scanning immediately
     setCapturedImage(imageBase64);
     setConfirmMode(true);
-
   };
+
   const handleRetake = async () => {
     setCapturedImage(null);
     setConfirmMode(false);
-    await handleScan(); // reopen camera
+    await handleScan();
   };
+
   const dataURLtoFile = (dataUrl: string, filename: string) => {
     const arr = dataUrl.split(",");
     const mime = arr[0].match(/:(.*?);/)![1];
     const bstr = atob(arr[1]);
     let n = bstr.length;
     const u8arr = new Uint8Array(n);
-
     while (n--) u8arr[n] = bstr.charCodeAt(n);
-
     return new File([u8arr], filename, { type: mime });
   };
 
@@ -285,7 +302,6 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       setIsScanning(false);
 
       if (imageType === "prescription") {
-        // ADD THIS — matches prescription_ocr_data schema exactly
         const rawMedicines = data.ocr_result?.medicines || [];
         const prescriptionData = {
           type: "prescription",
@@ -294,12 +310,12 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
             data.ocr_result?.date || null,
           diagnosis: data.ocr_result?.diagnosis || null,
           medicines: rawMedicines.map((m: any) =>
-            typeof m === "string" ? { name: m } : m   // normalise strings → objects
+            typeof m === "string" ? { name: m } : m
           ),
           routes: data.ocr_result?.routes || null,
           raw_text: data.ocr_result?.raw_text || null,
           confidence: data.ocr_result?.confidence != null
-            ? data.ocr_result.confidence / 100   // if API returns 0–100, convert to 0–1
+            ? data.ocr_result.confidence / 100
             : null,
           ocr_engine: data.ocr_result?.ocr_engine || null,
           fallback_used: data.ocr_result?.fallback_used ?? false,
@@ -315,17 +331,17 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
           type: "medicine",
           exp_date: data.ocr_result?.expiry_date || "N/A",
           precautions: data.ocr_result?.precautions || [],
-          confidence: data.ocr_result?.confidence || 90
+          confidence: data.ocr_result?.confidence || 90,
         };
         onScanComplete(medicineData);
       }
-
     } catch (err) {
       console.error("Upload failed:", err);
       setIsScanning(false);
     }
   };
-  // console.log("SESSION IN COMPONENT:", session);
+
+  const scanSteps = ["OCR Processing", "Database Matching", "Safety Analysis"];
 
   return (
     <div className="min-h-screen molecular-bg p-6 pb-24">
@@ -334,20 +350,21 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-4xl mx-auto"
       >
+        {/* ── Page header ── */}
         <div className="text-center mb-8">
           <h2 className="text-4xl mb-3">
             <span className="neon-text-cyan">
-              {imageType === "medicine" ? "Medicine Scanner" : "Prescription Scanner"}
+              {imageType === "medicine" ? t("Medicine Scanner") : t("Prescription Scanner")}
             </span>
           </h2>
           <p className="text-[#8a9ab8]">
             {imageType === "medicine"
-              ? "Upload or capture an image of your medication for instant identification"
-              : "Upload or capture an image of a prescription for OCR and safety analysis"}
+              ? t("Upload or capture an image of your medication for instant identification")
+              : t("Upload or capture an image of a prescription for OCR and safety analysis")}
           </p>
         </div>
 
-        {/* CAMERA PREVIEW (MUST BE OUTSIDE SCANNING UI) */}
+        {/* ── Camera preview ── */}
         {showCamera && !confirmMode && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -356,13 +373,14 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
             className="glass-card-strong rounded-3xl p-6 neon-border-cyan mb-6"
           >
             <video
-              key={videoKey}   // 🔥 THIS IS CRITICAL
+              key={videoKey}
               ref={videoRef}
               autoPlay
               playsInline
               muted
-              className={`w-full rounded-2xl aspect-video bg-black mb-4 ${cameraFacing === "user" ? "scale-x-[-1]" : ""
-                }`}
+              className={`w-full rounded-2xl aspect-video bg-black mb-4 ${
+                cameraFacing === "user" ? "scale-x-[-1]" : ""
+              }`}
             />
 
             <motion.button
@@ -370,7 +388,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
               onClick={switchCamera}
               className="mb-3 w-full glass-card rounded-2xl p-3 neon-border-blue text-white"
             >
-              🔄 Switch Camera
+              {t("🔄 Switch Camera")}
             </motion.button>
 
             <motion.button
@@ -378,11 +396,12 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
               onClick={capturePhoto}
               className="w-full glass-card rounded-2xl p-4 neon-border-cyan text-white"
             >
-              📸 Capture Photo
+              {t("📸 Capture Photo")}
             </motion.button>
           </motion.div>
         )}
-        {/* CONFIRM IMAGE PREVIEW */}
+
+        {/* ── Confirm image preview ── */}
         {confirmMode && capturedImage && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -394,14 +413,13 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
               alt="Captured"
               className="w-full rounded-2xl mb-4"
             />
-
             <div className="grid grid-cols-2 gap-4">
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={handleRetake}
                 className="glass-card rounded-2xl p-4 neon-border-blue text-white"
               >
-                🔁 Retake
+                {t("🔁 Retake")}
               </motion.button>
 
               <motion.button
@@ -409,13 +427,13 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                 onClick={handleConfirmUpload}
                 className="glass-card rounded-2xl p-4 neon-border-cyan text-white"
               >
-                ✅ Confirm & Upload
+                {t("✅ Confirm & Upload")}
               </motion.button>
             </div>
           </motion.div>
         )}
 
-        {/* Scanner Interface */}
+        {/* ── Scanner / upload interface ── */}
         <AnimatePresence mode="wait">
           {!isScanning && !confirmMode ? (
             <motion.div
@@ -425,37 +443,35 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
               exit={{ opacity: 0, scale: 0.95 }}
               className="glass-card-strong rounded-3xl p-8 neon-border-cyan"
             >
-              {/* IMAGE TYPE TABS */}
+              {/* Image type tabs */}
               <div className="flex justify-center mb-6">
                 <div className="glass-card rounded-2xl p-1 flex gap-1">
                   {(["medicine", "prescription"] as const).map((type) => (
                     <button
                       key={type}
                       onClick={() => setImageType(type)}
-                      className={`px-6 py-2 rounded-xl text-sm transition-all ${imageType === type
-                        ? "bg-[#4fd1c5] text-black font-semibold neon-glow-cyan"
-                        : "text-[#8a9ab8] hover:text-white"
-                        }`}
+                      className={`px-6 py-2 rounded-xl text-sm transition-all ${
+                        imageType === type
+                          ? "bg-[#4fd1c5] text-black font-semibold neon-glow-cyan"
+                          : "text-[#8a9ab8] hover:text-white"
+                      }`}
                     >
-                      {type === "medicine" ? "💊 Medicine" : "📝 Prescription"}
+                      {type === "medicine" ? t("💊 Medicine") : t("📝 Prescription")}
                     </button>
                   ))}
                 </div>
               </div>
 
-
-              {/* Drop Zone */}
+              {/* Drop zone */}
               <div
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  setDragActive(true);
-                }}
+                onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
                 onDragLeave={() => setDragActive(false)}
                 onDrop={handleDrop}
-                className={`relative border-2 border-dashed rounded-2xl p-12 mb-6 transition-all duration-300 ${dragActive
-                  ? "border-[#4fd1c5] bg-[#4fd1c5]/10 neon-glow-cyan"
-                  : "border-[#4fd1c5]/40 hover:border-[#4fd1c5]/70"
-                  }`}
+                className={`relative border-2 border-dashed rounded-2xl p-12 mb-6 transition-all duration-300 ${
+                  dragActive
+                    ? "border-[#4fd1c5] bg-[#4fd1c5]/10 neon-glow-cyan"
+                    : "border-[#4fd1c5]/40 hover:border-[#4fd1c5]/70"
+                }`}
               >
                 {/* Corner decorations */}
                 <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-[#4fd1c5]" />
@@ -473,11 +489,13 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                   </motion.div>
 
                   <h3>
-                    Drop your {imageType === "medicine" ? "medicine" : "prescription"} image here
+                    {imageType === "medicine"
+                      ? t("Drop your medicine image here")
+                      : t("Drop your prescription image here")}
                   </h3>
 
                   <p className="text-[#8a9ab8] mb-6">
-                    or click below to browse files
+                    {t("or click below to browse files")}
                   </p>
 
                   <input
@@ -490,7 +508,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Action buttons */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -499,7 +517,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                   className="glass-card rounded-2xl p-6 neon-border-blue hover:bg-[#6366f1]/10 transition-all duration-300 flex items-center justify-center gap-3"
                 >
                   <Upload className="w-6 h-6 text-[#6366f1]" />
-                  <span className="text-white">Upload from Gallery</span>
+                  <span className="text-white">{t("Upload from Gallery")}</span>
                 </motion.button>
 
                 <motion.button
@@ -509,15 +527,15 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                   className="glass-card rounded-2xl p-6 neon-border-cyan hover:bg-[#4fd1c5]/10 transition-all duration-300 flex items-center justify-center gap-3"
                 >
                   <Camera className="w-6 h-6 text-[#4fd1c5]" />
-                  <span className="text-white">Use Camera</span>
+                  <span className="text-white">{t("Use Camera")}</span>
                 </motion.button>
               </div>
 
               {/* Tips */}
               <div className="mt-6 glass-card rounded-2xl p-4">
                 <p className="text-[#8a9ab8] text-sm">
-                  💡 <span className="text-[#4fd1c5]">Tips:</span> Ensure good lighting,
-                  capture the pill strip or bottle clearly, and include any text or codes visible.
+                  {t("💡")} <span className="text-[#4fd1c5]">{t("Tips:")}</span>{" "}
+                  {t("Ensure good lighting, capture the pill strip or bottle clearly, and include any text or codes visible.")}
                 </p>
               </div>
             </motion.div>
@@ -531,7 +549,6 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
             >
               {/* Scanning animation */}
               <div className="relative h-96 flex items-center justify-center">
-                {/* HUD Frame */}
                 <div className="absolute inset-8 border-2 border-[#4fd1c5]/50 rounded-2xl">
                   <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-[#4fd1c5]" />
                   <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-[#4fd1c5]" />
@@ -539,18 +556,12 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                   <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-[#4fd1c5]" />
                 </div>
 
-                {/* Scan lines */}
                 <motion.div
                   animate={{ y: ["-100%", "100%"] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                   className="absolute inset-x-8 h-1 scan-line"
                 />
 
-                {/* Center icon */}
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
@@ -561,7 +572,6 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                   </div>
                 </motion.div>
 
-                {/* Spinning rings */}
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
@@ -573,7 +583,6 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                   className="absolute w-64 h-64 rounded-full border-2 border-dotted border-[#6366f1]/30"
                 />
 
-                {/* Scanning particles */}
                 {[...Array(8)].map((_, i) => (
                   <motion.div
                     key={i}
@@ -582,15 +591,8 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                       left: `${50 + 35 * Math.cos((i * Math.PI) / 4)}%`,
                       top: `${50 + 35 * Math.sin((i * Math.PI) / 4)}%`,
                     }}
-                    animate={{
-                      scale: [0, 1.5, 0],
-                      opacity: [0, 1, 0],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: i * 0.25,
-                    }}
+                    animate={{ scale: [0, 1.5, 0], opacity: [0, 1, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.25 }}
                   />
                 ))}
               </div>
@@ -603,15 +605,15 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                   className="flex items-center justify-center gap-3 mb-3"
                 >
                   <Loader2 className="w-6 h-6 text-[#4fd1c5] animate-spin" />
-                  <span className="text-xl text-white">Analyzing medication...</span>
+                  <span className="text-xl text-white">{t("Analyzing medication...")}</span>
                 </motion.div>
                 <p className="text-[#8a9ab8]">
-                  AI is identifying the medicine and checking for safety information
+                  {t("AI is identifying the medicine and checking for safety information")}
                 </p>
 
-                {/* Progress indicators */}
+                {/* Progress steps */}
                 <div className="mt-6 space-y-2">
-                  {["OCR Processing", "Database Matching", "Safety Analysis"].map((step, i) => (
+                  {scanSteps.map((step, i) => (
                     <motion.div
                       key={step}
                       initial={{ opacity: 0, x: -20 }}
@@ -624,7 +626,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
                         transition={{ duration: 1, repeat: Infinity, delay: i * 0.5 }}
                         className="w-2 h-2 bg-[#4fd1c5] rounded-full neon-glow-cyan"
                       />
-                      <span className="text-[#8a9ab8]">{step}</span>
+                      <span className="text-[#8a9ab8]">{t(step)}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -633,13 +635,8 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
           )}
         </AnimatePresence>
       </motion.div>
-      {/* Hidden camera elements */}
 
-      <canvas
-        ref={canvasRef}
-        className="hidden"
-      />
-
+      <canvas ref={canvasRef} className="hidden" />
     </div>
   );
 }

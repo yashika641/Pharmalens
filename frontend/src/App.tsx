@@ -7,7 +7,7 @@ import {
   useLocation,
   Navigate,
 } from "react-router-dom";
-import { App as CapApp } from '@capacitor/app';  // ADD at top
+import { App as CapApp } from '@capacitor/app';
 
 import { HomePage } from "./components/HomePage";
 import { ScannerPage } from "./components/ScannerPage";
@@ -23,12 +23,10 @@ import { supabase } from "./supabase";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { Toaster } from "./components/ui/sonner";
-// Add this import at the top
 import { PrescriptionDetails } from "./components/PrescriptionDetails";
 
-/* ------------------------------------------
-   App Content (Router-aware)
-------------------------------------------- */
+const API_URL = import.meta.env.VITE_API_URL;
+
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,27 +52,19 @@ function AppContent() {
       }
     );
 
-    // ADD THIS — catches the deep link URL on Android
     CapApp.addListener('appUrlOpen', async ({ url }) => {
       if (url.includes('pharmalens://auth/callback')) {
-        // Extract the fragment/hash from the URL
         const hashFragment = url.includes('#') ? url.split('#')[1] : '';
-
         if (hashFragment) {
-          // Parse the hash fragment to get the session
           const params = new URLSearchParams(hashFragment);
           const accessToken = params.get('access_token');
           const refreshToken = params.get('refresh_token');
-
           if (accessToken) {
-            const { data, error } = await supabase.auth.setSession({
+            const { data } = await supabase.auth.setSession({
               access_token: accessToken,
               refresh_token: refreshToken || '',
             });
-
-            if (data?.user) {
-              setUser(data.user);
-            }
+            if (data?.user) setUser(data.user);
           }
         }
       }
@@ -86,33 +76,45 @@ function AppContent() {
   }, []);
 
   /* ------------------------------------------
-     Router-based navigation handler
+     ✅ CENTRALIZED logout — used by both
+        Navigation and HomePage
+  ------------------------------------------- */
+  const handleLogout = async () => {
+    try {
+      await fetch(`${API_URL}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (err) {
+      console.error("Backend logout failed (continuing anyway):", err);
+    } finally {
+      // Always clear everything regardless of backend success
+      await supabase.auth.signOut();
+      localStorage.clear();
+      sessionStorage.clear();
+      setUser(null);
+      navigate("/", { replace: true });
+    }
+  };
+
+  /* ------------------------------------------
+     Navigation handler
   ------------------------------------------- */
   const handleNavigate = (page: string) => {
     const publicPages = ["home"];
-
-    if (!user && !publicPages.includes(page)) {
-      return; // 🔒 Freeze navbar when logged out
-    }
-
+    if (!user && !publicPages.includes(page)) return;
     const path = page === "home" ? "/" : `/${page}`;
     navigate(path);
   };
 
-  /* ------------------------------------------
-     Active page from URL
-  ------------------------------------------- */
   const currentPage =
-    location.pathname === "/"
-      ? "home"
-      : location.pathname.replace("/", "");
+    location.pathname === "/" ? "home" : location.pathname.replace("/", "");
 
   /* ------------------------------------------
      Feature handlers
   ------------------------------------------- */
   const handleScanComplete = (result: any) => {
     setScanResult(result);
-    // Route based on type
     navigate(result.type === "prescription" ? "/prescription" : "/medicine");
   };
 
@@ -125,9 +127,7 @@ function AppContent() {
       status: "safe",
       strength: medicine.strength,
     };
-
     setHistoryItems((prev) => [newItem, ...prev]);
-
     toast.success("Medicine saved", {
       description: `${medicine.name} added to history`,
     });
@@ -142,7 +142,6 @@ function AppContent() {
     <div className="min-h-screen bg-[#0a0e1a] text-white">
       <Toaster position="top-center" theme="dark" />
 
-      {/* Page transitions */}
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route
@@ -151,8 +150,8 @@ function AppContent() {
               <HomePage
                 onNavigate={handleNavigate}
                 user={user}
-                onLogout={() => setUser(null)}
-                onLogin={(user) => setUser(user)}
+                onLogout={handleLogout}  
+                onLogin={(u) => setUser(u)}
               />
             }
           />
@@ -160,8 +159,6 @@ function AppContent() {
             path="/auth/callback"
             element={<AuthCallback setUser={setUser} />}
           />
-
-
           <Route
             path="/scanner"
             element={
@@ -170,8 +167,6 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-
-          // existing /medicine route — stays as is, only reached for medicines now
           <Route
             path="/medicine"
             element={
@@ -188,8 +183,6 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-
-// ADD this new prescription route right below it
           <Route
             path="/prescription"
             element={
@@ -205,18 +198,14 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/interactions"
             element={
               <ProtectedRoute user={user}>
-                <DrugInteractionChecker
-                  initialDrugs={initialDrugsForCheck}
-                />
+                <DrugInteractionChecker initialDrugs={initialDrugsForCheck} />
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/chat"
             element={
@@ -225,7 +214,6 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/history"
             element={
@@ -234,7 +222,6 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/profile"
             element={
@@ -246,19 +233,17 @@ function AppContent() {
         </Routes>
       </AnimatePresence>
 
-      {/* Bottom Navigation */}
+      {/* ✅ Same centralized handleLogout passed here too */}
       <Navigation
         currentPage={currentPage}
         onNavigate={handleNavigate}
         user={user}
+        onLogout={handleLogout}
       />
     </div>
   );
 }
 
-/* ------------------------------------------
-   App Root
-------------------------------------------- */
 export default function App() {
   return (
     <BrowserRouter>

@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { Send, Mic, Camera, Loader2, Bot, User } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { supabase } from "../supabase";
+import { useLanguage } from "./language_context";
 
 interface Message {
   id: string;
@@ -11,13 +12,36 @@ interface Message {
   timestamp: Date;
 }
 
+// ── All static strings on this page ───────────────────────────────────────────
+const PAGE_STRINGS = [
+  "Hello! I'm your PharmaLens AI Pharmacist. I can help you with medication information, dosage guidance, side effects, and general health questions. How can I assist you today?",
+  "AI Pharmacist",
+  "Online & Ready to Help",
+  "Quick questions you can ask:",
+  "What is Paracetamol used for?",
+  "Side effects of Aspirin?",
+  "How to take antibiotics?",
+  "Drug interaction information",
+  "Ask me anything about medications...",
+  "Powered by Gemma 3n LLM • Always consult your doctor for medical decisions",
+];
+
 export function AIChat() {
+  const { t, language, prime } = useLanguage();
+
+  // ── Fire API call immediately when language changes ───────────────────────
+  useEffect(() => {
+    if (language !== "English") {
+      prime(PAGE_STRINGS);
+    }
+  }, [language, prime]);
+
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Hello! I'm your PharmaLens AI Pharmacist. I can help you with medication information, dosage guidance, side effects, and general health questions. How can I assist you today?",
+      text: t("Hello! I'm your PharmaLens AI Pharmacist. I can help you with medication information, dosage guidance, side effects, and general health questions. How can I assist you today?"),
       sender: "ai",
       timestamp: new Date(),
     },
@@ -26,6 +50,7 @@ export function AIChat() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const API_URL = import.meta.env.VITE_API_URL;
+
   const streamAIResponse = async (query: string) => {
     const session = await supabase.auth.getSession();
     const token = session.data.session?.access_token;
@@ -33,7 +58,6 @@ export function AIChat() {
     const eventSource = new EventSource(
       `${API_URL}/chat/stream?query=${encodeURIComponent(query)}&token=${token}`
     );
-
 
     let aiText = "";
     const aiId = crypto.randomUUID();
@@ -45,11 +69,8 @@ export function AIChat() {
 
     eventSource.onmessage = (e) => {
       aiText += e.data;
-
       setMessages(prev =>
-        prev.map(m =>
-          m.id === aiId ? { ...m, text: aiText } : m
-        )
+        prev.map(m => m.id === aiId ? { ...m, text: aiText } : m)
       );
     };
 
@@ -57,8 +78,8 @@ export function AIChat() {
       eventSource.close();
       setIsTyping(false);
     });
-
   };
+
   const startListening = () => {
     const SpeechRecognition =
       window.SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -72,8 +93,8 @@ export function AIChat() {
     recognitionRef.current = recognition;
 
     recognition.lang = "en-US";
-    recognition.interimResults = true;   // show partial results as user speaks
-    recognition.continuous = false;      // stop after first pause
+    recognition.interimResults = true;
+    recognition.continuous = false;
 
     recognition.onstart = () => setIsListening(true);
 
@@ -81,7 +102,7 @@ export function AIChat() {
       const transcript = Array.from(event.results)
         .map((r) => r[0].transcript)
         .join("");
-      setInputValue(transcript);         // live-updates the input
+      setInputValue(transcript);
     };
 
     recognition.onend = () => {
@@ -105,6 +126,7 @@ export function AIChat() {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   const getSessionAndToken = async () => {
     const sessionRes = await supabase.auth.getSession();
     return sessionRes.data.session?.access_token;
@@ -113,7 +135,9 @@ export function AIChat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
   console.log("Messages:", messages);
+
   const handleSend = async () => {
     if (!inputValue.trim()) return;
 
@@ -139,25 +163,19 @@ export function AIChat() {
       if (!token) return;
 
       const res = await fetch(`${API_URL}/chat/history`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const data = await res.json();
-
       const formatted: Message[] = [];
 
       data.forEach((row: any) => {
-        // User message
         formatted.push({
           id: crypto.randomUUID(),
           text: row.query,
           sender: "user",
           timestamp: new Date(row.timestamp),
         });
-
-        // AI response
         formatted.push({
           id: crypto.randomUUID(),
           text: row.response,
@@ -196,14 +214,14 @@ export function AIChat() {
             <Bot className="w-6 h-6 text-[#4fd1c5]" />
           </motion.div>
           <div>
-            <h2 className="text-xl text-white">AI Pharmacist</h2>
+            <h2 className="text-xl text-white">{t("AI Pharmacist")}</h2>
             <div className="flex items-center gap-2">
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-2 h-2 bg-[#34d399] rounded-full neon-glow-green"
               />
-              <p className="text-sm text-[#8a9ab8]">Online & Ready to Help</p>
+              <p className="text-sm text-[#8a9ab8]">{t("Online & Ready to Help")}</p>
             </div>
           </div>
         </div>
@@ -213,21 +231,21 @@ export function AIChat() {
       <div className="flex-1 overflow-y-auto p-6 pb-32">
         <div className="max-w-4xl mx-auto space-y-4">
           <AnimatePresence>
-            {messages.map((message, index) => (
+            {messages.map((message) => (
               <motion.div
                 key={message.id}
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.3 }}
-                className={`flex gap-3 ${message.sender === "user" ? "flex-row-reverse" : "flex-row"
-                  }`}
+                className={`flex gap-3 ${message.sender === "user" ? "flex-row-reverse" : "flex-row"}`}
               >
                 {/* Avatar */}
                 <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${message.sender === "ai"
-                    ? "bg-gradient-to-br from-[#4fd1c5]/20 to-[#6366f1]/20 neon-border-cyan"
-                    : "bg-gradient-to-br from-[#a78bfa]/20 to-[#6366f1]/20 neon-border-purple"
-                    }`}
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                    message.sender === "ai"
+                      ? "bg-gradient-to-br from-[#4fd1c5]/20 to-[#6366f1]/20 neon-border-cyan"
+                      : "bg-gradient-to-br from-[#a78bfa]/20 to-[#6366f1]/20 neon-border-purple"
+                  }`}
                 >
                   {message.sender === "ai" ? (
                     <Bot className="w-5 h-5 text-[#4fd1c5]" />
@@ -238,11 +256,13 @@ export function AIChat() {
 
                 {/* Message Bubble */}
                 <div
-                  className={`glass-card rounded-2xl p-4 max-w-[70%] ${message.sender === "ai" ? "rounded-tl-none" : "rounded-tr-none"
-                    } ${message.sender === "ai"
+                  className={`glass-card rounded-2xl p-4 max-w-[70%] ${
+                    message.sender === "ai" ? "rounded-tl-none" : "rounded-tr-none"
+                  } ${
+                    message.sender === "ai"
                       ? "border border-[#4fd1c5]/30"
                       : "border border-[#a78bfa]/30"
-                    }`}
+                  }`}
                 >
                   <p className="text-[#e8f0ff] leading-relaxed">{message.text}</p>
                   <p className="text-xs text-[#8a9ab8] mt-2">
@@ -274,11 +294,7 @@ export function AIChat() {
                       <motion.div
                         key={i}
                         animate={{ y: [0, -8, 0] }}
-                        transition={{
-                          duration: 0.6,
-                          repeat: Infinity,
-                          delay: i * 0.2,
-                        }}
+                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.2 }}
                         className="w-2 h-2 bg-[#4fd1c5] rounded-full"
                       />
                     ))}
@@ -297,7 +313,7 @@ export function AIChat() {
               className="pt-4"
             >
               <p className="text-sm text-[#8a9ab8] mb-3 text-center">
-                Quick questions you can ask:
+                {t("Quick questions you can ask:")}
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {quickQuestions.map((question, index) => (
@@ -311,7 +327,7 @@ export function AIChat() {
                     onClick={() => setInputValue(question)}
                     className="glass-card rounded-xl p-3 text-left text-sm text-[#e8f0ff] hover:neon-border-cyan transition-all duration-300"
                   >
-                    {question}
+                    {t(question)}
                   </motion.button>
                 ))}
               </div>
@@ -342,7 +358,7 @@ export function AIChat() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSend()}
-                placeholder="Ask me anything about medications..."
+                placeholder={t("Ask me anything about medications...")}
                 className="w-full glass-card rounded-xl px-4 py-3 pr-12 text-white placeholder-[#8a9ab8] neon-border-cyan focus:outline-none focus:neon-glow-cyan transition-all duration-300"
               />
             </div>
@@ -352,10 +368,11 @@ export function AIChat() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={isListening ? stopListening : startListening}
-              className={`glass-card rounded-xl p-3 transition-all duration-300 ${isListening
+              className={`glass-card rounded-xl p-3 transition-all duration-300 ${
+                isListening
                   ? "neon-border-cyan bg-[#4fd1c5]/20 animate-pulse"
                   : "neon-border-purple hover:bg-[#a78bfa]/10"
-                }`}
+              }`}
             >
               <Mic className={`w-6 h-6 ${isListening ? "text-[#4fd1c5]" : "text-[#a78bfa]"}`} />
             </motion.button>
@@ -377,7 +394,7 @@ export function AIChat() {
           </div>
 
           <p className="text-xs text-[#8a9ab8] text-center mt-3">
-            Powered by Gemma 3n LLM • Always consult your doctor for medical decisions
+            {t("Powered by Gemma 3n LLM • Always consult your doctor for medical decisions")}
           </p>
         </div>
       </div>

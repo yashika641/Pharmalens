@@ -8,7 +8,8 @@ import {
   Search,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
- 
+import { useLanguage } from "./language_context";
+
 interface Drug {
   id: string;
   name: string;
@@ -35,9 +36,32 @@ interface DrugInteractionCheckerProps {
   initialDrugs?: string[];
 }
 
+// ── All static strings on this page ───────────────────────────────────────────
+const PAGE_STRINGS = [
+  "Drug Interaction",
+  "Checker",
+  "Analyze real clinical interactions using PharmaLens intelligence",
+  "Add Medications",
+  "Type medication name...",
+  "Analyzing interactions…",
+  "Hide details",
+  "View details",
+  "Observed interaction patterns:",
+  "Confidence level:",
+];
+
 export function DrugInteractionChecker({
   initialDrugs = [],
 }: DrugInteractionCheckerProps) {
+  const { t, language, prime } = useLanguage();
+
+  // ── Fire API call immediately when language changes ───────────────────────
+  useEffect(() => {
+    if (language !== "English") {
+      prime(PAGE_STRINGS);
+    }
+  }, [language, prime]);
+
   const [drugs, setDrugs] = useState<Drug[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -46,7 +70,8 @@ export function DrugInteractionChecker({
   const [results, setResults] = useState<InteractionResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showDetails, setShowDetails] = useState(false);
-const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
+
   // Initialize with provided drugs
   useEffect(() => {
     if (initialDrugs.length > 0) {
@@ -87,19 +112,16 @@ const API_URL = import.meta.env.VITE_API_URL;
     setShowResults(false);
 
     try {
-      const response = await fetch(
-        `${API_URL}/drug-interactions/check`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-          body: JSON.stringify({
-            drugs: drugs.map((d) => d.name),
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/drug-interactions/check`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        body: JSON.stringify({
+          drugs: drugs.map((d) => d.name),
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch interaction data");
@@ -150,23 +172,23 @@ const API_URL = import.meta.env.VITE_API_URL;
       >
         <div className="text-center mb-8">
           <h2 className="text-4xl mb-3">
-            <span className="neon-text-cyan">Drug Interaction</span>{" "}
-            <span className="text-[#a78bfa]">Checker</span>
+            <span className="neon-text-cyan">{t("Drug Interaction")}</span>{" "}
+            <span className="text-[#a78bfa]">{t("Checker")}</span>
           </h2>
           <p className="text-[#8a9ab8]">
-            Analyze real clinical interactions using PharmaLens intelligence
+            {t("Analyze real clinical interactions using PharmaLens intelligence")}
           </p>
         </div>
 
         {/* Input Section */}
         <div className="glass-card-strong rounded-3xl p-6 mb-6 neon-border-cyan">
-          <label className="text-white mb-3 block">Add Medications</label>
+          <label className="text-white mb-3 block">{t("Add Medications")}</label>
           <div className="flex gap-3">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => handleInputChange(e.target.value)}
-              placeholder="Type medication name..."
+              placeholder={t("Type medication name...")}
               className="flex-1 glass-card rounded-xl px-4 py-3 text-white placeholder-[#8a9ab8] neon-border-cyan"
             />
 
@@ -207,7 +229,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
         {/* Loading / Error */}
         {loading && (
-          <p className="text-center text-[#4fd1c5]">Analyzing interactions…</p>
+          <p className="text-center text-[#4fd1c5]">{t("Analyzing interactions…")}</p>
         )}
         {error && (
           <p className="text-center text-[#ef4444]">{error}</p>
@@ -230,12 +252,13 @@ const API_URL = import.meta.env.VITE_API_URL;
               <p className="text-[#8a9ab8]">
                 {results.ai_analysis.short_answer}
               </p>
+
               {/* VIEW DETAILS BUTTON */}
               <button
                 onClick={() => setShowDetails((prev) => !prev)}
                 className="mt-3 text-sm text-[#a78bfa] hover:underline"
               >
-                {showDetails ? "Hide details" : "View details"}
+                {showDetails ? t("Hide details") : t("View details")}
               </button>
 
               {/* DETAILS SECTION */}
@@ -256,7 +279,7 @@ const API_URL = import.meta.env.VITE_API_URL;
                     {results.interactions.length > 0 && (
                       <div className="text-xs text-[#8a9ab8]">
                         <p className="mb-1 font-medium">
-                          Observed interaction patterns:
+                          {t("Observed interaction patterns:")}
                         </p>
                         <ul className="list-disc ml-4 space-y-1">
                           {results.interactions.map((item, idx) => (
@@ -271,12 +294,12 @@ const API_URL = import.meta.env.VITE_API_URL;
                   </motion.div>
                 )}
               </AnimatePresence>
+
               {/* CONFIDENCE */}
               <p className="text-xs text-[#8a9ab8] mt-4">
-                Confidence level: {results.ai_analysis.confidence}
+                {t("Confidence level:")} {results.ai_analysis.confidence}
               </p>
             </motion.div>
-
           )}
         </AnimatePresence>
       </motion.div>
