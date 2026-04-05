@@ -1,9 +1,7 @@
 import { Scan, ShieldAlert, MessageSquare, TrendingUp, AlertCircle, Clock } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState, useEffect } from "react";
-import { AuthModal } from "./login";
-// import { useNavigate } from "react-router-dom";
-import { supabase } from "../supabase"; // adjust path if needed
+import { supabase } from "../supabase";
 import { useLanguage } from "./language_context";
 
 interface HomePageProps {
@@ -13,7 +11,6 @@ interface HomePageProps {
   onLogin: (user: any) => void;
 }
 
-// ── All static strings on this page ───────────────────────────────────────────
 const PAGE_STRINGS = [
   "Daily Scans",
   "Detected Risks",
@@ -43,18 +40,10 @@ const PAGE_STRINGS = [
 export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps) {
   const { t, language, prime } = useLanguage();
 
-  // ── Fire API call immediately when language changes ───────────────────────
   useEffect(() => {
-    if (language !== "English") {
-      prime(PAGE_STRINGS);
-    }
+    if (language !== "English") prime(PAGE_STRINGS);
   }, [language, prime]);
 
-  const stats = [
-    { label: "Daily Scans", value: "247", icon: Scan, color: "cyan" },
-    { label: "Detected Risks", value: "12", icon: AlertCircle, color: "yellow" },
-    { label: "Saved Alerts", value: "89", icon: ShieldAlert, color: "purple" },
-  ];
   const [profileOpen, setProfileOpen] = useState(false);
   const [profileData, setProfileData] = useState({
     age: "",
@@ -63,50 +52,14 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
     conditions: "",
     medications: "",
   });
+
   const API_URL = import.meta.env.VITE_API_URL;
-  const [authOpen, setAuthOpen] = useState(false);
-  // const navigate = useNavigate();
-  
 
-  const handleProfileChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setProfileData({
-      ...profileData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-
-  const handleProfileSubmit = async () => {
-    try {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-
-      if (error || !session) {
-        throw new Error("User not authenticated");
-      }
-
-      await fetch(`${API_URL}/user-profile/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify(profileData),
-      });
-
-      setProfileOpen(false);
-      console.log("✅ User profile saved");
-    } catch (err) {
-      console.error("❌ Failed to save profile", err);
-    }
-  };
-
-  // now you can safely use `user`
-
+  const stats = [
+    { label: "Daily Scans",    value: "247", icon: Scan,         color: "cyan"   },
+    { label: "Detected Risks", value: "12",  icon: AlertCircle,  color: "yellow" },
+    { label: "Saved Alerts",   value: "89",  icon: ShieldAlert,  color: "purple" },
+  ];
 
   const ctaButtons = [
     {
@@ -137,8 +90,31 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
       color: "blue",
       onClick: () => onNavigate("chat"),
     },
-
   ];
+
+  const handleProfileChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => setProfileData({ ...profileData, [e.target.name]: e.target.value });
+
+  const handleProfileSubmit = async () => {
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error || !session) throw new Error("User not authenticated");
+
+      await fetch(`${API_URL}/user-profile/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify(profileData),
+      });
+
+      setProfileOpen(false);
+    } catch (err) {
+      console.error("❌ Failed to save profile", err);
+    }
+  };
 
   return (
     <div className="min-h-screen molecular-bg p-6 pb-24">
@@ -147,7 +123,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
         <div className="text-2xl font-bold neon-text-cyan">PharmaLens</div>
       </nav>
 
-      {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -186,7 +161,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
           className="mb-12 flex justify-center"
         >
           <div className="relative w-64 h-64">
-            {/* Animated rings */}
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -199,8 +173,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
               className="absolute inset-4 rounded-full border-2 border-[#6366f1]/30"
               style={{ borderStyle: "dashed" }}
             />
-
-            {/* Center pill icon */}
             <div className="absolute inset-0 flex items-center justify-center">
               <motion.div
                 animate={{ y: [-10, 10, -10] }}
@@ -210,8 +182,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                 <Scan className="w-24 h-24 text-[#4fd1c5]" />
               </motion.div>
             </div>
-
-            {/* Floating particles */}
             {[...Array(6)].map((_, i) => (
               <motion.div
                 key={i}
@@ -220,21 +190,14 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                   left: `${50 + 40 * Math.cos((i * Math.PI) / 3)}%`,
                   top: `${50 + 40 * Math.sin((i * Math.PI) / 3)}%`,
                 }}
-                animate={{
-                  scale: [1, 1.5, 1],
-                  opacity: [0.3, 0.8, 0.3],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.3,
-                }}
+                animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.8, 0.3] }}
+                transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
               />
             ))}
           </div>
         </motion.div>
 
-        {/* Stats Cards */}
+        {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {stats.map((stat, index) => (
             <motion.div
@@ -246,22 +209,20 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
             >
               <div className="flex items-center justify-between mb-3">
                 <stat.icon
-                  className={`w-8 h-8 ${stat.color === "cyan"
-                    ? "text-[#4fd1c5]"
-                    : stat.color === "yellow"
-                      ? "text-[#fbbf24]"
-                      : "text-[#a78bfa]"
-                    }`}
+                  className={`w-8 h-8 ${
+                    stat.color === "cyan" ? "text-[#4fd1c5]"
+                    : stat.color === "yellow" ? "text-[#fbbf24]"
+                    : "text-[#a78bfa]"
+                  }`}
                 />
                 <motion.div
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className={`w-2 h-2 rounded-full ${stat.color === "cyan"
-                    ? "bg-[#4fd1c5] neon-glow-cyan"
-                    : stat.color === "yellow"
-                      ? "bg-[#fbbf24] neon-glow-yellow"
-                      : "bg-[#a78bfa]"
-                    }`}
+                  className={`w-2 h-2 rounded-full ${
+                    stat.color === "cyan" ? "bg-[#4fd1c5] neon-glow-cyan"
+                    : stat.color === "yellow" ? "bg-[#fbbf24] neon-glow-yellow"
+                    : "bg-[#a78bfa]"
+                  }`}
                 />
               </div>
               <p className="text-3xl mb-1 text-white">{stat.value}</p>
@@ -281,34 +242,29 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.98 }}
               onClick={button.onClick}
-              className={`glass-card-strong rounded-3xl p-8 text-left group relative overflow-hidden ${button.color === "cyan"
-                ? "neon-border-cyan"
-                : button.color === "purple"
-                  ? "neon-border-purple"
-                  : "neon-border-blue"
-                }`}
+              className={`glass-card-strong rounded-3xl p-8 text-left group relative overflow-hidden ${
+                button.color === "cyan" ? "neon-border-cyan"
+                : button.color === "purple" ? "neon-border-purple"
+                : "neon-border-blue"
+              }`}
             >
               <div className="relative z-10">
                 <button.icon
-                  className={`w-12 h-12 mb-4 ${button.color === "cyan"
-                    ? "text-[#4fd1c5]"
-                    : button.color === "purple"
-                      ? "text-[#a78bfa]"
-                      : "text-[#6366f1]"
-                    }`}
+                  className={`w-12 h-12 mb-4 ${
+                    button.color === "cyan" ? "text-[#4fd1c5]"
+                    : button.color === "purple" ? "text-[#a78bfa]"
+                    : "text-[#6366f1]"
+                  }`}
                 />
                 <h3 className="text-xl mb-2 text-white">{t(button.title)}</h3>
                 <p className="text-[#8a9ab8]">{t(button.description)}</p>
               </div>
-
-              {/* Hover glow effect */}
               <div
-                className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${button.color === "cyan"
-                  ? "bg-gradient-to-br from-[#4fd1c5]/10 to-transparent"
-                  : button.color === "purple"
-                    ? "bg-gradient-to-br from-[#a78bfa]/10 to-transparent"
-                    : "bg-gradient-to-br from-[#6366f1]/10 to-transparent"
-                  }`}
+                className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+                  button.color === "cyan" ? "bg-gradient-to-br from-[#4fd1c5]/10 to-transparent"
+                  : button.color === "purple" ? "bg-gradient-to-br from-[#a78bfa]/10 to-transparent"
+                  : "bg-gradient-to-br from-[#6366f1]/10 to-transparent"
+                }`}
               />
             </motion.button>
           ))}
@@ -337,6 +293,8 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
           </button>
         </motion.div>
       </motion.div>
+
+      {/* Profile Modal — stays here, it's home-page-specific UI */}
       <AnimatePresence>
         {profileOpen && (
           <motion.div
@@ -354,7 +312,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
               <h3 className="text-2xl mb-4 text-white text-center">
                 {t("Let's Know You Better 💊")}
               </h3>
-
               <div className="space-y-4">
                 <input
                   type="number"
@@ -364,7 +321,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                   onChange={handleProfileChange}
                   className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
                 />
-
                 <input
                   type="tel"
                   name="phone"
@@ -373,7 +329,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                   onChange={handleProfileChange}
                   className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
                 />
-
                 <textarea
                   name="allergies"
                   placeholder={t("Known Allergies (e.g. Penicillin, Peanuts)")}
@@ -381,7 +336,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                   onChange={handleProfileChange}
                   className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
                 />
-
                 <textarea
                   name="conditions"
                   placeholder={t("Medical Conditions (Diabetes, Hypertension, etc.)")}
@@ -389,7 +343,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                   onChange={handleProfileChange}
                   className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
                 />
-
                 <textarea
                   name="medications"
                   placeholder={t("Current Medications (optional)")}
@@ -398,7 +351,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                   className="w-full p-3 rounded-xl bg-black/30 border border-[#4fd1c5]/30 text-white"
                 />
               </div>
-
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setProfileOpen(false)}
@@ -406,7 +358,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
                 >
                   {t("Cancel")}
                 </button>
-
                 <button
                   onClick={handleProfileSubmit}
                   className="glass-card rounded-xl p-3 neon-border-cyan text-white"
@@ -418,15 +369,6 @@ export function HomePage({ onNavigate, user, onLogout, onLogin }: HomePageProps)
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Auth Modal */}
-      <AuthModal
-        open={authOpen}
-        onClose={() => setAuthOpen(false)}
-        onLogin={(user: any) => {
-          onLogin(user);
-        }}
-      />
     </div>
   );
 }
