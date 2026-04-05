@@ -233,15 +233,15 @@ def normalize_expiry_date(text):
 # Add/replace these two functions in your parsers.py
 # They now accept image_bytes and use Gemini Vision when OCR text is empty/weak
 
-import base64
 import json
 import re
-import google.generativeai as genai
-from PIL import Image
 import io
+from PIL import Image
+from google.genai import types
 
-# Configure once at module level (or wherever you set up genai)
-# genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+from backend.utils.llm import _get_client  # reuse existing client
+
+_MODEL_NAME = "gemini-2.5-flash"
 
 MEDICINE_PROMPT = """
 You are a pharmacy AI. Extract medicine information from this image.
@@ -275,7 +275,6 @@ No explanation. No markdown. JSON only.
 
 
 def _parse_gemini_json(raw: str) -> dict:
-    """Strip markdown fences and parse JSON safely."""
     cleaned = re.sub(r"```(?:json)?|```", "", raw).strip()
     try:
         return json.loads(cleaned)
@@ -283,38 +282,44 @@ def _parse_gemini_json(raw: str) -> dict:
         return {}
 
 
+def _image_bytes_to_part(image_bytes: bytes) -> types.Part:
+    """
+    Re-encode through PIL to guarantee valid PNG bytes.
+    This also fixes the OCR.Space E302 corruption issue —
+    same clean bytes can be reused for OCR.Space too.
+    """
+    img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    buf.seek(0)
+    return types.Part.from_bytes(data=buf.getvalue(), mime_type="image/png")
+
+
 async def gemini_extract_medicine(
     ocr_text: str = "",
     image_bytes: bytes | None = None,
 ) -> dict:
-    """
-    Extract medicine fields using Gemini.
-
-    Strategy:
-    - If image_bytes provided → use Gemini Vision (image + prompt).
-      This works even when OCR text is empty or garbage.
-    - If only ocr_text → fall back to text-only Gemini call.
-    """
     print("[LLM] Running Gemini medicine extraction...")
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    client = _get_client()
 
     try:
         if image_bytes:
-            # ✅ Vision path — Gemini reads the image directly
-            print("[LLM] Using Gemini Vision (image_bytes provided)")
-            pil_image = Image.open(io.BytesIO(image_bytes))
-            response = model.generate_content([MEDICINE_PROMPT, pil_image])
+            print("[LLM] Using Gemini Vision (image_bytes)")
+            contents = [_image_bytes_to_part(image_bytes), MEDICINE_PROMPT]
         elif ocr_text.strip():
-            # Fallback: text only
-            print("[LLM] Using Gemini text-only (no image bytes)")
-            prompt = f"{MEDICINE_PROMPT}\n\nOCR Text:\n{ocr_text}"
-            response = model.generate_content(prompt)
+            print("[LLM] Using Gemini text-only")
+            contents = f"{MEDICINE_PROMPT}\n\nOCR Text:\n{ocr_text}"
         else:
-            print("[LLM ⚠️] No image bytes and no OCR text — Gemini skipped")
+            print("[LLM ⚠️] No image and no OCR text — Gemini skipped")
             return {}
 
-        raw = response.text
-        print(f"[LLM] Gemini raw response: {raw[:300]}")
+        response = client.models.generate_content(
+            model=_MODEL_NAME,
+            contents=contents,
+        )
+
+        raw = response.text or ""
+        print(f"[LLM] Gemini response: {raw[:300]}")
         return _parse_gemini_json(raw)
 
     except Exception as e:
@@ -326,28 +331,27 @@ async def gemini_extract_prescription(
     ocr_text: str = "",
     image_bytes: bytes | None = None,
 ) -> dict:
-    """
-    Extract prescription fields using Gemini Vision.
-    Same strategy as gemini_extract_medicine.
-    """
     print("[LLM] Running Gemini prescription extraction...")
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    client = _get_client()
 
     try:
         if image_bytes:
-            print("[LLM] Using Gemini Vision (image_bytes provided)")
-            pil_image = Image.open(io.BytesIO(image_bytes))
-            response = model.generate_content([PRESCRIPTION_PROMPT, pil_image])
+            print("[LLM] Using Gemini Vision (image_bytes)")
+            contents = [_image_bytes_to_part(image_bytes), PRESCRIPTION_PROMPT]
         elif ocr_text.strip():
-            print("[LLM] Using Gemini text-only (no image bytes)")
-            prompt = f"{PRESCRIPTION_PROMPT}\n\nOCR Text:\n{ocr_text}"
-            response = model.generate_content(prompt)
+            print("[LLM] Using Gemini text-only")
+            contents = f"{PRESCRIPTION_PROMPT}\n\nOCR Text:\n{ocr_text}"
         else:
-            print("[LLM ⚠️] No image bytes and no OCR text — Gemini skipped")
+            print("[LLM ⚠️] No image and no OCR text — Gemini skipped")
             return {}
 
-        raw = response.text
-        print(f"[LLM] Gemini raw response: {raw[:300]}")
+        response = client.models.generate_content(
+            model=_MODEL_NAME,
+            contents=contents,
+        )
+
+        raw = response.text or ""
+        print(f"[LLM] Gemini response: {raw[:300]}")
         return _parse_gemini_json(raw)
 
     except Exception as e:
