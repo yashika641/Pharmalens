@@ -1,6 +1,8 @@
 import { AlertTriangle, CheckCircle, Info, Pill, Building2, Activity } from "lucide-react";
 import { motion } from "motion/react";
 import { Progress } from "./ui/progress";
+import { useLanguage } from "./language_context";
+import { useEffect } from "react";
 
 interface MedicineDetailsProps {
   medicine: {
@@ -21,7 +23,43 @@ interface MedicineDetailsProps {
   onCheckInteractions: (medicineName: string) => void;
 }
 
+// ── All static strings on this page ───────────────────────────────────────────
+const PAGE_STRINGS = [
+  "Medicine Identified",
+  "Analysis complete - Review details below",
+  "Confidence",
+  "AI Confidence Level",
+  "Composition",
+  "Strength",
+  "Expiry Date",
+  "Not detected",
+  "Precautions",
+  "Possible Side Effects",
+  "mild",
+  "moderate",
+  "severe",
+  "Save to History",
+  "Check Interactions",
+  // default fallback strings
+  "Nausea",
+  "Drowsiness",
+  "Do not exceed recommended dosage",
+  "Avoid alcohol while taking this medication",
+  "Store in a cool and dry place",
+  "Keep out of reach of children",
+  "Take after food if stomach irritation occurs",
+];
+
 export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions }: MedicineDetailsProps) {
+  const { t, language, prime } = useLanguage();
+
+  // ── Fire API call immediately when language changes ───────────────────────
+  useEffect(() => {
+    if (language !== "English") {
+      prime(PAGE_STRINGS);
+    }
+  }, [language, prime]);
+
   const sideEffects =
     medicine.side_effects?.map((e) => ({
       ...e,
@@ -38,14 +76,16 @@ export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions
         "Do not exceed recommended dosage",
         "Avoid alcohol while taking this medication",
       ];
+
   const precautions =
     medicine.precautions?.length
       ? medicine.precautions
       : [
         "Store in a cool and dry place",
         "Keep out of reach of children",
-        "Take after food if stomach irritation occurs"
+        "Take after food if stomach irritation occurs",
       ];
+
   return (
     <div className="min-h-screen molecular-bg p-6 pb-24">
       <motion.div
@@ -63,9 +103,9 @@ export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions
             <CheckCircle className="w-10 h-10 text-[#34d399]" />
           </motion.div>
           <h2 className="text-4xl mb-2">
-            <span className="neon-text-cyan">Medicine Identified</span>
+            <span className="neon-text-cyan">{t("Medicine Identified")}</span>
           </h2>
-          <p className="text-[#8a9ab8]">Analysis complete - Review details below</p>
+          <p className="text-[#8a9ab8]">{t("Analysis complete - Review details below")}</p>
         </div>
 
         {/* Main Details Card */}
@@ -87,7 +127,7 @@ export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions
               </div>
             </div>
             <div className="glass-card rounded-xl px-4 py-2">
-              <p className="text-sm text-[#8a9ab8] mb-1">Confidence</p>
+              <p className="text-sm text-[#8a9ab8] mb-1">{t("Confidence")}</p>
               <p className="text-2xl text-[#34d399]">{medicine.confidence * 100}%</p>
             </div>
           </div>
@@ -95,7 +135,7 @@ export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions
           {/* Confidence Bar */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-[#8a9ab8]">AI Confidence Level</span>
+              <span className="text-sm text-[#8a9ab8]">{t("AI Confidence Level")}</span>
               <span className="text-sm text-[#4fd1c5]">{medicine.confidence * 100}%</span>
             </div>
             <div className="h-2 bg-[#1a2332] rounded-full overflow-hidden">
@@ -119,7 +159,7 @@ export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions
             <div className="glass-card rounded-2xl p-4 flex items-center gap-3">
               <Building2 className="w-6 h-6 text-[#6366f1]" />
               <div>
-                <p className="text-sm text-[#8a9ab8]">Composition</p>
+                <p className="text-sm text-[#8a9ab8]">{t("Composition")}</p>
                 <p className="text-white">{medicine.manufacturer}</p>
               </div>
             </div>
@@ -127,25 +167,24 @@ export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions
             <div className="glass-card rounded-2xl p-4 flex items-center gap-3">
               <Activity className="w-6 h-6 text-[#a78bfa]" />
               <div>
-                <p className="text-sm text-[#8a9ab8]">Strength</p>
+                <p className="text-sm text-[#8a9ab8]">{t("Strength")}</p>
                 <p className="text-white">{medicine.strength}</p>
               </div>
-
             </div>
+
             <div className="glass-card rounded-2xl p-4 flex items-center gap-3">
               <Activity className="w-6 h-6 text-[#34d399]" />
               <div>
-                <p className="text-sm text-[#8a9ab8]">Expiry Date</p>
+                <p className="text-sm text-[#8a9ab8]">{t("Expiry Date")}</p>
                 <p className="text-white">
-                  {medicine.expiry_date || "Not detected"}
+                  {medicine.expiry_date || t("Not detected")}
                 </p>
               </div>
             </div>
           </div>
         </motion.div>
 
-        
-
+        {/* Precautions Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -156,7 +195,7 @@ export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions
             <div className="w-10 h-10 rounded-lg bg-[#6366f1]/20 flex items-center justify-center">
               <Info className="w-6 h-6 text-[#6366f1]" />
             </div>
-            <h3 className="text-xl text-white">Precautions</h3>
+            <h3 className="text-xl text-white">{t("Precautions")}</h3>
           </div>
 
           <div className="space-y-3">
@@ -169,7 +208,7 @@ export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions
                 className="flex items-start gap-3 glass-card rounded-xl p-3 border border-[#6366f1]/30"
               >
                 <div className="w-2 h-2 bg-[#6366f1] rounded-full mt-2 neon-glow-blue" />
-                <p className="text-[#e8f0ff] flex-1">{item}</p>
+                <p className="text-[#e8f0ff] flex-1">{t(item)}</p>
               </motion.div>
             ))}
           </div>
@@ -186,7 +225,7 @@ export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions
             <div className="w-10 h-10 rounded-lg bg-[#a78bfa]/20 flex items-center justify-center">
               <Info className="w-6 h-6 text-[#a78bfa]" />
             </div>
-            <h3 className="text-xl text-white">Possible Side Effects</h3>
+            <h3 className="text-xl text-white">{t("Possible Side Effects")}</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -196,32 +235,35 @@ export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
-                className={`glass-card rounded-xl p-4 flex items-center gap-3 ${effect.severity === "severe"
+                className={`glass-card rounded-xl p-4 flex items-center gap-3 ${
+                  effect.severity === "severe"
                     ? "border border-[#ef4444]/50 bg-[#ef4444]/5"
                     : effect.severity === "moderate"
                       ? "border border-[#fbbf24]/50 bg-[#fbbf24]/5"
                       : "border border-[#4fd1c5]/30"
-                  }`}
+                }`}
               >
                 <effect.icon
-                  className={`w-5 h-5 ${effect.severity === "severe"
+                  className={`w-5 h-5 ${
+                    effect.severity === "severe"
                       ? "text-[#ef4444]"
                       : effect.severity === "moderate"
                         ? "text-[#fbbf24]"
                         : "text-[#4fd1c5]"
-                    }`}
+                  }`}
                 />
                 <div className="flex-1">
-                  <p className="text-white">{effect.name}</p>
+                  <p className="text-white">{t(effect.name)}</p>
                   <p
-                    className={`text-xs ${effect.severity === "severe"
+                    className={`text-xs ${
+                      effect.severity === "severe"
                         ? "text-[#ef4444]"
                         : effect.severity === "moderate"
                           ? "text-[#fbbf24]"
                           : "text-[#4fd1c5]"
-                      }`}
+                    }`}
                   >
-                    {effect.severity}
+                    {t(effect.severity)}
                   </p>
                 </div>
                 {effect.severity === "severe" && (
@@ -247,13 +289,13 @@ export function MedicineDetails({ medicine, onSaveToHistory, onCheckInteractions
             className="flex-1 glass-card-strong rounded-2xl py-4 neon-border-cyan hover:bg-[#4fd1c5]/10 transition-all duration-300"
             onClick={() => onSaveToHistory(medicine)}
           >
-            <span className="text-white">Save to History</span>
+            <span className="text-white">{t("Save to History")}</span>
           </button>
           <button
             className="flex-1 glass-card-strong rounded-2xl py-4 neon-border-blue hover:bg-[#6366f1]/10 transition-all duration-300"
             onClick={() => onCheckInteractions(medicine.medicine_name)}
           >
-            <span className="text-white">Check Interactions</span>
+            <span className="text-white">{t("Check Interactions")}</span>
           </button>
         </motion.div>
       </motion.div>

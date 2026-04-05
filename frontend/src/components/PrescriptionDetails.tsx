@@ -4,6 +4,8 @@ import {
   ChevronRight, Activity, Hash, Navigation2,
 } from "lucide-react";
 import { motion } from "motion/react";
+import { useEffect } from "react";
+import { useLanguage } from "./language_context";
 
 // ─── Types matching prescription_ocr_data schema exactly ─────────────────────
 
@@ -23,8 +25,8 @@ interface PrescriptionData {
   doctor_name?: string | null;
   prescription_date?: string | null;
   diagnosis?: string | null;
-  medicines?: (Medicine | string)[] | null;          // jsonb — objects or strings
-  routes?: string[] | Record<string, string> | null; // jsonb
+  medicines?: (Medicine | string)[] | null;
+  routes?: string[] | Record<string, string> | null;
   raw_text?: string | null;
   confidence?: number | null;
   ocr_engine?: string | null;
@@ -39,44 +41,53 @@ interface PrescriptionDetailsProps {
   onSaveToHistory?: (prescription: PrescriptionData) => void;
 }
 
+// ── All static strings on this page ───────────────────────────────────────────
+const PAGE_STRINGS = [
+  "Prescription Scanned",
+  "AI-extracted prescription details",
+  "Needs manual review",
+  "AI Confidence",
+  "Engine:",
+  "Fallback OCR used",
+  "Doctor",
+  "Prescription Date",
+  "Diagnosis",
+  "Not detected",
+  "Not specified",
+  "Prescribed Medicines",
+  "No medicines extracted",
+  "Administration Routes",
+  "Raw OCR Text",
+  "tap to expand",
+  "Scanned",
+  "Updated",
+  "Save to History",
+];
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const normaliseMedicines = (
   raw: (Medicine | string)[] | string | null | undefined
 ): Medicine[] => {
   if (!raw) return [];
-
-  // Parse if it's a JSON string (comes from Supabase as stringified jsonb)
   let parsed = raw;
   if (typeof raw === "string") {
-    try {
-      parsed = JSON.parse(raw);
-    } catch {
-      return [];
-    }
+    try { parsed = JSON.parse(raw); } catch { return []; }
   }
-
   if (!Array.isArray(parsed)) return [];
-
   return parsed
     .map((m) => (typeof m === "string" ? { name: m } : m))
-    .filter((m) => m.name != null && m.name.trim() !== ""); // remove null name entries
+    .filter((m) => m.name != null && m.name.trim() !== "");
 };
 
 const normaliseRoutes = (
   raw: string[] | Record<string, string> | string | null | undefined
 ): string[] => {
   if (!raw) return [];
-
   let parsed = raw;
   if (typeof raw === "string") {
-    try {
-      parsed = JSON.parse(raw);
-    } catch {
-      return [];
-    }
+    try { parsed = JSON.parse(raw); } catch { return []; }
   }
-
   if (Array.isArray(parsed)) return parsed;
   if (typeof parsed === "object") return Object.entries(parsed).map(([k, v]) => `${k}: ${v}`);
   return [];
@@ -140,7 +151,6 @@ function MedicineCard({ med, index }: { med: Medicine; index: number }) {
       transition={{ delay: 0.3 + index * 0.08 }}
       className="rounded-2xl border border-[#4fd1c5]/25 bg-[#4fd1c5]/5 overflow-hidden"
     >
-      {/* Name row */}
       <div className="flex items-center gap-3 p-4">
         <div className="w-9 h-9 rounded-xl bg-[#4fd1c5]/15 border border-[#4fd1c5]/30 flex items-center justify-center shrink-0">
           <Pill className="w-4 h-4 text-[#4fd1c5]" />
@@ -158,7 +168,6 @@ function MedicineCard({ med, index }: { med: Medicine; index: number }) {
         )}
       </div>
 
-      {/* Detail pills */}
       {hasDetails && (
         <div className="px-4 pb-4 flex flex-wrap gap-2">
           {med.frequency && (
@@ -191,6 +200,15 @@ export function PrescriptionDetails({
   prescription,
   onSaveToHistory,
 }: PrescriptionDetailsProps) {
+  const { t, language, prime } = useLanguage();
+
+  // ── Fire API call immediately when language changes ───────────────────────
+  useEffect(() => {
+    if (language !== "English") {
+      prime(PAGE_STRINGS);
+    }
+  }, [language, prime]);
+
   const medicines  = normaliseMedicines(prescription.medicines);
   const routes     = normaliseRoutes(prescription.routes);
   const confidence = prescription.confidence ?? null;
@@ -218,8 +236,8 @@ export function PrescriptionDetails({
             <FileText className="w-10 h-10 text-[#a78bfa]" />
           </motion.div>
 
-          <h2 className="text-4xl mb-2 neon-text-cyan">Prescription Scanned</h2>
-          <p className="text-[#8a9ab8]">AI-extracted prescription details</p>
+          <h2 className="text-4xl mb-2 neon-text-cyan">{t("Prescription Scanned")}</h2>
+          <p className="text-[#8a9ab8]">{t("AI-extracted prescription details")}</p>
 
           {prescription.needs_review && (
             <motion.div
@@ -230,7 +248,7 @@ export function PrescriptionDetails({
                          bg-[#fbbf24]/10 border border-[#fbbf24]/40 text-[#fbbf24]"
             >
               <AlertTriangle className="w-4 h-4" />
-              Needs manual review
+              {t("Needs manual review")}
             </motion.div>
           )}
         </div>
@@ -248,7 +266,7 @@ export function PrescriptionDetails({
                 <div className="flex-1 min-w-[180px]">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-[#8a9ab8] uppercase tracking-wide">
-                      AI Confidence
+                      {t("AI Confidence")}
                     </span>
                     <span className={`text-sm font-bold ${confidenceColor(confidence)}`}>
                       {confPct}%
@@ -270,14 +288,14 @@ export function PrescriptionDetails({
                 {prescription.ocr_engine && (
                   <span className="flex items-center gap-1.5">
                     <Activity className="w-3.5 h-3.5 text-[#4fd1c5]" />
-                    Engine:
+                    {t("Engine:")}
                     <span className="text-white ml-1">{prescription.ocr_engine}</span>
                   </span>
                 )}
                 {prescription.fallback_used && (
                   <span className="flex items-center gap-1.5 text-[#fbbf24]">
                     <Info className="w-3.5 h-3.5" />
-                    Fallback OCR used
+                    {t("Fallback OCR used")}
                   </span>
                 )}
                 {prescription.id && (
@@ -300,20 +318,20 @@ export function PrescriptionDetails({
         >
           <MetaChip
             icon={Stethoscope}
-            label="Doctor"
-            value={prescription.doctor_name ?? "Not detected"}
+            label={t("Doctor")}
+            value={prescription.doctor_name ?? t("Not detected")}
             color="#a78bfa"
           />
           <MetaChip
             icon={Calendar}
-            label="Prescription Date"
+            label={t("Prescription Date")}
             value={fmtDate(prescription.prescription_date)}
             color="#4fd1c5"
           />
           <MetaChip
             icon={Activity}
-            label="Diagnosis"
-            value={prescription.diagnosis ?? "Not specified"}
+            label={t("Diagnosis")}
+            value={prescription.diagnosis ?? t("Not specified")}
             color={prescription.diagnosis ? "#34d399" : "#8a9ab8"}
           />
         </motion.div>
@@ -329,7 +347,7 @@ export function PrescriptionDetails({
             <div className="w-10 h-10 rounded-xl bg-[#4fd1c5]/15 border border-[#4fd1c5]/30 flex items-center justify-center">
               <Pill className="w-5 h-5 text-[#4fd1c5]" />
             </div>
-            <h3 className="text-xl text-white font-medium">Prescribed Medicines</h3>
+            <h3 className="text-xl text-white font-medium">{t("Prescribed Medicines")}</h3>
             <span className="ml-auto text-xs px-2.5 py-0.5 rounded-full bg-[#4fd1c5]/10 border border-[#4fd1c5]/30 text-[#4fd1c5]">
               {medicines.length}
             </span>
@@ -344,7 +362,7 @@ export function PrescriptionDetails({
           ) : (
             <div className="flex flex-col items-center py-8 text-center">
               <Pill className="w-10 h-10 text-[#4fd1c5]/20 mb-2" />
-              <p className="text-[#8a9ab8] text-sm">No medicines extracted</p>
+              <p className="text-[#8a9ab8] text-sm">{t("No medicines extracted")}</p>
             </div>
           )}
         </motion.div>
@@ -361,7 +379,7 @@ export function PrescriptionDetails({
               <div className="w-10 h-10 rounded-xl bg-[#6366f1]/15 border border-[#6366f1]/30 flex items-center justify-center">
                 <Navigation2 className="w-5 h-5 text-[#6366f1]" />
               </div>
-              <h3 className="text-xl text-white font-medium">Administration Routes</h3>
+              <h3 className="text-xl text-white font-medium">{t("Administration Routes")}</h3>
             </div>
             <div className="flex flex-wrap gap-2">
               {routes.map((r, i) => (
@@ -393,9 +411,9 @@ export function PrescriptionDetails({
               <div className="w-10 h-10 rounded-xl bg-[#8a9ab8]/10 border border-[#8a9ab8]/20 flex items-center justify-center">
                 <FileText className="w-5 h-5 text-[#8a9ab8]" />
               </div>
-              <h3 className="text-lg text-white font-medium flex-1">Raw OCR Text</h3>
+              <h3 className="text-lg text-white font-medium flex-1">{t("Raw OCR Text")}</h3>
               <span className="text-xs text-[#8a9ab8] border border-[#8a9ab8]/30 px-2 py-0.5 rounded-lg">
-                tap to expand
+                {t("tap to expand")}
               </span>
             </summary>
             <div className="mt-4 p-4 rounded-2xl bg-[#0d1520] border border-[#8a9ab8]/10">
@@ -417,14 +435,14 @@ export function PrescriptionDetails({
             {prescription.created_at && (
               <span className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
-                Scanned {fmtDate(prescription.created_at)}
+                {t("Scanned")} {fmtDate(prescription.created_at)}
               </span>
             )}
             {prescription.updated_at &&
               prescription.updated_at !== prescription.created_at && (
               <span className="flex items-center gap-1.5">
                 <CheckCircle className="w-3.5 h-3.5 text-[#34d399]" />
-                Updated {fmtDate(prescription.updated_at)}
+                {t("Updated")} {fmtDate(prescription.updated_at)}
               </span>
             )}
           </motion.div>
@@ -443,7 +461,7 @@ export function PrescriptionDetails({
                        border border-[#a78bfa]/50 hover:bg-[#a78bfa]/10
                        transition-all duration-300 text-white font-medium"
           >
-            Save to History
+            {t("Save to History")}
           </motion.button>
         )}
       </motion.div>

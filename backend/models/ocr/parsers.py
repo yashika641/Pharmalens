@@ -346,8 +346,12 @@ from PIL import Image
 import io
 
 def compress_image_for_ocr_space(image_bytes: bytes, max_size_kb=900) -> bytes:
-
+    
     img = Image.open(io.BytesIO(image_bytes))
+
+    # ✅ JPEG doesn't support alpha channel — convert before saving
+    if img.mode in ("RGBA", "LA", "P"):
+        img = img.convert("RGB")
 
     quality = 95
 
