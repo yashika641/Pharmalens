@@ -8,7 +8,9 @@ import {
   Search,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { toast } from "sonner";
 import { useLanguage } from "./language_context";
+import { fireInteractionAlert } from "../lib/notifications";
 
 interface Drug {
   id: string;
@@ -130,6 +132,23 @@ export function DrugInteractionChecker({
       const data: InteractionResult = await response.json();
       setResults(data);
       setShowResults(true);
+
+      // Fire push notification + in-app toast for severe interactions
+      const severeInteractions = data.interactions.filter(
+        (i) => i.severity === 'severe'
+      );
+      if (severeInteractions.length > 0) {
+        await fireInteractionAlert(data.input_drugs, 'severe');
+        toast.error('Dangerous drug combination detected!', {
+          description: `${data.input_drugs.join(' + ')}: severe interaction — consult your doctor immediately.`,
+          duration: 10000,
+        });
+      } else if (data.interactions.some((i) => i.severity === 'moderate')) {
+        toast.warning('Moderate drug interaction detected', {
+          description: `${data.input_drugs.join(' + ')}: use with caution. Check with your pharmacist.`,
+          duration: 7000,
+        });
+      }
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {

@@ -137,6 +137,14 @@
 
   body {
     @apply bg-background text-foreground;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  input, textarea, [contenteditable] {
+    user-select: text;
+    -webkit-user-select: text;
   }
 }
 
@@ -283,5 +291,10 @@ html {
       rgba(79, 209, 197, 0.1) 55%,
       transparent 100%
     );
+  }
+
+  /* Safe-area-aware bottom padding for pages sitting above the nav bar */
+  .pb-nav {
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom));
   }
 }

@@ -228,7 +228,7 @@ export function AIChat() {
       </motion.div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-6 pb-32">
+      <div className="flex-1 overflow-y-auto p-6 pb-48">
         <div className="max-w-4xl mx-auto space-y-4">
           <AnimatePresence>
             {messages.map((message) => (
@@ -339,7 +339,10 @@ export function AIChat() {
       </div>
 
       {/* Input Area */}
-      <div className="fixed bottom-20 left-0 right-0 p-6 glass-card-strong border-t border-[#4fd1c5]/20">
+      <div
+        className="fixed left-0 right-0 p-4 md:p-6 glass-card-strong border-t border-[#4fd1c5]/20"
+        style={{ bottom: 'calc(5rem + env(safe-area-inset-bottom))' }}
+      >
         <div className="max-w-4xl mx-auto">
           <div className="flex gap-3">
             {/* Camera Button */}

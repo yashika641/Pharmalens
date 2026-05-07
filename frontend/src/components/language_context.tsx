@@ -6,28 +6,47 @@ import {
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
 export type Language =
-  | "English" | "Spanish" | "French" | "German"
-  | "Chinese" | "Arabic" | "Hindi" | "Japanese"
-  | "Portuguese" | "Russian";
+  | "English"   | "Hindi"     | "Bengali"   | "Telugu"    | "Marathi"
+  | "Tamil"     | "Urdu"      | "Gujarati"  | "Kannada"   | "Odia"
+  | "Malayalam" | "Punjabi"   | "Assamese"  | "Maithili"  | "Sanskrit"
+  | "Santali"   | "Kashmiri"  | "Nepali"    | "Sindhi"    | "Dogri"
+  | "Manipuri"  | "Bodo"      | "Konkani"   | "Bhojpuri"  | "Mizo";
 
 export const LANGUAGES: Language[] = [
-  "English", "Spanish", "French", "German",
-  "Chinese", "Arabic", "Hindi", "Japanese", "Portuguese", "Russian",
+  "English",   "Hindi",    "Bengali",  "Telugu",   "Marathi",
+  "Tamil",     "Urdu",     "Gujarati", "Kannada",  "Odia",
+  "Malayalam", "Punjabi",  "Assamese", "Maithili", "Sanskrit",
+  "Santali",   "Kashmiri", "Nepali",   "Sindhi",   "Dogri",
+  "Manipuri",  "Bodo",     "Konkani",  "Bhojpuri", "Mizo",
 ];
 
 export const LANG_CODE: Record<Language, string> = {
-  English: "en", Spanish: "es", French: "fr",  German: "de",
-  Chinese: "zh", Arabic: "ar", Hindi:  "hi",   Japanese: "ja",
-  Portuguese: "pt", Russian: "ru",
+  English:   "en",  Hindi:    "hi",  Bengali:  "bn",  Telugu:   "te",  Marathi:  "mr",
+  Tamil:     "ta",  Urdu:     "ur",  Gujarati: "gu",  Kannada:  "kn",  Odia:     "or",
+  Malayalam: "ml",  Punjabi:  "pa",  Assamese: "as",  Maithili: "mai", Sanskrit: "sa",
+  Santali:   "sat", Kashmiri: "ks",  Nepali:   "ne",  Sindhi:   "sd",  Dogri:    "doi",
+  Manipuri:  "mni", Bodo:     "brx", Konkani:  "gom", Bhojpuri: "bho", Mizo:     "lus",
 };
 
+// Native script name shown in the language picker
+export const LANG_NATIVE: Record<Language, string> = {
+  English:   "English",     Hindi:    "हिंदी",       Bengali:  "বাংলা",       Telugu:   "తెలుగు",     Marathi:  "मराठी",
+  Tamil:     "தமிழ்",       Urdu:     "اردو",        Gujarati: "ગુજરાતી",     Kannada:  "ಕನ್ನಡ",      Odia:     "ଓଡ଼ିଆ",
+  Malayalam: "മലയാളം",      Punjabi:  "ਪੰਜਾਬੀ",     Assamese: "অসমীয়া",     Maithili: "मैथिली",     Sanskrit: "संस्कृतम्",
+  Santali:   "ᱥᱟᱱᱛᱟᱲᱤ",   Kashmiri: "کٲشُر",      Nepali:   "नेपाली",      Sindhi:   "سنڌي",       Dogri:    "डोगरी",
+  Manipuri:  "মেইতেই",      Bodo:     "बड़ो",        Konkani:  "कोंकणी",      Bhojpuri: "भोजपुरी",   Mizo:     "Mizo",
+};
+
+// Keep for backward compat but no longer used in the UI
 export const LANG_FLAG: Record<Language, string> = {
-  English: "🇬🇧", Spanish: "🇪🇸", French: "🇫🇷",  German: "🇩🇪",
-  Chinese: "🇨🇳", Arabic: "🇸🇦", Hindi:  "🇮🇳",   Japanese: "🇯🇵",
-  Portuguese: "🇧🇷", Russian: "🇷🇺",
+  English:   "🇮🇳", Hindi:    "🇮🇳", Bengali:  "🇮🇳", Telugu:   "🇮🇳", Marathi:  "🇮🇳",
+  Tamil:     "🇮🇳", Urdu:     "🇮🇳", Gujarati: "🇮🇳", Kannada:  "🇮🇳", Odia:     "🇮🇳",
+  Malayalam: "🇮🇳", Punjabi:  "🇮🇳", Assamese: "🇮🇳", Maithili: "🇮🇳", Sanskrit: "🇮🇳",
+  Santali:   "🇮🇳", Kashmiri: "🇮🇳", Nepali:   "🇮🇳", Sindhi:   "🇮🇳", Dogri:    "🇮🇳",
+  Manipuri:  "🇮🇳", Bodo:     "🇮🇳", Konkani:  "🇮🇳", Bhojpuri: "🇮🇳", Mizo:     "🇮🇳",
 };
 
-export const RTL_LANGUAGES: Language[] = ["Arabic"];
+export const RTL_LANGUAGES: Language[] = ["Urdu", "Sindhi"];
 
 // ─── Context shape ─────────────────────────────────────────────────────────────
 

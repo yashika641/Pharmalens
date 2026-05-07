@@ -6,19 +6,10 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Switch } from "./ui/switch";
-import { useLanguage, Language } from "./language_context";
+import { useLanguage, Language, LANGUAGES, LANG_NATIVE } from "./language_context";
+import { scheduleDailyReminder, cancelDailyReminder } from "../lib/notifications";
 
 const API_URL = import.meta.env.VITE_API_URL;
-
-const LANGUAGES: Language[] = [
-  "English", "Spanish", "French", "German", "Chinese",
-  "Arabic", "Hindi", "Japanese", "Portuguese", "Russian"
-];
-
-const LANG_FLAG: Record<Language, string> = {
-  English: "🇬🇧", Spanish: "🇪🇸", French: "🇫🇷", German: "🇩🇪", Chinese: "🇨🇳",
-  Arabic: "🇸🇦", Hindi: "🇮🇳", Japanese: "🇯🇵", Portuguese: "🇧🇷", Russian: "🇷🇺"
-};
 
 // ── All static strings on this page ───────────────────────────────────────────
 // Passed to prime() so the API is called immediately on language change,
@@ -192,17 +183,66 @@ const SMART_ALERTS = [
   "Blood-thinner conflicts",
 ];
 
+const SETTINGS_KEY = "pharmalens_settings";
+
+interface AppSettings {
+  notificationsEnabled: boolean;
+  offlineMode: boolean;
+  smartAlerts: string[];
+}
+
+const DEFAULT_SETTINGS: AppSettings = {
+  notificationsEnabled: false,
+  offlineMode: false,
+  smartAlerts: [...SMART_ALERTS],
+};
+
+function loadSettings(): AppSettings {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if (!raw) return DEFAULT_SETTINGS;
+    return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
+  } catch {
+    return DEFAULT_SETTINGS;
+  }
+}
+
+function persistSettings(s: AppSettings) {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+}
+
 export function ProfileSettings() {
   const { t, language, setLanguage, translating, prime } = useLanguage();
 
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [offlineMode,          setOfflineMode]          = useState(false);
-  const [profile,              setProfile]              = useState<UserProfile | null>(null);
-  const [loading,              setLoading]              = useState(true);
-  const [removingAllergy,      setRemovingAllergy]      = useState<string | null>(null);
-  const [removingCondition,    setRemovingCondition]    = useState<string | null>(null);
-  const [addingAllergy,        setAddingAllergy]        = useState(false);
-  const [addingCondition,      setAddingCondition]      = useState(false);
+  const [appSettings,      setAppSettings]      = useState<AppSettings>(loadSettings);
+  const [profile,          setProfile]          = useState<UserProfile | null>(null);
+  const [loading,          setLoading]          = useState(true);
+  const [removingAllergy,  setRemovingAllergy]  = useState<string | null>(null);
+  const [removingCondition,setRemovingCondition]= useState<string | null>(null);
+  const [addingAllergy,    setAddingAllergy]    = useState(false);
+  const [addingCondition,  setAddingCondition]  = useState(false);
+
+  const updateSettings = (patch: Partial<AppSettings>) => {
+    const next = { ...appSettings, ...patch };
+    setAppSettings(next);
+    persistSettings(next);
+  };
+
+  const handleNotificationsToggle = async (enabled: boolean) => {
+    updateSettings({ notificationsEnabled: enabled });
+    if (enabled) {
+      await scheduleDailyReminder();
+    } else {
+      await cancelDailyReminder();
+    }
+  };
+
+  const handleAlertToggle = (label: string, checked: boolean) => {
+    const next = checked
+      ? [...appSettings.smartAlerts, label]
+      : appSettings.smartAlerts.filter((a) => a !== label);
+    updateSettings({ smartAlerts: next });
+  };
 
   // ── Fire API call immediately when language changes ───────────────────────
   // prime() queues all PAGE_STRINGS and calls the backend in one batch,
@@ -312,7 +352,7 @@ export function ProfileSettings() {
   const conditions = parseList(profile.conditions);
 
   return (
-    <div className="min-h-screen molecular-bg p-6 pb-24">
+    <div className="min-h-screen molecular-bg p-4 md:p-6 pb-nav">
 
       {/* Translating indicator */}
       <AnimatePresence>
@@ -330,27 +370,27 @@ export function ProfileSettings() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto">
 
         <div className="text-center mb-8">
-          <h2 className="text-4xl mb-3">
+          <h2 className="text-2xl md:text-4xl mb-3">
             <span className="neon-text-cyan">{t("Health Profile")}</span>
           </h2>
-          <p className="text-[#8a9ab8]">{t("Manage your health information and app settings")}</p>
+          <p className="text-sm md:text-base text-[#8a9ab8]">{t("Manage your health information and app settings")}</p>
         </div>
 
         {/* Profile Card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="glass-card-strong rounded-3xl p-8 mb-6 neon-border-cyan"
+          className="glass-card-strong rounded-3xl p-4 md:p-8 mb-6 neon-border-cyan"
         >
-          <div className="flex items-center gap-6 mb-6">
+          <div className="flex items-center gap-3 md:gap-6 mb-4 md:mb-6">
             <motion.div whileHover={{ scale: 1.05 }}
-              className="w-24 h-24 rounded-3xl bg-gradient-to-br from-[#4fd1c5]/20 to-[#6366f1]/20 neon-border-cyan flex items-center justify-center"
+              className="w-16 h-16 md:w-24 md:h-24 rounded-2xl md:rounded-3xl bg-gradient-to-br from-[#4fd1c5]/20 to-[#6366f1]/20 neon-border-cyan flex items-center justify-center shrink-0"
             >
-              <User className="w-12 h-12 text-[#4fd1c5]" />
+              <User className="w-8 h-8 md:w-12 md:h-12 text-[#4fd1c5]" />
             </motion.div>
-            <div className="flex-1">
-              <h3 className="text-2xl text-white mb-0.5">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg md:text-2xl text-white mb-0.5 truncate">
                 {profile.full_name ?? profile.username ?? t("User")}
               </h3>
-              <p className="text-[#8a9ab8] text-sm mb-1">{profile.email}</p>
+              <p className="text-[#8a9ab8] text-xs md:text-sm mb-1 truncate">{profile.email}</p>
               {profile.phone && (
                 <p className="text-[#8a9ab8] text-xs flex items-center gap-1">
                   <Phone className="w-3 h-3" />{profile.phone}
@@ -413,37 +453,75 @@ export function ProfileSettings() {
 
         {/* Language Settings */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          className="glass-card-strong rounded-3xl p-6 mb-6"
+          className="glass-card-strong rounded-3xl p-4 md:p-6 mb-6"
         >
-          <h3 className="text-xl text-white mb-1 flex items-center gap-2">
-            <Globe className="w-6 h-6 text-[#4fd1c5]" />{t("Language Settings")}
-          </h3>
+          <div className="flex items-start justify-between mb-1">
+            <h3 className="text-xl text-white flex items-center gap-2">
+              <Globe className="w-6 h-6 text-[#4fd1c5]" />{t("Language Settings")}
+            </h3>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-[#4fd1c5]/10 border border-[#4fd1c5]/30 text-[#4fd1c5] shrink-0">
+              25 languages
+            </span>
+          </div>
           <p className="text-[#8a9ab8] text-xs mb-4">
             {t("Selecting a language translates the entire app automatically")}
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-            {LANGUAGES.map((lang, index) => (
-              <motion.button
-                key={lang}
-                initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 + index * 0.04 }}
-                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                onClick={() => setLanguage(lang)}
-                className={`glass-card rounded-xl p-3 transition-all duration-300 flex flex-col items-center gap-1 ${
-                  language === lang ? "neon-border-cyan bg-[#4fd1c5]/10" : "hover:neon-border-cyan"
-                }`}
-              >
-                <span className="text-2xl">{LANG_FLAG[lang]}</span>
-                <span className="text-white text-xs">{lang}</span>
-                {language === lang && (
-                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
-                    className="w-1.5 h-1.5 bg-[#4fd1c5] rounded-full neon-glow-cyan"
-                  />
-                )}
-              </motion.button>
-            ))}
+          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+            {LANGUAGES.map((lang, index) => {
+              const isActive = language === lang;
+              return (
+                <motion.button
+                  key={lang}
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.3 + index * 0.02 }}
+                  whileTap={{ scale: 0.94 }}
+                  onClick={() => setLanguage(lang)}
+                  className={`relative glass-card rounded-xl p-2.5 transition-all duration-300 flex flex-col items-center gap-1 text-center ${
+                    isActive
+                      ? "neon-border-cyan bg-[#4fd1c5]/10"
+                      : "border border-white/5 hover:border-[#4fd1c5]/40"
+                  }`}
+                >
+                  {/* Native script */}
+                  <span
+                    className={`text-sm font-semibold leading-tight ${
+                      isActive ? "text-[#4fd1c5]" : "text-[#e8f0ff]"
+                    }`}
+                    style={{ fontFamily: "system-ui, sans-serif" }}
+                  >
+                    {LANG_NATIVE[lang]}
+                  </span>
+
+                  {/* English name */}
+                  <span className="text-[10px] text-[#8a9ab8] leading-none">{lang}</span>
+
+                  {/* Active dot */}
+                  {isActive && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#4fd1c5] rounded-full neon-glow-cyan border border-[#0a0e1a]"
+                    />
+                  )}
+                </motion.button>
+              );
+            })}
           </div>
+
+          {/* Current language indicator */}
+          {language !== "English" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mt-4 flex items-center gap-2 text-xs text-[#4fd1c5]"
+            >
+              <div className="w-1.5 h-1.5 bg-[#4fd1c5] rounded-full neon-glow-cyan" />
+              Active: <span className="font-medium">{language}</span>
+              <span className="text-[#8a9ab8]">({LANG_NATIVE[language]})</span>
+            </motion.div>
+          )}
         </motion.div>
 
         {/* App Settings */}
@@ -463,12 +541,12 @@ export function ProfileSettings() {
                   <p className="text-sm text-[#8a9ab8]">{t("Get notified about medication times")}</p>
                 </div>
               </div>
-              <Switch checked={notificationsEnabled} onCheckedChange={setNotificationsEnabled} />
+              <Switch checked={appSettings.notificationsEnabled} onCheckedChange={handleNotificationsToggle} />
             </div>
 
             <div className="flex items-center justify-between p-4 glass-card rounded-xl">
               <div className="flex items-center gap-3">
-                {offlineMode
+                {appSettings.offlineMode
                   ? <WifiOff className="w-5 h-5 text-[#8a9ab8]" />
                   : <Wifi className="w-5 h-5 text-[#4fd1c5]" />}
                 <div>
@@ -476,7 +554,7 @@ export function ProfileSettings() {
                   <p className="text-sm text-[#8a9ab8]">{t("Use local database for scanning")}</p>
                 </div>
               </div>
-              <Switch checked={offlineMode} onCheckedChange={setOfflineMode} />
+              <Switch checked={appSettings.offlineMode} onCheckedChange={(v) => updateSettings({ offlineMode: v })} />
             </div>
           </div>
 
@@ -485,7 +563,12 @@ export function ProfileSettings() {
             <div className="space-y-2 text-sm">
               {SMART_ALERTS.map((label) => (
                 <label key={label} className="flex items-center gap-2 text-[#8a9ab8] cursor-pointer hover:text-white transition-colors">
-                  <input type="checkbox" defaultChecked className="rounded" />
+                  <input
+                    type="checkbox"
+                    checked={appSettings.smartAlerts.includes(label)}
+                    onChange={(e) => handleAlertToggle(label, e.target.checked)}
+                    className="rounded accent-[#4fd1c5] w-4 h-4 cursor-pointer"
+                  />
                   {t(label)}
                 </label>
               ))}

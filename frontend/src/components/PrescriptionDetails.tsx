@@ -5,7 +5,9 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect } from "react";
+import { toast } from "sonner";
 import { useLanguage } from "./language_context";
+import { schedulePrescriptionReminders } from "../lib/notifications";
 
 // ─── Types matching prescription_ocr_data schema exactly ─────────────────────
 
@@ -210,6 +212,20 @@ export function PrescriptionDetails({
   }, [language, prime]);
 
   const medicines  = normaliseMedicines(prescription.medicines);
+
+  // ── Schedule dose reminders from prescription instructions ────────────────
+  useEffect(() => {
+    if (medicines.length === 0) return;
+    schedulePrescriptionReminders(medicines).then((count) => {
+      if (count > 0) {
+        toast.success(
+          `${count} medication reminder${count !== 1 ? 's' : ''} scheduled`,
+          { description: 'Daily notifications set based on your prescription dosage' }
+        );
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const routes     = normaliseRoutes(prescription.routes);
   const confidence = prescription.confidence ?? null;
   const confPct    = confidence !== null ? Math.round(confidence * 100) : null;

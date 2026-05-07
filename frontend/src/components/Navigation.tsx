@@ -76,6 +76,7 @@ export function Navigation({
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#4fd1c5]/20 glass-card-strong"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="mx-auto max-w-6xl px-4 py-3">
         <div className="flex items-center justify-around">

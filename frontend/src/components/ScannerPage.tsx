@@ -344,7 +344,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
   const scanSteps = ["OCR Processing", "Database Matching", "Safety Analysis"];
 
   return (
-    <div className="min-h-screen molecular-bg p-6 pb-24">
+    <div className="min-h-screen molecular-bg p-4 md:p-6 pb-nav">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -352,7 +352,7 @@ export function ScannerPage({ onScanComplete }: ScannerPageProps) {
       >
         {/* ── Page header ── */}
         <div className="text-center mb-8">
-          <h2 className="text-4xl mb-3">
+          <h2 className="text-2xl md:text-4xl mb-3">
             <span className="neon-text-cyan">
               {imageType === "medicine" ? t("Medicine Scanner") : t("Prescription Scanner")}
             </span>
