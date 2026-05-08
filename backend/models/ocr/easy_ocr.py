@@ -1,7 +1,8 @@
+import os
 import requests
 from backend.models.ocr.exceptions import OCREngineError
 
-OCR_SPACE_API_KEY = "K83818984888957"
+OCR_SPACE_API_KEY = os.getenv("OCR_SPACE_API_KEY", "")
 OCR_SPACE_URL = "https://api.ocr.space/parse/image"
 
 
@@ -29,7 +30,7 @@ def _extracted_from_run_ocr_space_8(image_bytes):
     }
 
     data = {
-        "apikey": "K83818984888957",
+        "apikey": OCR_SPACE_API_KEY,
         "language": "eng",
        "isOverlayRequired": False,
         "OCREngine": 2,  # better for handwriting

@@ -8,6 +8,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { App as CapApp } from '@capacitor/app';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 import { HomePage } from "./components/HomePage";
 import { ScannerPage } from "./components/ScannerPage";
@@ -25,6 +26,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { Toaster } from "./components/ui/sonner";
 import { PrescriptionDetails } from "./components/PrescriptionDetails";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { EmergencyCard } from "./components/EmergencyCard";
+import { Onboarding, shouldShowOnboarding } from "./components/Onboarding";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -33,7 +37,8 @@ function AppContent() {
   const location = useLocation();
 
   const [user, setUser] = useState<any>(null);
-  const [authOpen, setAuthOpen] = useState(false); // ← ADD THIS
+  const [authOpen, setAuthOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(() => shouldShowOnboarding());
   const [scanResult, setScanResult] = useState<any>(null);
   const [initialDrugsForCheck, setInitialDrugsForCheck] = useState<string[]>([]);
   const [historyItems, setHistoryItems] = useState<any[]>([]);
@@ -43,6 +48,9 @@ function AppContent() {
   ------------------------------------------- */
   useEffect(() => {
     document.documentElement.classList.add("dark");
+
+    StatusBar.setStyle({ style: Style.Dark }).catch(() => {});
+    StatusBar.setOverlaysWebView({ overlay: false }).catch(() => {});
 
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user ?? null);
@@ -154,17 +162,23 @@ function AppContent() {
     <div className="min-h-screen bg-[#0a0e1a] text-white">
       <Toaster position="top-center" theme="dark" />
 
+      {showOnboarding && (
+        <Onboarding onDone={() => setShowOnboarding(false)} />
+      )}
+
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route
             path="/"
             element={
-              <HomePage
-                onNavigate={handleNavigate}
-                user={user}
-                onLogout={handleLogout}
-                onLogin={handleLogin}
-              />
+              <ErrorBoundary>
+                <HomePage
+                  onNavigate={handleNavigate}
+                  user={user}
+                  onLogout={handleLogout}
+                  onLogin={handleLogin}
+                />
+              </ErrorBoundary>
             }
           />
           <Route
@@ -172,10 +186,20 @@ function AppContent() {
             element={<AuthCallback setUser={setUser} />}
           />
           <Route
+            path="/emergency"
+            element={
+              <ErrorBoundary>
+                <EmergencyCard />
+              </ErrorBoundary>
+            }
+          />
+          <Route
             path="/scanner"
             element={
               <ProtectedRoute user={user}>
-                <ScannerPage onScanComplete={handleScanComplete} />
+                <ErrorBoundary>
+                  <ScannerPage onScanComplete={handleScanComplete} />
+                </ErrorBoundary>
               </ProtectedRoute>
             }
           />
@@ -183,15 +207,17 @@ function AppContent() {
             path="/medicine"
             element={
               <ProtectedRoute user={user}>
-                {scanResult ? (
-                  <MedicineDetails
-                    medicine={scanResult}
-                    onSaveToHistory={handleSaveToHistory}
-                    onCheckInteractions={handleCheckInteractions}
-                  />
-                ) : (
-                  <Navigate to="/" replace />
-                )}
+                <ErrorBoundary>
+                  {scanResult ? (
+                    <MedicineDetails
+                      medicine={scanResult}
+                      onSaveToHistory={handleSaveToHistory}
+                      onCheckInteractions={handleCheckInteractions}
+                    />
+                  ) : (
+                    <Navigate to="/" replace />
+                  )}
+                </ErrorBoundary>
               </ProtectedRoute>
             }
           />
@@ -199,14 +225,16 @@ function AppContent() {
             path="/prescription"
             element={
               <ProtectedRoute user={user}>
-                {scanResult ? (
-                  <PrescriptionDetails
-                    prescription={scanResult}
-                    onSaveToHistory={handleSaveToHistory}
-                  />
-                ) : (
-                  <Navigate to="/" replace />
-                )}
+                <ErrorBoundary>
+                  {scanResult ? (
+                    <PrescriptionDetails
+                      prescription={scanResult}
+                      onSaveToHistory={handleSaveToHistory}
+                    />
+                  ) : (
+                    <Navigate to="/" replace />
+                  )}
+                </ErrorBoundary>
               </ProtectedRoute>
             }
           />
@@ -214,7 +242,9 @@ function AppContent() {
             path="/interactions"
             element={
               <ProtectedRoute user={user}>
-                <DrugInteractionChecker initialDrugs={initialDrugsForCheck} />
+                <ErrorBoundary>
+                  <DrugInteractionChecker initialDrugs={initialDrugsForCheck} />
+                </ErrorBoundary>
               </ProtectedRoute>
             }
           />
@@ -222,7 +252,9 @@ function AppContent() {
             path="/chat"
             element={
               <ProtectedRoute user={user}>
-                <AIChat />
+                <ErrorBoundary>
+                  <AIChat />
+                </ErrorBoundary>
               </ProtectedRoute>
             }
           />
@@ -230,7 +262,9 @@ function AppContent() {
             path="/history"
             element={
               <ProtectedRoute user={user}>
-                <MedicationHistory historyItems={historyItems} />
+                <ErrorBoundary>
+                  <MedicationHistory historyItems={historyItems} />
+                </ErrorBoundary>
               </ProtectedRoute>
             }
           />
@@ -238,7 +272,9 @@ function AppContent() {
             path="/profile"
             element={
               <ProtectedRoute user={user}>
-                <ProfileSettings />
+                <ErrorBoundary>
+                  <ProfileSettings />
+                </ErrorBoundary>
               </ProtectedRoute>
             }
           />
@@ -250,7 +286,7 @@ function AppContent() {
         onNavigate={handleNavigate}
         user={user}
         onLogout={handleLogout}
-        onLoginClick={() => setAuthOpen(true)} // ← ADD THIS PROP
+        onLoginClick={() => setAuthOpen(true)}
       />
 
       {/* AuthModal — one instance for the whole app */}

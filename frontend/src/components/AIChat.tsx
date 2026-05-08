@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 import { useState, useRef, useEffect } from "react";
-import { Send, Mic, Camera, Loader2, Bot, User } from "lucide-react";
+import { Send, Mic, Loader2, Bot, User, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { supabase } from "../supabase";
 import { useLanguage } from "./language_context";
@@ -12,7 +12,6 @@ interface Message {
   timestamp: Date;
 }
 
-// ── All static strings on this page ───────────────────────────────────────────
 const PAGE_STRINGS = [
   "Hello! I'm your PharmaLens AI Pharmacist. I can help you with medication information, dosage guidance, side effects, and general health questions. How can I assist you today?",
   "AI Pharmacist",
@@ -29,11 +28,8 @@ const PAGE_STRINGS = [
 export function AIChat() {
   const { t, language, prime } = useLanguage();
 
-  // ── Fire API call immediately when language changes ───────────────────────
   useEffect(() => {
-    if (language !== "English") {
-      prime(PAGE_STRINGS);
-    }
+    if (language !== "English") prime(PAGE_STRINGS);
   }, [language, prime]);
 
   const [isListening, setIsListening] = useState(false);
@@ -83,75 +79,39 @@ export function AIChat() {
   const startListening = () => {
     const SpeechRecognition =
       window.SpeechRecognition || (window as any).webkitSpeechRecognition;
-
     if (!SpeechRecognition) {
       alert("Your browser doesn't support voice input. Try Chrome or Edge.");
       return;
     }
-
     const recognition = new SpeechRecognition();
     recognitionRef.current = recognition;
-
     recognition.lang = "en-US";
     recognition.interimResults = true;
     recognition.continuous = false;
-
     recognition.onstart = () => setIsListening(true);
-
     recognition.onresult = (event: SpeechRecognitionEvent) => {
-      const transcript = Array.from(event.results)
-        .map((r) => r[0].transcript)
-        .join("");
+      const transcript = Array.from(event.results).map((r) => r[0].transcript).join("");
       setInputValue(transcript);
     };
-
-    recognition.onend = () => {
-      setIsListening(false);
-      recognitionRef.current = null;
-    };
-
-    recognition.onerror = (e) => {
-      console.error("Speech error:", e.error);
-      setIsListening(false);
-    };
-
+    recognition.onend = () => { setIsListening(false); recognitionRef.current = null; };
+    recognition.onerror = (e) => { console.error("Speech error:", e.error); setIsListening(false); };
     recognition.start();
   };
 
-  const stopListening = () => {
-    recognitionRef.current?.stop();
-    setIsListening(false);
-  };
+  const stopListening = () => { recognitionRef.current?.stop(); setIsListening(false); };
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const scrollToBottom = () => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); };
 
-  const getSessionAndToken = async () => {
-    const sessionRes = await supabase.auth.getSession();
-    return sessionRes.data.session?.access_token;
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  useEffect(() => { scrollToBottom(); }, [messages]);
 
   console.log("Messages:", messages);
 
   const handleSend = async () => {
     if (!inputValue.trim()) return;
-
-    const userMsg: Message = {
-      id: crypto.randomUUID(),
-      text: inputValue,
-      sender: "user",
-      timestamp: new Date(),
-    };
-
+    const userMsg: Message = { id: crypto.randomUUID(), text: inputValue, sender: "user", timestamp: new Date() };
     setMessages(prev => [...prev, userMsg]);
     setInputValue("");
     setIsTyping(true);
-
     streamAIResponse(userMsg.text);
   };
 
@@ -159,34 +119,16 @@ export function AIChat() {
     const loadChatHistory = async () => {
       const session = await supabase.auth.getSession();
       const token = session.data.session?.access_token;
-
       if (!token) return;
-
-      const res = await fetch(`${API_URL}/chat/history`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
+      const res = await fetch(`${API_URL}/chat/history`, { headers: { Authorization: `Bearer ${token}` } });
       const data = await res.json();
       const formatted: Message[] = [];
-
       data.forEach((row: any) => {
-        formatted.push({
-          id: crypto.randomUUID(),
-          text: row.query,
-          sender: "user",
-          timestamp: new Date(row.timestamp),
-        });
-        formatted.push({
-          id: crypto.randomUUID(),
-          text: row.response,
-          sender: "ai",
-          timestamp: new Date(row.timestamp),
-        });
+        formatted.push({ id: crypto.randomUUID(), text: row.query, sender: "user", timestamp: new Date(row.timestamp) });
+        formatted.push({ id: crypto.randomUUID(), text: row.response, sender: "ai", timestamp: new Date(row.timestamp) });
       });
-
       setMessages(formatted);
     };
-
     loadChatHistory();
   }, []);
 
@@ -198,104 +140,91 @@ export function AIChat() {
   ];
 
   return (
-    <div className="min-h-screen molecular-bg flex flex-col">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass-card-strong border-b border-[#4fd1c5]/20 p-6"
-      >
-        <div className="max-w-4xl mx-auto flex items-center gap-4">
-          <motion.div
-            animate={{ rotate: [0, 10, -10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-            className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#4fd1c5]/20 to-[#6366f1]/20 neon-border-cyan flex items-center justify-center"
-          >
-            <Bot className="w-6 h-6 text-[#4fd1c5]" />
-          </motion.div>
-          <div>
-            <h2 className="text-xl text-white">{t("AI Pharmacist")}</h2>
-            <div className="flex items-center gap-2">
-              <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="w-2 h-2 bg-[#34d399] rounded-full neon-glow-green"
-              />
-              <p className="text-sm text-[#8a9ab8]">{t("Online & Ready to Help")}</p>
+    <div className="min-h-screen molecular-bg flex flex-col" style={{ paddingTop: 'calc(1.5rem + 20px)' }}>
+      {/* ── Header ── */}
+      <div className="shrink-0 border-b border-white/[0.06] px-4 py-3"
+        style={{ background: 'rgba(8,13,26,0.85)', backdropFilter: 'blur(20px)' }}>
+        <div className="max-w-2xl mx-auto flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0"
+            style={{ background: 'linear-gradient(135deg, rgba(45,212,191,0.2), rgba(99,102,241,0.2))', border: '1px solid rgba(45,212,191,0.2)' }}>
+            <Bot className="w-5 h-5 text-[#2DD4BF]" />
+          </div>
+          <div className="flex-1">
+            <p className="text-white font-semibold text-sm leading-none mb-1">{t("AI Pharmacist")}</p>
+            <div className="flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#34D399]" />
+              <p className="text-[#64748B] text-xs">{t("Online & Ready to Help")}</p>
             </div>
           </div>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center"
+            style={{ background: 'rgba(45,212,191,0.08)', border: '1px solid rgba(45,212,191,0.15)' }}>
+            <Sparkles className="w-4 h-4 text-[#2DD4BF]" />
+          </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-6 pb-48">
-        <div className="max-w-4xl mx-auto space-y-4">
+      {/* ── Messages ── */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-48">
+        <div className="max-w-2xl mx-auto space-y-4">
           <AnimatePresence>
             {messages.map((message) => (
               <motion.div
                 key={message.id}
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className={`flex gap-3 ${message.sender === "user" ? "flex-row-reverse" : "flex-row"}`}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
+                className={`flex gap-2.5 ${message.sender === "user" ? "flex-row-reverse" : "flex-row"}`}
               >
                 {/* Avatar */}
-                <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    message.sender === "ai"
-                      ? "bg-gradient-to-br from-[#4fd1c5]/20 to-[#6366f1]/20 neon-border-cyan"
-                      : "bg-gradient-to-br from-[#a78bfa]/20 to-[#6366f1]/20 neon-border-purple"
-                  }`}
-                >
-                  {message.sender === "ai" ? (
-                    <Bot className="w-5 h-5 text-[#4fd1c5]" />
-                  ) : (
-                    <User className="w-5 h-5 text-[#a78bfa]" />
-                  )}
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
+                  message.sender === "ai"
+                    ? "bg-[#2DD4BF]/10 border border-[#2DD4BF]/20"
+                    : "bg-[#8B5CF6]/10 border border-[#8B5CF6]/20"
+                }`}>
+                  {message.sender === "ai"
+                    ? <Bot className="w-4 h-4 text-[#2DD4BF]" />
+                    : <User className="w-4 h-4 text-[#8B5CF6]" />}
                 </div>
 
-                {/* Message Bubble */}
-                <div
-                  className={`glass-card rounded-2xl p-4 max-w-[70%] ${
-                    message.sender === "ai" ? "rounded-tl-none" : "rounded-tr-none"
-                  } ${
-                    message.sender === "ai"
-                      ? "border border-[#4fd1c5]/30"
-                      : "border border-[#a78bfa]/30"
-                  }`}
-                >
-                  <p className="text-[#e8f0ff] leading-relaxed">{message.text}</p>
-                  <p className="text-xs text-[#8a9ab8] mt-2">
-                    {message.timestamp.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                {/* Bubble */}
+                <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${
+                  message.sender === "user"
+                    ? "rounded-tr-sm"
+                    : "rounded-tl-sm"
+                }`}
+                  style={message.sender === "user"
+                    ? { background: 'linear-gradient(135deg, rgba(45,212,191,0.15), rgba(99,102,241,0.1))', border: '1px solid rgba(45,212,191,0.2)' }
+                    : { background: 'rgba(17,25,40,0.8)', border: '1px solid rgba(255,255,255,0.07)' }
+                  }>
+                  <p className="text-[#E2E8F0] text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                  <p className="text-[#475569] text-[10px] mt-1.5">
+                    {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </p>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
 
-          {/* Typing Indicator */}
+          {/* Typing indicator */}
           <AnimatePresence>
             {isTyping && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                className="flex gap-3"
+                exit={{ opacity: 0, y: 8 }}
+                className="flex gap-2.5"
               >
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4fd1c5]/20 to-[#6366f1]/20 neon-border-cyan flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-[#4fd1c5]" />
+                <div className="w-8 h-8 rounded-xl bg-[#2DD4BF]/10 border border-[#2DD4BF]/20 flex items-center justify-center shrink-0">
+                  <Bot className="w-4 h-4 text-[#2DD4BF]" />
                 </div>
-                <div className="glass-card rounded-2xl rounded-tl-none p-4 border border-[#4fd1c5]/30">
-                  <div className="flex gap-2">
+                <div className="rounded-2xl rounded-tl-sm px-4 py-3" style={{ background: 'rgba(17,25,40,0.8)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div className="flex gap-1.5 items-center h-4">
                     {[0, 1, 2].map((i) => (
                       <motion.div
                         key={i}
-                        animate={{ y: [0, -8, 0] }}
-                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.2 }}
-                        className="w-2 h-2 bg-[#4fd1c5] rounded-full"
+                        animate={{ y: [0, -4, 0] }}
+                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
+                        className="w-1.5 h-1.5 bg-[#2DD4BF] rounded-full opacity-60"
                       />
                     ))}
                   </div>
@@ -304,28 +233,26 @@ export function AIChat() {
             )}
           </AnimatePresence>
 
-          {/* Quick Questions */}
+          {/* Quick questions */}
           {messages.length === 1 && !isTyping && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="pt-4"
+              transition={{ delay: 0.4 }}
+              className="pt-2"
             >
-              <p className="text-sm text-[#8a9ab8] mb-3 text-center">
-                {t("Quick questions you can ask:")}
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <p className="text-[#475569] text-xs text-center mb-3">{t("Quick questions you can ask:")}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {quickQuestions.map((question, index) => (
                   <motion.button
                     key={question}
-                    initial={{ opacity: 0, scale: 0.9 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.6 + index * 0.1 }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    transition={{ delay: 0.5 + index * 0.08 }}
+                    whileTap={{ scale: 0.97 }}
                     onClick={() => setInputValue(question)}
-                    className="glass-card rounded-xl p-3 text-left text-sm text-[#e8f0ff] hover:neon-border-cyan transition-all duration-300"
+                    className="text-left px-4 py-3 rounded-xl text-sm text-[#94A3B8] transition-all"
+                    style={{ background: 'rgba(17,25,40,0.6)', border: '1px solid rgba(255,255,255,0.07)' }}
                   >
                     {t(question)}
                   </motion.button>
@@ -338,65 +265,49 @@ export function AIChat() {
         </div>
       </div>
 
-      {/* Input Area */}
+      {/* ── Input bar ── */}
       <div
-        className="fixed left-0 right-0 p-4 md:p-6 glass-card-strong border-t border-[#4fd1c5]/20"
-        style={{ bottom: 'calc(5rem + env(safe-area-inset-bottom))' }}
+        className="fixed left-0 right-0 px-4 py-3"
+        style={{ bottom: 'calc(5rem + env(safe-area-inset-bottom))', background: 'rgba(8,13,26,0.9)', backdropFilter: 'blur(20px)', borderTop: '1px solid rgba(255,255,255,0.06)' }}
       >
-        <div className="max-w-4xl mx-auto">
-          <div className="flex gap-3">
-            {/* Camera Button */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="glass-card rounded-xl p-3 neon-border-cyan hover:bg-[#4fd1c5]/10 transition-all duration-300"
-            >
-              <Camera className="w-6 h-6 text-[#4fd1c5]" />
-            </motion.button>
+        <div className="max-w-2xl mx-auto">
+          <div className="flex items-center gap-2 rounded-2xl px-3 py-2" style={{ background: 'rgba(17,25,40,0.8)', border: '1px solid rgba(255,255,255,0.09)' }}>
+            {/* Input */}
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSend()}
+              placeholder={t("Ask me anything about medications...")}
+              className="flex-1 bg-transparent text-white text-sm placeholder-[#475569] outline-none py-1"
+            />
 
-            {/* Input Field */}
-            <div className="flex-1 relative">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSend()}
-                placeholder={t("Ask me anything about medications...")}
-                className="w-full glass-card rounded-xl px-4 py-3 pr-12 text-white placeholder-[#8a9ab8] neon-border-cyan focus:outline-none focus:neon-glow-cyan transition-all duration-300"
-              />
-            </div>
-
-            {/* Voice Button */}
+            {/* Voice */}
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.9 }}
               onClick={isListening ? stopListening : startListening}
-              className={`glass-card rounded-xl p-3 transition-all duration-300 ${
-                isListening
-                  ? "neon-border-cyan bg-[#4fd1c5]/20 animate-pulse"
-                  : "neon-border-purple hover:bg-[#a78bfa]/10"
+              className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all ${
+                isListening ? "bg-[#2DD4BF]/20" : "hover:bg-white/5"
               }`}
             >
-              <Mic className={`w-6 h-6 ${isListening ? "text-[#4fd1c5]" : "text-[#a78bfa]"}`} />
+              <Mic className={`w-4 h-4 ${isListening ? "text-[#2DD4BF]" : "text-[#475569]"}`} />
             </motion.button>
 
-            {/* Send Button */}
+            {/* Send */}
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.9 }}
               onClick={handleSend}
               disabled={!inputValue.trim()}
-              className="glass-card rounded-xl p-3 neon-border-blue hover:bg-[#6366f1]/10 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 disabled:opacity-30 transition-all"
+              style={{ background: inputValue.trim() ? 'linear-gradient(135deg, #14B8A6, #6366F1)' : 'rgba(255,255,255,0.05)' }}
             >
-              {isTyping ? (
-                <Loader2 className="w-6 h-6 text-[#6366f1] animate-spin" />
-              ) : (
-                <Send className="w-6 h-6 text-[#6366f1]" />
-              )}
+              {isTyping
+                ? <Loader2 className="w-4 h-4 text-white animate-spin" />
+                : <Send className="w-4 h-4 text-white" />}
             </motion.button>
           </div>
 
-          <p className="text-xs text-[#8a9ab8] text-center mt-3">
+          <p className="text-[#334155] text-[10px] text-center mt-2">
             {t("Powered by Gemma 3n LLM • Always consult your doctor for medical decisions")}
           </p>
         </div>

@@ -4,7 +4,13 @@
       "Bash(npm install *)",
       "Bash(npx tsc *)",
       "Bash(node_modules\\\\.bin\\\\tsc --noEmit)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\palya\\\\Desktop\\\\pharmalens\\\\Pharmalens\\\\frontend\\\\src\" -Recurse -Filter \"*.tsx\")",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(findstr \"status-bar\\\\|capacitor\")",
+      "Bash(npx cap *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\palya\\\\Desktop\\\\pharmalens\\\\Pharmalens\" -Recurse -Directory -Filter \"training\")",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\palya\\\\Desktop\\\\pharmalens\\\\Pharmalens\\\\training_data\" -File | Select-Object Name, @{Name=\"Extension\"; Expression={$_.Extension}}, Length | Sort-Object Name)"
     ]
   }
 }

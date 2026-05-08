@@ -1,67 +1,46 @@
 import { useState, useEffect } from "react";
-import {
-  Plus,
-  X,
-  AlertTriangle,
-  CheckCircle,
-  AlertCircle,
-  Search,
-} from "lucide-react";
+import { Plus, X, AlertTriangle, CheckCircle, AlertCircle, Search, ShieldAlert, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { useLanguage } from "./language_context";
 import { fireInteractionAlert } from "../lib/notifications";
 
-interface Drug {
-  id: string;
-  name: string;
-}
+interface Drug { id: string; name: string; }
 interface EvidenceInteraction {
   severity: "mild" | "moderate" | "severe";
   prr_bucket: string;
   frequency_bucket: string;
 }
-
 interface AIAnalysis {
   short_answer: string;
   long_answer: string;
   confidence: "low" | "medium" | "high";
 }
-
 interface InteractionResult {
   input_drugs: string[];
   ai_analysis: AIAnalysis;
   interactions: EvidenceInteraction[];
 }
+interface DrugInteractionCheckerProps { initialDrugs?: string[]; }
 
-interface DrugInteractionCheckerProps {
-  initialDrugs?: string[];
-}
-
-// ── All static strings on this page ───────────────────────────────────────────
 const PAGE_STRINGS = [
-  "Drug Interaction",
-  "Checker",
+  "Drug Interaction", "Checker",
   "Analyze real clinical interactions using PharmaLens intelligence",
-  "Add Medications",
-  "Type medication name...",
-  "Analyzing interactions…",
-  "Hide details",
-  "View details",
-  "Observed interaction patterns:",
-  "Confidence level:",
+  "Add Medications", "Type medication name...", "Analyzing interactions…",
+  "Hide details", "View details", "Observed interaction patterns:", "Confidence level:",
 ];
 
-export function DrugInteractionChecker({
-  initialDrugs = [],
-}: DrugInteractionCheckerProps) {
+const SEVERITY_CONFIG = {
+  severe:   { bg: 'rgba(239,68,68,0.08)',   border: 'rgba(239,68,68,0.3)',   text: '#F87171', icon: AlertTriangle,  label: 'Severe'   },
+  moderate: { bg: 'rgba(251,191,36,0.08)',  border: 'rgba(251,191,36,0.3)',  text: '#FBBF24', icon: AlertCircle,   label: 'Moderate' },
+  mild:     { bg: 'rgba(52,211,153,0.08)',  border: 'rgba(52,211,153,0.3)',  text: '#34D399', icon: CheckCircle,   label: 'Mild'     },
+};
+
+export function DrugInteractionChecker({ initialDrugs = [] }: DrugInteractionCheckerProps) {
   const { t, language, prime } = useLanguage();
 
-  // ── Fire API call immediately when language changes ───────────────────────
   useEffect(() => {
-    if (language !== "English") {
-      prime(PAGE_STRINGS);
-    }
+    if (language !== "English") prime(PAGE_STRINGS);
   }, [language, prime]);
 
   const [drugs, setDrugs] = useState<Drug[]>([]);
@@ -74,21 +53,13 @@ export function DrugInteractionChecker({
   const [showDetails, setShowDetails] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Initialize with provided drugs
   useEffect(() => {
     if (initialDrugs.length > 0) {
-      setDrugs(
-        initialDrugs.map((name) => ({
-          id: crypto.randomUUID(),
-          name,
-        }))
-      );
+      setDrugs(initialDrugs.map((name) => ({ id: crypto.randomUUID(), name })));
     }
   }, [initialDrugs]);
 
-  const handleInputChange = (value: string) => {
-    setInputValue(value);
-  };
+  const handleInputChange = (value: string) => { setInputValue(value); };
 
   const addDrug = (drugName: string) => {
     if (!drugName.trim()) return;
@@ -108,35 +79,20 @@ export function DrugInteractionChecker({
 
   const checkInteractions = async () => {
     if (drugs.length < 2) return;
-
     setLoading(true);
     setError(null);
     setShowResults(false);
-
     try {
       const response = await fetch(`${API_URL}/drug-interactions/check`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-        body: JSON.stringify({
-          drugs: drugs.map((d) => d.name),
-        }),
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("access_token")}` },
+        body: JSON.stringify({ drugs: drugs.map((d) => d.name) }),
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch interaction data");
-      }
-
+      if (!response.ok) throw new Error("Failed to fetch interaction data");
       const data: InteractionResult = await response.json();
       setResults(data);
       setShowResults(true);
-
-      // Fire push notification + in-app toast for severe interactions
-      const severeInteractions = data.interactions.filter(
-        (i) => i.severity === 'severe'
-      );
+      const severeInteractions = data.interactions.filter((i) => i.severity === 'severe');
       if (severeInteractions.length > 0) {
         await fireInteractionAlert(data.input_drugs, 'severe');
         toast.error('Dangerous drug combination detected!', {
@@ -156,168 +112,194 @@ export function DrugInteractionChecker({
     }
   };
 
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case "severe":
-        return {
-          bg: "bg-[#ef4444]/10",
-          border: "border-[#ef4444]/50",
-          text: "text-[#ef4444]",
-          glow: "neon-glow-red",
-        };
-      case "moderate":
-        return {
-          bg: "bg-[#fbbf24]/10",
-          border: "border-[#fbbf24]/50",
-          text: "text-[#fbbf24]",
-          glow: "neon-glow-yellow",
-        };
-      default:
-        return {
-          bg: "bg-[#34d399]/10",
-          border: "border-[#34d399]/50",
-          text: "text-[#34d399]",
-          glow: "neon-glow-green",
-        };
-    }
-  };
+  const overallSeverity = results
+    ? results.interactions.some(i => i.severity === 'severe') ? 'severe'
+    : results.interactions.some(i => i.severity === 'moderate') ? 'moderate'
+    : 'mild'
+    : null;
 
   return (
-    <div className="min-h-screen molecular-bg p-6 pb-24">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="max-w-4xl mx-auto"
-      >
-        <div className="text-center mb-8">
-          <h2 className="text-4xl mb-3">
-            <span className="neon-text-cyan">{t("Drug Interaction")}</span>{" "}
-            <span className="text-[#a78bfa]">{t("Checker")}</span>
-          </h2>
-          <p className="text-[#8a9ab8]">
-            {t("Analyze real clinical interactions using PharmaLens intelligence")}
-          </p>
+    <div className="min-h-screen molecular-bg px-4 pb-nav" style={{ paddingTop: 'calc(1.5rem + 20px)' }}>
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl mx-auto">
+
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-2xl flex items-center justify-center"
+              style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.25)' }}>
+              <ShieldAlert className="w-5 h-5 text-[#A78BFA]" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white leading-none mb-0.5">
+                {t("Drug Interaction")} <span className="text-[#A78BFA]">{t("Checker")}</span>
+              </h1>
+              <p className="text-[#64748B] text-xs">{t("Analyze real clinical interactions using PharmaLens intelligence")}</p>
+            </div>
+          </div>
         </div>
 
-        {/* Input Section */}
-        <div className="glass-card-strong rounded-3xl p-6 mb-6 neon-border-cyan">
-          <label className="text-white mb-3 block">{t("Add Medications")}</label>
-          <div className="flex gap-3">
+        {/* Input section */}
+        <div className="glass-card-strong rounded-2xl p-5 mb-4">
+          <label className="text-[#94A3B8] text-xs font-medium uppercase tracking-wide mb-3 block">
+            {t("Add Medications")}
+          </label>
+
+          <div className="flex gap-2 mb-4">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => handleInputChange(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && addDrug(inputValue)}
               placeholder={t("Type medication name...")}
-              className="flex-1 glass-card rounded-xl px-4 py-3 text-white placeholder-[#8a9ab8] neon-border-cyan"
+              className="flex-1 rounded-xl px-4 py-3 text-white text-sm placeholder-[#475569] outline-none transition-all"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)' }}
             />
-
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.93 }}
               onClick={() => addDrug(inputValue)}
-              className="glass-card-strong rounded-xl px-4 neon-border-blue"
+              className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all"
+              style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)' }}
             >
-              <Plus className="w-6 h-6 text-[#6366f1]" />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={checkInteractions}
-              className="glass-card-strong rounded-xl px-4 neon-border-cyan"
-            >
-              <Search className="w-6 h-6 text-[#4fd1c5]" />
+              <Plus className="w-5 h-5 text-[#818CF8]" />
             </motion.button>
           </div>
 
-          {/* Selected Drugs */}
-          <div className="mt-6 flex flex-wrap gap-3">
-            {drugs.map((drug) => (
-              <div
-                key={drug.id}
-                className="glass-card rounded-full px-4 py-2 flex items-center gap-2 neon-border-cyan"
-              >
-                <span className="text-white">{drug.name}</span>
-                <button onClick={() => removeDrug(drug.id)}>
-                  <X className="w-4 h-4 text-[#ef4444]" />
-                </button>
-              </div>
-            ))}
-          </div>
+          {/* Drug tags */}
+          {drugs.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {drugs.map((drug) => (
+                <motion.div
+                  key={drug.id}
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.85 }}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full"
+                  style={{ background: 'rgba(45,212,191,0.1)', border: '1px solid rgba(45,212,191,0.25)' }}
+                >
+                  <span className="text-[#2DD4BF] text-sm font-medium">{drug.name}</span>
+                  <button onClick={() => removeDrug(drug.id)} className="hover:opacity-70 transition-opacity">
+                    <X className="w-3.5 h-3.5 text-[#2DD4BF]" />
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+          )}
+
+          {/* Check Interactions button */}
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            onClick={checkInteractions}
+            className="w-full py-3.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all"
+            style={drugs.length >= 2 && !loading
+              ? { background: 'linear-gradient(135deg, #14B8A6, #6366F1)', color: '#fff', boxShadow: '0 4px 20px rgba(20,184,166,0.25)', cursor: 'pointer' }
+              : { background: 'rgba(45,212,191,0.15)', border: '1px solid rgba(45,212,191,0.3)', color: 'rgba(255,255,255,0.5)', cursor: drugs.length < 2 ? 'not-allowed' : 'wait' }
+            }
+          >
+            {loading
+              ? <><Loader2 className="w-4 h-4 animate-spin" />{t("Analyzing interactions…")}</>
+              : <><Search className="w-4 h-4" />Check Interactions</>
+            }
+          </motion.button>
+
+          {drugs.length < 2 && (
+            <p className="text-[#2DD4BF]/50 text-xs text-center mt-2">Add at least 2 medications to check</p>
+          )}
         </div>
 
-        {/* Loading / Error */}
-        {loading && (
-          <p className="text-center text-[#4fd1c5]">{t("Analyzing interactions…")}</p>
-        )}
+        {/* Error */}
         {error && (
-          <p className="text-center text-[#ef4444]">{error}</p>
+          <div className="rounded-xl px-4 py-3 mb-4 text-sm text-[#F87171]"
+            style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
+            {error}
+          </div>
         )}
 
         {/* Results */}
         <AnimatePresence>
-          {showResults && results && (
+          {showResults && results && overallSeverity && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              className="glass-card-strong rounded-3xl p-6 neon-border-cyan"
+              exit={{ opacity: 0 }}
+              className="space-y-3"
             >
-              {/* DRUG PAIR */}
-              <h3 className="text-white text-lg mb-2">
-                {results.input_drugs.join(" + ")}
-              </h3>
-
-              {/* SHORT ANSWER */}
-              <p className="text-[#8a9ab8]">
-                {results.ai_analysis.short_answer}
-              </p>
-
-              {/* VIEW DETAILS BUTTON */}
-              <button
-                onClick={() => setShowDetails((prev) => !prev)}
-                className="mt-3 text-sm text-[#a78bfa] hover:underline"
-              >
-                {showDetails ? t("Hide details") : t("View details")}
-              </button>
-
-              {/* DETAILS SECTION */}
-              <AnimatePresence>
-                {showDetails && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="mt-4 space-y-4"
-                  >
-                    {/* LONG ANSWER */}
-                    <div className="text-[#8a9ab8] text-sm leading-relaxed">
-                      {results.ai_analysis.long_answer}
+              {/* Severity banner */}
+              {(() => {
+                const cfg = SEVERITY_CONFIG[overallSeverity];
+                const Icon = cfg.icon;
+                return (
+                  <div className="rounded-2xl p-4 flex items-center gap-3"
+                    style={{ background: cfg.bg, border: `1px solid ${cfg.border}` }}>
+                    <Icon className="w-6 h-6 shrink-0" style={{ color: cfg.text }} />
+                    <div>
+                      <p className="font-semibold text-white text-sm">{cfg.label} Interaction</p>
+                      <p className="text-[#94A3B8] text-xs mt-0.5">
+                        {results.input_drugs.join(" + ")}
+                      </p>
                     </div>
+                  </div>
+                );
+              })()}
 
-                    {/* OBSERVED INTERACTION PATTERNS */}
-                    {results.interactions.length > 0 && (
-                      <div className="text-xs text-[#8a9ab8]">
-                        <p className="mb-1 font-medium">
-                          {t("Observed interaction patterns:")}
-                        </p>
-                        <ul className="list-disc ml-4 space-y-1">
-                          {results.interactions.map((item, idx) => (
-                            <li key={idx}>
-                              {item.severity} severity • PRR {item.prr_bucket} •{" "}
-                              {item.frequency_bucket.replace("_", " ")} frequency
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {/* AI summary */}
+              <div className="glass-card-strong rounded-2xl p-5">
+                <p className="text-[#E2E8F0] text-sm leading-relaxed mb-4">
+                  {results.ai_analysis.short_answer}
+                </p>
 
-              {/* CONFIDENCE */}
-              <p className="text-xs text-[#8a9ab8] mt-4">
-                {t("Confidence level:")} {results.ai_analysis.confidence}
-              </p>
+                <button
+                  onClick={() => setShowDetails((prev) => !prev)}
+                  className="text-xs text-[#A78BFA] font-medium hover:opacity-80 transition-opacity"
+                >
+                  {showDetails ? t("Hide details") : t("View details")}
+                </button>
+
+                <AnimatePresence>
+                  {showDetails && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mt-4 space-y-4 overflow-hidden"
+                    >
+                      <p className="text-[#94A3B8] text-sm leading-relaxed">
+                        {results.ai_analysis.long_answer}
+                      </p>
+
+                      {results.interactions.length > 0 && (
+                        <div>
+                          <p className="text-[#64748B] text-xs font-medium uppercase tracking-wide mb-2">
+                            {t("Observed interaction patterns:")}
+                          </p>
+                          <div className="space-y-2">
+                            {results.interactions.map((item, idx) => {
+                              const cfg = SEVERITY_CONFIG[item.severity];
+                              return (
+                                <div key={idx} className="flex items-center gap-2 text-xs px-3 py-2 rounded-lg"
+                                  style={{ background: cfg.bg, border: `1px solid ${cfg.border}` }}>
+                                  <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: cfg.text }} />
+                                  <span style={{ color: cfg.text }} className="font-medium capitalize">{item.severity}</span>
+                                  <span className="text-[#64748B]">·</span>
+                                  <span className="text-[#94A3B8]">PRR {item.prr_bucket} · {item.frequency_bucket.replace("_", " ")}</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center gap-1.5">
+                  <span className="text-[#475569] text-xs">{t("Confidence level:")}</span>
+                  <span className={`text-xs font-semibold capitalize ${
+                    results.ai_analysis.confidence === 'high' ? 'text-[#34D399]'
+                    : results.ai_analysis.confidence === 'medium' ? 'text-[#FBBF24]'
+                    : 'text-[#94A3B8]'
+                  }`}>{results.ai_analysis.confidence}</span>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

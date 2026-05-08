@@ -21,7 +21,13 @@ origins = [
     "http://localhost:5173",
     "https://pharmalenss.netlify.app",
     "https://pharmalens1.netlify.app",
-
+    "http://192.168.1.34:8000",
+    "http://192.168.1.35:8000",
+    "http://localhost",
+    "https://localhost",            # ← THIS is what your app actually sends
+    "capacitor://localhost",
+    "ionic://localhost",
+    "http://localhost:8080",
 ]
 
 app.add_middleware(
@@ -31,6 +37,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def debug_middleware(request: Request, call_next):
+    print(f"➡️ {request.method} {request.url}")
+    print(f"   Origin: {request.headers.get('origin')}")
+    print(f"   Headers: {dict(request.headers)}")
+    response = await call_next(request)
+    print(f"⬅️ Status: {response.status_code}")
+    return response
 # -------------------------------------------------
 # Routers (SAFE: no heavy init at import)
 # -------------------------------------------------

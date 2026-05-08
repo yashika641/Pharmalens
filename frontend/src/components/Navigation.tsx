@@ -72,13 +72,15 @@ export function Navigation({
   };
 
   return (
-    <motion.nav
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#4fd1c5]/20 glass-card-strong"
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="mx-auto max-w-6xl px-4 py-3">
+      {/* Blur backdrop — extends into safe area */}
+      <div className="absolute inset-0 border-t border-white/[0.06]"
+        style={{ background: 'rgba(8,13,26,0.96)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }} />
+
+      <div className="relative mx-auto max-w-lg px-2">
         <div className="flex items-center justify-around">
           {navItems.map(({ id, label, icon: Icon, isAuth }, index) => {
             const isActive = !isAuth && currentPage === id;
@@ -86,46 +88,46 @@ export function Navigation({
             return (
               <motion.button
                 key={id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
+                transition={{ delay: index * 0.04 }}
+                whileTap={{ scale: 0.92 }}
                 onClick={() => handleClick(id)}
-                className={`relative flex flex-col items-center gap-1 rounded-xl px-3 py-2 transition-all duration-300
-                  ${isActive ? "text-[#4fd1c5]" : "text-[#8a9ab8] hover:text-[#4fd1c5]"}`}
+                className="relative flex flex-col items-center gap-1 px-2 py-2.5 rounded-2xl transition-colors duration-200 min-w-[48px]"
               >
-                {/* Active background pill */}
+                {/* Active pill background */}
                 {isActive && (
                   <motion.div
-                    layoutId="activeTab"
-                    transition={{ type: "spring", duration: 0.5 }}
-                    className="absolute inset-0 rounded-xl glass-card neon-border-cyan"
+                    layoutId="nav-active"
+                    transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                    className="absolute inset-0 rounded-2xl"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(45,212,191,0.15), rgba(99,102,241,0.1))',
+                      border: '1px solid rgba(45,212,191,0.2)',
+                    }}
                   />
                 )}
 
                 <div className="relative z-10">
-                  <Icon className="h-6 w-6" />
+                  <Icon
+                    className={`h-5 w-5 transition-colors duration-200 ${
+                      isActive ? 'text-[#2DD4BF]' : 'text-slate-500'
+                    }`}
+                  />
                 </div>
 
-                <span className="relative z-10 text-xs">{t(label)}</span>
-
-                {/* Active dot */}
-                {isActive && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -bottom-1 h-1.5 w-1.5 rounded-full bg-[#4fd1c5] neon-glow-cyan"
-                  />
-                )}
+                <span
+                  className={`relative z-10 text-[10px] font-medium leading-none transition-colors duration-200 ${
+                    isActive ? 'text-[#2DD4BF]' : 'text-slate-500'
+                  }`}
+                >
+                  {t(label)}
+                </span>
               </motion.button>
             );
           })}
         </div>
       </div>
-
-      {/* Top glow line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#4fd1c5] to-transparent opacity-50" />
-    </motion.nav>
+    </nav>
   );
 }

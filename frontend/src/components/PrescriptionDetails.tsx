@@ -1,7 +1,7 @@
 import {
   FileText, Calendar, Pill, AlertTriangle,
   Info, Stethoscope, Clock, CheckCircle,
-  ChevronRight, Activity, Hash, Navigation2,
+  ChevronRight, Activity, Hash, Navigation2, Share2,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect } from "react";
@@ -213,6 +213,21 @@ export function PrescriptionDetails({
 
   const medicines  = normaliseMedicines(prescription.medicines);
 
+  const shareOnWhatsApp = () => {
+    const lines = [
+      "*Prescription Details — PharmaLens*",
+      prescription.doctor_name ? `Doctor: ${prescription.doctor_name}` : null,
+      prescription.prescription_date ? `Date: ${prescription.prescription_date}` : null,
+      prescription.diagnosis ? `Diagnosis: ${prescription.diagnosis}` : null,
+      medicines.length ? "\n*Medicines:*" : null,
+      ...medicines.map((m) =>
+        `• ${m.name}${m.dosage ? ` — ${m.dosage}` : ""}${m.frequency ? ` (${m.frequency})` : ""}`
+      ),
+      "\n_Shared via PharmaLens_",
+    ].filter(Boolean).join("\n");
+    window.open(`https://wa.me/?text=${encodeURIComponent(lines)}`, "_blank");
+  };
+
   // ── Schedule dose reminders from prescription instructions ────────────────
   useEffect(() => {
     if (medicines.length === 0) return;
@@ -231,43 +246,40 @@ export function PrescriptionDetails({
   const confPct    = confidence !== null ? Math.round(confidence * 100) : null;
 
   return (
-    <div className="min-h-screen molecular-bg p-6 pb-24">
+    <div className="min-h-screen molecular-bg px-4 pb-nav" style={{ paddingTop: 'calc(1.5rem + 20px)' }}>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-4xl mx-auto"
+        className="max-w-2xl mx-auto"
       >
         {/* ── Page header ── */}
-        <div className="text-center mb-8">
+        <div className="flex items-center gap-3 mb-6">
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", duration: 0.6 }}
-            className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-4"
-            style={{
-              background: "linear-gradient(135deg,rgba(163,139,250,.2),rgba(99,102,241,.2))",
-              border: "1px solid rgba(163,139,250,.5)",
-            }}
+            initial={{ scale: 0 }} animate={{ scale: 1 }}
+            transition={{ type: "spring", duration: 0.5 }}
+            className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
+            style={{ background: 'rgba(167,139,250,0.12)', border: '1px solid rgba(167,139,250,0.3)' }}
           >
-            <FileText className="w-10 h-10 text-[#a78bfa]" />
+            <FileText className="w-6 h-6 text-[#A78BFA]" />
           </motion.div>
-
-          <h2 className="text-4xl mb-2 neon-text-cyan">{t("Prescription Scanned")}</h2>
-          <p className="text-[#8a9ab8]">{t("AI-extracted prescription details")}</p>
-
-          {prescription.needs_review && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 mt-3 px-4 py-1.5 rounded-full text-sm
-                         bg-[#fbbf24]/10 border border-[#fbbf24]/40 text-[#fbbf24]"
-            >
-              <AlertTriangle className="w-4 h-4" />
-              {t("Needs manual review")}
-            </motion.div>
-          )}
+          <div>
+            <h1 className="text-xl font-bold text-white leading-none mb-0.5">
+              Prescription <span className="text-[#A78BFA]">Scanned</span>
+            </h1>
+            <p className="text-[#64748B] text-xs">{t("AI-extracted prescription details")}</p>
+          </div>
         </div>
+        {prescription.needs_review && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full text-sm"
+            style={{ background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.3)', color: '#FBBF24' }}
+          >
+            <AlertTriangle className="w-3.5 h-3.5" />
+            {t("Needs manual review")}
+          </motion.div>
+        )}
 
         {/* ── Confidence + OCR meta bar ── */}
         {(confPct !== null || prescription.ocr_engine) && (
@@ -464,22 +476,33 @@ export function PrescriptionDetails({
           </motion.div>
         )}
 
-        {/* ── Save button ── */}
-        {onSaveToHistory && (
+        {/* ── Action buttons ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-3"
+        >
+          {onSaveToHistory && (
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={() => onSaveToHistory(prescription)}
+              className="w-full py-4 rounded-2xl font-semibold text-white text-sm transition-all"
+              style={{ background: 'linear-gradient(135deg, #14B8A6, #6366F1)', boxShadow: '0 4px 20px rgba(20,184,166,0.25)' }}
+            >
+              {t("Save to History")}
+            </motion.button>
+          )}
           <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => onSaveToHistory(prescription)}
-            className="w-full glass-card-strong rounded-2xl py-4
-                       border border-[#a78bfa]/50 hover:bg-[#a78bfa]/10
-                       transition-all duration-300 text-white font-medium"
+            whileTap={{ scale: 0.97 }}
+            onClick={shareOnWhatsApp}
+            className="w-full py-4 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2 transition-all"
+            style={{ background: 'rgba(37,211,102,0.08)', border: '1px solid rgba(37,211,102,0.3)', color: '#25D366' }}
           >
-            {t("Save to History")}
+            <Share2 className="w-4 h-4" />
+            <span className="font-medium">Share on WhatsApp</span>
           </motion.button>
-        )}
+        </motion.div>
       </motion.div>
     </div>
   );

@@ -245,13 +245,24 @@ export function ProfileSettings() {
   };
 
   // ── Fire API call immediately when language changes ───────────────────────
-  // prime() queues all PAGE_STRINGS and calls the backend in one batch,
-  // bypassing the t()-registration race entirely.
   useEffect(() => {
     if (language !== "English") {
       prime(PAGE_STRINGS);
     }
   }, [language, prime]);
+
+  // ── Keep emergency card data in sync with profile ─────────────────────────
+  useEffect(() => {
+    if (!profile) return;
+    const emergencyData = {
+      name: profile.full_name ?? profile.username ?? profile.email ?? "Unknown",
+      age: profile.age ?? null,
+      allergies: profile.allergies ?? "",
+      conditions: profile.conditions ?? "",
+      savedAt: new Date().toISOString(),
+    };
+    localStorage.setItem("pharmalens_emergency_data", JSON.stringify(emergencyData));
+  }, [profile]);
 
   useEffect(() => {
     (async () => {
@@ -352,7 +363,7 @@ export function ProfileSettings() {
   const conditions = parseList(profile.conditions);
 
   return (
-    <div className="min-h-screen molecular-bg p-4 md:p-6 pb-nav">
+    <div className="min-h-screen molecular-bg px-4 md:px-6 pb-nav" style={{ paddingTop: 'calc(1.5rem + 20px)' }}>
 
       {/* Translating indicator */}
       <AnimatePresence>
@@ -369,16 +380,25 @@ export function ProfileSettings() {
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto">
 
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-4xl mb-3">
-            <span className="neon-text-cyan">{t("Health Profile")}</span>
-          </h2>
-          <p className="text-sm md:text-base text-[#8a9ab8]">{t("Manage your health information and app settings")}</p>
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-1">
+            <div className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0"
+              style={{ background: 'rgba(45,212,191,0.12)', border: '1px solid rgba(45,212,191,0.25)' }}>
+              <User className="w-5 h-5 text-[#2DD4BF]" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white leading-none mb-0.5">
+                {t("Health")} <span className="text-[#2DD4BF]">{t("Profile")}</span>
+              </h1>
+              <p className="text-[#64748B] text-xs">{t("Manage your health information and app settings")}</p>
+            </div>
+          </div>
         </div>
 
         {/* Profile Card */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="glass-card-strong rounded-3xl p-4 md:p-8 mb-6 neon-border-cyan"
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+          className="glass-card-strong rounded-2xl p-4 md:p-6 mb-4"
+          style={{ border: '1px solid rgba(45,212,191,0.2)' }}
         >
           <div className="flex items-center gap-3 md:gap-6 mb-4 md:mb-6">
             <motion.div whileHover={{ scale: 1.05 }}
@@ -419,11 +439,12 @@ export function ProfileSettings() {
         </motion.div>
 
         {/* Health Information */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          className="glass-card-strong rounded-3xl p-6 mb-6"
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+          className="glass-card-strong rounded-2xl p-5 mb-4"
+          style={{ border: '1px solid rgba(255,255,255,0.07)' }}
         >
-          <h3 className="text-xl text-white mb-4 flex items-center gap-2">
-            <Heart className="w-6 h-6 text-[#ef4444]" />{t("Health Information")}
+          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+            <Heart className="w-4 h-4 text-[#F87171]" />{t("Health Information")}
           </h3>
 
           <div className="mb-6">
@@ -452,12 +473,13 @@ export function ProfileSettings() {
         </motion.div>
 
         {/* Language Settings */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          className="glass-card-strong rounded-3xl p-4 md:p-6 mb-6"
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="glass-card-strong rounded-2xl p-4 mb-4"
+          style={{ border: '1px solid rgba(255,255,255,0.07)' }}
         >
           <div className="flex items-start justify-between mb-1">
-            <h3 className="text-xl text-white flex items-center gap-2">
-              <Globe className="w-6 h-6 text-[#4fd1c5]" />{t("Language Settings")}
+            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+              <Globe className="w-4 h-4 text-[#2DD4BF]" />{t("Language Settings")}
             </h3>
             <span className="text-xs px-2 py-0.5 rounded-full bg-[#4fd1c5]/10 border border-[#4fd1c5]/30 text-[#4fd1c5] shrink-0">
               25 languages
@@ -525,11 +547,12 @@ export function ProfileSettings() {
         </motion.div>
 
         {/* App Settings */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          className="glass-card-strong rounded-3xl p-6"
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          className="glass-card-strong rounded-2xl p-5"
+          style={{ border: '1px solid rgba(255,255,255,0.07)' }}
         >
-          <h3 className="text-xl text-white mb-4 flex items-center gap-2">
-            <Bell className="w-6 h-6 text-[#fbbf24]" />{t("App Settings")}
+          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+            <Bell className="w-4 h-4 text-[#FBBF24]" />{t("App Settings")}
           </h3>
 
           <div className="space-y-4">
