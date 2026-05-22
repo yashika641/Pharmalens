@@ -1,0 +1,1888 @@
+file,status,confidence,elapsed,fields_found,fill_pct,doctor_name,prescription_date,diagnosis,medicines,routes,raw_json
+1.jpg,PASS,1.0,5.009,5,100%,Dr B. Who,,,"[""Digoxin""]",,"{
+  ""doctor_name"": ""Dr B. Who"",
+  ""patient_name"": ""Patient 30"",
+  ""date"": ""1994-11-01"",
+  ""medicines"": [
+    ""Digoxin""
+  ],
+  ""dosages"": [
+    ""0.125 mg, 1 tablet once daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+10.jpg,PASS,1.0,5.068,5,100%,Dr. Naveen Polavarapu,,Severe sepsis with Multiple Organ Dysfunction Syndrome (likely liver abscess with aspiration pneumonia),,,"{
+  ""doctor_name"": ""Dr. Naveen Polavarapu"",
+  ""patient_name"": ""Mr. Ch. Samuel"",
+  ""date"": ""2021-08-24"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""He further needs hospital stay for about 8-10 days for complete recovery. This is to inform and kindly do the needful."",
+  ""diagnosis"": ""Severe sepsis with Multiple Organ Dysfunction Syndrome (likely liver abscess with aspiration pneumonia)""
+}"
+100.jpg,PASS,1.0,30.769,5,100%,DR. W. P. BAKER,,Sick headache,"[""Cannabis indica extract"", ""Croton chloral""]",,"{
+  ""doctor_name"": ""DR. W. P. BAKER"",
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Cannabis indica extract"",
+    ""Croton chloral""
+  ],
+  ""dosages"": [
+    ""4 grains"",
+    ""15 grains""
+  ],
+  ""instructions"": ""Make 15 capsules. Take one capsule, repeat in 30 minutes."",
+  ""diagnosis"": ""Sick headache""
+}"
+101.jpg,PASS,0.6,21.05,3,60%,,,,"[""Diclofenac"", ""Ranitidine"", ""Vitamin B Complex with C""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": ""2021-09-08"",
+  ""medicines"": [
+    ""Diclofenac"",
+    ""Ranitidine"",
+    ""Vitamin B Complex with C""
+  ],
+  ""dosages"": [
+    null,
+    null,
+    null
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+102.jpg,PASS,0.4,10.825,2,40%,,,Missing IUD string,,,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Ultrasound to check position of IUD. Return to clinic after ultrasound scan. Consider Dilation and Curettage for removal."",
+  ""diagnosis"": ""Missing IUD string""
+}"
+103.jpg,PASS,1.0,30.106,5,100%,R. G. Combs M. D.,,,"[""Cocaine"", ""Resinous Compound Ointment""]",,"{
+  ""doctor_name"": ""R. G. Combs M. D."",
+  ""patient_name"": ""Guy Steele"",
+  ""date"": ""1920-07-29"",
+  ""medicines"": [
+    ""Cocaine"",
+    ""Resinous Compound Ointment""
+  ],
+  ""dosages"": [
+    ""10 grains"",
+    ""1 dram, apply 3 times a day""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+104.jpg,PASS,0.6,12.004,3,60%,Dr. S. Biswas,,Left Chronic Suppurative Otitis Media with Cholesteatoma,,,"{
+  ""doctor_name"": ""Dr. S. Biswas"",
+  ""patient_name"": null,
+  ""date"": ""2024-05-01"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": null,
+  ""diagnosis"": ""Left Chronic Suppurative Otitis Media with Cholesteatoma""
+}"
+105.jpg,PASS,1.0,12.945,5,100%,Dr. Raj Kamal Agarwal,,Advisory for contacts of COVID-19 positive cases,"[""Hydroxychloroquine"", ""Vitamin C"", ""Zing"", ""Crocin/Calpol"", ""Cetirizine"", ""Alex Syrup""]",,"{
+  ""doctor_name"": ""Dr. Raj Kamal Agarwal"",
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Hydroxychloroquine"",
+    ""Vitamin C"",
+    ""Zing"",
+    ""Crocin/Calpol"",
+    ""Cetirizine"",
+    ""Alex Syrup""
+  ],
+  ""dosages"": [
+    ""400mg once a week"",
+    ""1 gram once a day"",
+    ""50mg once a day"",
+    ""650mg as needed for fever"",
+    ""10mg once a day for throat pain and cough"",
+    ""2/3 teaspoon three times a day for throat pain and cough""
+  ],
+  ""instructions"": ""As per ICMR guideline, the contacts of COVID positive cases should be put on HOME ISOLATION even with Mild Symptoms. It is advised that everybody takes these preventive medication apart from following SOCIAL DISTANCING, HAND HYGIENE & WEARING MASK."",
+  ""diagnosis"": ""Advisory for contacts of COVID-19 positive cases""
+}"
+106.jpg,PASS,0.4,22.218,2,40%,,,,"[""TRILOCK 1000"", ""Nonium"", ""Bryginta"", ""Pal"", ""Proget. Con"", ""A-te forte eye due""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""TRILOCK 1000"",
+    ""Nonium"",
+    ""Bryginta"",
+    ""Pal"",
+    ""Proget. Con"",
+    ""A-te forte eye due""
+  ],
+  ""dosages"": [
+    ""1000mg twice daily (morning and night)"",
+    ""10mg once daily orally"",
+    ""One tablet once daily in the morning for 2 months"",
+    ""One tablet three times daily"",
+    ""One tablet three times daily"",
+    null
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+107.jpg,PASS,1.2,30.667,6,120%,H. A. Brown M. D.,,,"[""Codeine Sulfate"", ""Fluid Extract of Sanguinaria"", ""Aromatic Syrup of Yerba Santa""]",,"{
+  ""doctor_name"": ""H. A. Brown M. D."",
+  ""patient_name"": ""Adams"",
+  ""date"": ""1903-03-23"",
+  ""medicines"": [
+    ""Codeine Sulfate"",
+    ""Fluid Extract of Sanguinaria"",
+    ""Aromatic Syrup of Yerba Santa""
+  ],
+  ""dosages"": [
+    ""4 grains"",
+    ""4 fluid drams"",
+    ""1 fluid dram""
+  ],
+  ""instructions"": ""Take 0.5 to 1 fluid dram when necessary as directed."",
+  ""diagnosis"": null
+}"
+108.jpg,PASS,1.4,16.309,7,140%,Kumud,,"Known case of Hypertension, complains of pain abdomen. Cholecystitis with cholelithiasis with mucopyocele of Gallbladder (on USG dated 2021-03-23).","[""Diclo injection"", ""Rantac injection"", ""Diclo tablet"", ""Rantac tablet""]",,"{
+  ""doctor_name"": ""Kumud"",
+  ""patient_name"": ""LAXMI"",
+  ""date"": ""2021-07-13"",
+  ""medicines"": [
+    ""Diclo injection"",
+    ""Rantac injection"",
+    ""Diclo tablet"",
+    ""Rantac tablet""
+  ],
+  ""dosages"": [
+    ""1 ampoule immediately"",
+    ""1 ampoule immediately"",
+    ""1 tablet twice daily"",
+    ""1 tablet once daily before breakfast""
+  ],
+  ""instructions"": ""ORS in 1 liter water. Review in OPD."",
+  ""diagnosis"": ""Known case of Hypertension, complains of pain abdomen. Cholecystitis with cholelithiasis with mucopyocele of Gallbladder (on USG dated 2021-03-23).""
+}"
+109.jpg,PASS,1.2,12.827,6,120%,Deane,,Parkinson's Disease,"[""STALEVO 125/31.25/200""]",,"{
+  ""doctor_name"": ""Deane"",
+  ""patient_name"": null,
+  ""date"": ""2017-01-07"",
+  ""medicines"": [
+    ""STALEVO 125/31.25/200""
+  ],
+  ""dosages"": [
+    ""1 tablet of 125/31.25/200mg by mouth 5 times daily at 06:00, 10:00, 14:00, 18:00, 22:00""
+  ],
+  ""instructions"": ""LEVODOPA CARBIDOPA ENTACAPONE"",
+  ""diagnosis"": ""Parkinson's Disease""
+}"
+11.jpg,PASS,1.4,20.725,7,140%,Dr. Ashok Gupta,,"Fever, Cold, Acute Respiratory Infection","[""Sumol DS"", ""Mucolite LS"", ""Meftal-P""]",,"{
+  ""doctor_name"": ""Dr. Ashok Gupta"",
+  ""patient_name"": ""Seerat"",
+  ""date"": ""2019-11-04"",
+  ""medicines"": [
+    ""Sumol DS"",
+    ""Mucolite LS"",
+    ""Meftal-P""
+  ],
+  ""dosages"": [
+    ""4 ml as needed"",
+    ""2.5 ml three times daily"",
+    ""1 tablet as needed""
+  ],
+  ""instructions"": ""Initial course for 3 days. Review required. If adverse events occur, consult for advice. May be continued for 5 days. Next review on 2019-11-07."",
+  ""diagnosis"": ""Fever, Cold, Acute Respiratory Infection""
+}"
+110.jpg,PASS,0.4,8.88,2,40%,,,Anovulatory cycles,,,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Pap smear deferred, will need to be done. Routine Pap smear every 4 years. Endocrine screen. Return to clinic in 3 weeks."",
+  ""diagnosis"": ""Anovulatory cycles""
+}"
+111.jpg,PASS,1.2,35.631,6,120%,Dr. Bharat Kumar Sharma,,"Fever, Dry Cough, Pica","[""Syrup (for fever)"", ""Syrup (for dry cough)"", ""Syrup (for pica)"", ""Syrup [unclear name] 100mg"", ""Dualin Nebulizer Solution"", ""Pondol""]",,"{
+  ""doctor_name"": ""Dr. Bharat Kumar Sharma"",
+  ""patient_name"": ""Aarno"",
+  ""date"": ""2019-11-11"",
+  ""medicines"": [
+    ""Syrup (for fever)"",
+    ""Syrup (for dry cough)"",
+    ""Syrup (for pica)"",
+    ""Syrup [unclear name] 100mg"",
+    ""Dualin Nebulizer Solution"",
+    ""Pondol""
+  ],
+  ""dosages"": [
+    ""5ml four times daily"",
+    ""5ml three times daily"",
+    ""5ml at night"",
+    ""5ml once daily"",
+    ""2mg twice daily for 5 days"",
+    ""0.5g twice daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": ""Fever, Dry Cough, Pica""
+}"
+112.jpg,PASS,0.8,9.524,4,80%,Steven Maxwell MD,,,"[""Amoxil Suspension""]",,"{
+  ""doctor_name"": ""Steven Maxwell MD"",
+  ""patient_name"": ""Melissa Austin"",
+  ""date"": null,
+  ""medicines"": [
+    ""Amoxil Suspension""
+  ],
+  ""dosages"": [
+    ""125mg, 1 dram four times daily for 10 days""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+113.jpg,PASS,1.0,10.634,5,100%,Jdelacruz,,,"[""FeSO4"", ""Ascorbic Acid""]",,"{
+  ""doctor_name"": ""Jdelacruz"",
+  ""patient_name"": ""Lolita Alvarez"",
+  ""date"": ""2013-02-05"",
+  ""medicines"": [
+    ""FeSO4"",
+    ""Ascorbic Acid""
+  ],
+  ""dosages"": [
+    ""Once daily"",
+    ""500mg once daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+114.jpg,PASS,1.4,13.507,7,140%,"W.E. Hansen, MD",,Hypertension,"[""Losartan""]",,"{
+  ""doctor_name"": ""W.E. Hansen, MD"",
+  ""patient_name"": ""Harry Hypertensive"",
+  ""date"": ""2010-04-10"",
+  ""medicines"": [
+    ""Losartan""
+  ],
+  ""dosages"": [
+    ""50 milligram Tabs, take one by mouth daily in the morning""
+  ],
+  ""instructions"": ""Dispense #30. For blood pressure control. Refill 6 times. Generic substitution OK."",
+  ""diagnosis"": ""Hypertension""
+}"
+115.jpg,PASS,0.8,10.7,4,80%,Dr. Shalina Ray,,,"[""Liposomal Amphotericin"", ""Amphotericin Conventional""]",,"{
+  ""doctor_name"": ""Dr. Shalina Ray"",
+  ""patient_name"": ""Vijaya Lakshmi"",
+  ""date"": null,
+  ""medicines"": [
+    ""Liposomal Amphotericin"",
+    ""Amphotericin Conventional""
+  ],
+  ""dosages"": [
+    ""300mg once daily (6 vials per day)"",
+    ""50mg once daily (1 vial per day) for 6-8 weeks""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+116.jpg,PASS,1.2,8.594,6,120%,Dr. N. APOORVA REDDY,,Mucormycosis of paranasal sinus with meningitis,"[""liposomal Amphotericin B""]",,"{
+  ""doctor_name"": ""Dr. N. APOORVA REDDY"",
+  ""patient_name"": ""Mr Uday Kumar"",
+  ""date"": null,
+  ""medicines"": [
+    ""liposomal Amphotericin B""
+  ],
+  ""dosages"": [
+    ""10 injections for 2 weeks""
+  ],
+  ""instructions"": ""Kindly do the needful."",
+  ""diagnosis"": ""Mucormycosis of paranasal sinus with meningitis""
+}"
+117.jpg,PASS,1.0,7.598,5,100%,F. Adlam,,,"[""Novorapid""]",,"{
+  ""doctor_name"": ""F. Adlam"",
+  ""patient_name"": null,
+  ""date"": ""2018-03-28"",
+  ""medicines"": [
+    ""Novorapid""
+  ],
+  ""dosages"": [
+    ""6 units at 8 AM, 6 units at 12 PM, and 6 units at 6 PM""
+  ],
+  ""instructions"": ""Please indicate the following on main drug chart: \""Insulin - See Insulin Prescribing Chart\""."",
+  ""diagnosis"": null
+}"
+118.jpg,PASS,0.4,15.152,2,40%,,,,"[""Granacef"", ""Ferolia"", ""Navizor S nasal drops""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Granacef"",
+    ""Ferolia"",
+    ""Navizor S nasal drops""
+  ],
+  ""dosages"": [
+    ""1 tablet twice daily for 5 days"",
+    ""1 tablet twice daily for 5 days"",
+    ""2 drops once daily nasally""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+119.jpg,PASS,0.8,18.145,4,80%,Dr. Dileep Amar,,"Cholangiocarcinoma with extrahepatic bile duct involvement, and multiple pancreatic, periportal, precaval, and pericholedochal lymph node metastasis",,,"{
+  ""doctor_name"": ""Dr. Dileep Amar"",
+  ""patient_name"": ""LAXMI"",
+  ""date"": ""2021-07-18"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": null,
+  ""diagnosis"": ""Cholangiocarcinoma with extrahepatic bile duct involvement, and multiple pancreatic, periportal, precaval, and pericholedochal lymph node metastasis""
+}"
+12.jpg,PASS,0.8,19.108,4,80%,,,,"[""Novalgin""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": ""2005-02-15"",
+  ""medicines"": [
+    ""Novalgin""
+  ],
+  ""dosages"": [
+    ""20 drops four times daily""
+  ],
+  ""instructions"": ""Patient-Controlled Analgesia initiated/increased. Full reserve medication ordered."",
+  ""diagnosis"": null
+}"
+120.jpg,PASS,0.8,13.99,4,80%,Thos. L. Dwyer M.D.,,,"[""Liq. Hermenti""]",,"{
+  ""doctor_name"": ""Thos. L. Dwyer M.D."",
+  ""patient_name"": ""Wm. Burns"",
+  ""date"": null,
+  ""medicines"": [
+    ""Liq. Hermenti""
+  ],
+  ""dosages"": [
+    ""Dispense 32 drams. Take 1 dram every 4 hours for 8 days.""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+121.jpg,PASS,0.4,25.049,2,40%,,,,"[""Zaleplon""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Zaleplon""
+  ],
+  ""dosages"": [
+    ""10mg, 1 tablet nightly (or 1/2 tablet nightly)""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+122.jpg,PASS,0.4,13.744,2,40%,,,,"[""Nicardia R"", ""Lasix"", ""Pantac"", ""Emeset"", ""Aalrin"", ""Nodoin"", ""Domperidon""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Nicardia R"",
+    ""Lasix"",
+    ""Pantac"",
+    ""Emeset"",
+    ""Aalrin"",
+    ""Nodoin"",
+    ""Domperidon""
+  ],
+  ""dosages"": [
+    ""20mg three times daily"",
+    ""40mg at bedtime"",
+    ""150mg twice daily"",
+    ""4mg three times daily"",
+    ""100mg"",
+    ""1 tablet twice daily"",
+    ""1 tablet twice daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+123.jpg,PASS,1.4,14.995,7,140%,DR. G. R. COMBS,,Cough,"[""Heroin Hydoch"", ""Combs Curcol Emul""]",,"{
+  ""doctor_name"": ""DR. G. R. COMBS"",
+  ""patient_name"": ""Mrs. Belricke"",
+  ""date"": ""1920-11-01"",
+  ""medicines"": [
+    ""Heroin Hydoch"",
+    ""Combs Curcol Emul""
+  ],
+  ""dosages"": [
+    ""quantity sufficient"",
+    ""10 fluid drachms""
+  ],
+  ""instructions"": ""Take 1 fluid drachm in water every 3 hours for cough."",
+  ""diagnosis"": ""Cough""
+}"
+124.jpg,PASS,1.4,28.525,7,140%,Dr. Tanmoy Kumar Mandal,,"Metastatic Breast Cancer (Bone, Lung, Liver); 2D Echo Normal","[""Paclitaxel"", ""Herceptin"", ""Xgeva"", ""HMW"", ""Cloreu"", ""Dexamethasone"", ""Ondansetron"", ""Ultracet""]",,"{
+  ""doctor_name"": ""Dr. Tanmoy Kumar Mandal"",
+  ""patient_name"": ""Dalia Kundu"",
+  ""date"": ""2021-02-19"",
+  ""medicines"": [
+    ""Paclitaxel"",
+    ""Herceptin"",
+    ""Xgeva"",
+    ""HMW"",
+    ""Cloreu"",
+    ""Dexamethasone"",
+    ""Ondansetron"",
+    ""Ultracet""
+  ],
+  ""dosages"": [
+    ""6 cycles"",
+    ""6 cycles"",
+    ""120mg alternate cycle"",
+    ""three times daily"",
+    ""three times daily"",
+    ""4mg twice daily from Day 2 to Day 4"",
+    ""4mg twice daily from Day 2 to Day 4"",
+    ""twice daily for 5 days""
+  ],
+  ""instructions"": ""Perform CBC test. Administer G(P+H) on 2021-02-10. Review status on 2021-03-03 with CBC for Cycle 2."",
+  ""diagnosis"": ""Metastatic Breast Cancer (Bone, Lung, Liver); 2D Echo Normal""
+}"
+125.jpg,PASS,1.0,8.536,5,100%,Dr. Talat Aziz,,Sciatica with Prolapse disc,,,"{
+  ""doctor_name"": ""Dr. Talat Aziz"",
+  ""patient_name"": ""Sheeba Malik"",
+  ""date"": ""2018-08-18"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Complete bed rest for 3 months from 2018-08-18 to 2018-11-18."",
+  ""diagnosis"": ""Sciatica with Prolapse disc""
+}"
+126.jpg,PASS,1.2,7.183,6,120%,Allen,,,"[""Phenytoin Sodium Extended""]",,"{
+  ""doctor_name"": ""Allen"",
+  ""patient_name"": ""Sherry Powell"",
+  ""date"": ""2002-11-10"",
+  ""medicines"": [
+    ""Phenytoin Sodium Extended""
+  ],
+  ""dosages"": [
+    ""100 mg three times daily, quantity 90""
+  ],
+  ""instructions"": ""No refills. Generic substitution permitted."",
+  ""diagnosis"": null
+}"
+127.jpg,PASS,1.2,7.45,6,120%,Robert Kemer,,,"[""Oxycontin""]",,"{
+  ""doctor_name"": ""Robert Kemer"",
+  ""patient_name"": ""Cassandra Garrison"",
+  ""date"": ""2003-11-11"",
+  ""medicines"": [
+    ""Oxycontin""
+  ],
+  ""dosages"": [
+    ""80mg, one tablet by mouth three times daily as needed for pain""
+  ],
+  ""instructions"": ""Do not label."",
+  ""diagnosis"": null
+}"
+128.jpg,PASS,0.8,21.309,4,80%,"Dr. Ruel, Senior Surgeon",,"Choledocholithiasis with gallbladder malignancy with moderate dilatations of extrahepatic and intrahepatic biliary. Multiple pancreatic, periportal and pericholedochal lymph node metastasis.",,,"{
+  ""doctor_name"": ""Dr. Ruel, Senior Surgeon"",
+  ""patient_name"": ""LAXMI"",
+  ""date"": ""2021-07-18"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": null,
+  ""diagnosis"": ""Choledocholithiasis with gallbladder malignancy with moderate dilatations of extrahepatic and intrahepatic biliary. Multiple pancreatic, periportal and pericholedochal lymph node metastasis.""
+}"
+129.jpg,PASS,1.0,4.548,5,100%,Dr B. Who,,,"[""Tolbutamide"", ""Morphine""]",,"{
+  ""doctor_name"": ""Dr B. Who"",
+  ""patient_name"": ""Patient 32"",
+  ""date"": ""1994-11-01"",
+  ""medicines"": [
+    ""Tolbutamide"",
+    ""Morphine""
+  ],
+  ""dosages"": [
+    ""1000mg, dispense 30 tablets, 1 tablet before breakfast"",
+    ""10 milligram tablets, dispense 35 tablets, one tablet every six hours, two before the night (maximum 5 daily)""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+13.jpg,PASS,0.6,13.67,3,60%,,,,"[""Hypnodom""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": ""John Beckworth"",
+  ""date"": null,
+  ""medicines"": [
+    ""Hypnodom""
+  ],
+  ""dosages"": [
+    ""2mg""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+14.jpg,PASS,1.2,13.404,6,120%,Dr. Ajay Sahdev,,COVID positive,"[""REMDEC"", ""Actemra""]",,"{
+  ""doctor_name"": ""Dr. Ajay Sahdev"",
+  ""patient_name"": ""Ajay Sethi"",
+  ""date"": ""2021-04-24"",
+  ""medicines"": [
+    ""REMDEC"",
+    ""Actemra""
+  ],
+  ""dosages"": [
+    ""200mg immediately, then 100mg once daily for 4 days"",
+    ""400mg per dose, two doses, with a 2-day gap between doses""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": ""COVID positive""
+}"
+15.jpg,PASS,1.2,12.852,6,120%,"Tx Anderson, DO",,,"[""Methadone""]",,"{
+  ""doctor_name"": ""Tx Anderson, DO"",
+  ""patient_name"": ""Todd Braggs"",
+  ""date"": ""2006-03-10"",
+  ""medicines"": [
+    ""Methadone""
+  ],
+  ""dosages"": [
+    ""40mg three times daily""
+  ],
+  ""instructions"": ""As needed for pain. Quantity: 90."",
+  ""diagnosis"": null
+}"
+16.jpg,PASS,0.6,14.238,3,60%,,,,"[""Paracetamol""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": ""2017-10-17"",
+  ""medicines"": [
+    ""Paracetamol""
+  ],
+  ""dosages"": [
+    ""1g by mouth four times daily as needed for pain, maximum 4g in 24 hours""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+17.jpg,PASS,0.8,9.895,4,80%,,,,"[""Augmentin 625"", ""Enzoflam"", ""Pan D 40"", ""Hexigel gum paint""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": ""Mr. Sachin Sansare"",
+  ""date"": ""2022-10-12"",
+  ""medicines"": [
+    ""Augmentin 625"",
+    ""Enzoflam"",
+    ""Pan D 40"",
+    ""Hexigel gum paint""
+  ],
+  ""dosages"": [
+    ""625mg twice daily after meals for 5 days"",
+    ""Twice daily after meals for 5 days"",
+    ""40mg once daily before meals for 5 days"",
+    ""Apply and massage twice daily for 1 week""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+18.jpg,PASS,0.8,8.902,4,80%,,,,"[""Phenytoin Sodium Extended""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": ""Shorty Powell"",
+  ""date"": ""2012-11-16"",
+  ""medicines"": [
+    ""Phenytoin Sodium Extended""
+  ],
+  ""dosages"": [
+    ""100 mg three times daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+19.jpg,PASS,0.6,12.243,3,60%,,,Multiple physical injuries to the motor vehicle accident (4/23/2021),,,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": ""2021-04-26"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Patient needs under medical advised rest."",
+  ""diagnosis"": ""Multiple physical injuries to the motor vehicle accident (4/23/2021)""
+}"
+2.jpg,PASS,1.2,26.971,6,120%,Dr. R. Keshwani,,Acute Gastroenteritis with Dehydration,"[""Oflazest OZ"", ""Azenac NR"", ""Andial"", ""Zofer""]",,"{
+  ""doctor_name"": ""Dr. R. Keshwani"",
+  ""patient_name"": ""Ms. ARATHNA"",
+  ""date"": ""1987-03-15"",
+  ""medicines"": [
+    ""Oflazest OZ"",
+    ""Azenac NR"",
+    ""Andial"",
+    ""Zofer""
+  ],
+  ""dosages"": [
+    ""1 tablet twice daily for 3 days"",
+    ""1 tablet twice daily for 3 days"",
+    ""2 tablets in the morning, 1 tablet at noon, 1 tablet at night for 3 days"",
+    ""1 tablet twice daily for 3 days""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": ""Acute Gastroenteritis with Dehydration""
+}"
+20.jpg,PASS,1.0,6.394,5,100%,B. Homin,,,"[""Stilbestrol""]",,"{
+  ""doctor_name"": ""B. Homin"",
+  ""patient_name"": ""Mrs. J. Paris"",
+  ""date"": ""2019-07-17"",
+  ""medicines"": [
+    ""Stilbestrol""
+  ],
+  ""dosages"": [
+    ""25mg, 1 tablet daily for 8 days, then 1 tablet once daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+21.jpg,PASS,0.6,8.738,3,60%,Dr. NAVEEN POLAVARAPU,,Severe sepsis with MODS (Likely liver abscess with aspiration pneumonia),,,"{
+  ""doctor_name"": ""Dr. NAVEEN POLAVARAPU"",
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""He further needs hospital stay for about 8-10 days for complete recovery. This is to inform and kindly do the needful."",
+  ""diagnosis"": ""Severe sepsis with MODS (Likely liver abscess with aspiration pneumonia)""
+}"
+22.jpg,PASS,1.2,24.65,6,120%,"WILLIAM LEWIS TOWNS, M. D.",,,"[""Judgeline"", ""Opii"", ""Belladonna"", ""Aconite""]",,"{
+  ""doctor_name"": ""WILLIAM LEWIS TOWNS, M. D."",
+  ""patient_name"": ""Bertha Queensberry"",
+  ""date"": ""1928-07-25"",
+  ""medicines"": [
+    ""Judgeline"",
+    ""Opii"",
+    ""Belladonna"",
+    ""Aconite""
+  ],
+  ""dosages"": [
+    ""2 drachms"",
+    ""1 drachm"",
+    ""1 drachm"",
+    ""1 drachm""
+  ],
+  ""instructions"": ""Office hours: 9-10 a.m., 2-3 p.m., 7-8 p.m. Mix ingredients in given proportions to make a total of 4 drachms. Apply as a paint morning and evening."",
+  ""diagnosis"": null
+}"
+23.jpg,PASS,1.0,5.996,5,100%,Aditya,,"Gastritis for 1 week, Pain Abdomen aggravated on food intake, Headache for 3 days","[""Ranitidine"", ""Paracetamol""]",,"{
+  ""doctor_name"": ""Aditya"",
+  ""patient_name"": null,
+  ""date"": ""2011-05-24"",
+  ""medicines"": [
+    ""Ranitidine"",
+    ""Paracetamol""
+  ],
+  ""dosages"": [
+    ""150mg twice daily for 5 days"",
+    ""500mg three times daily for 5 days""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": ""Gastritis for 1 week, Pain Abdomen aggravated on food intake, Headache for 3 days""
+}"
+24.jpg,PASS,1.0,17.392,5,100%,Dr. Raja Nag,,"Anteroseptal Myocardial Infarction (ASMI), Hypertension (HT), Reduced Left Ventricular Ejection Fraction (LVEF 45%)","[""Daplett A"", ""Azlon"", ""Nitricentrin""]",,"{
+  ""doctor_name"": ""Dr. Raja Nag"",
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Daplett A"",
+    ""Azlon"",
+    ""Nitricentrin""
+  ],
+  ""dosages"": [
+    ""150mg once daily in the morning"",
+    ""80mg once daily in the morning"",
+    ""2.6mg once daily""
+  ],
+  ""instructions"": ""Please turn over (PTO)"",
+  ""diagnosis"": ""Anteroseptal Myocardial Infarction (ASMI), Hypertension (HT), Reduced Left Ventricular Ejection Fraction (LVEF 45%)""
+}"
+25.jpg,PASS,1.2,27.77,6,120%,M. E. Towe MD,,,"[""Opium"", ""Belladonna Extract"", ""Ichthyol""]",,"{
+  ""doctor_name"": ""M. E. Towe MD"",
+  ""patient_name"": ""L. E. Stegner"",
+  ""date"": ""1924-10-05"",
+  ""medicines"": [
+    ""Opium"",
+    ""Belladonna Extract"",
+    ""Ichthyol""
+  ],
+  ""dosages"": [
+    ""1 grain per suppository"",
+    ""0.25 grains per suppository"",
+    ""T/24 grains per suppository""
+  ],
+  ""instructions"": ""Mix Opium 24 grains, Belladonna Extract 6 grains, Ichthyol T grains with sufficient quantity of Cocoa Butter (Oleum Theobromatis) to make 24 suppositories. Take one suppository morning and evening."",
+  ""diagnosis"": null
+}"
+26.jpg,PASS,1.0,8.711,5,100%,Ram Colla,,,"[""Zendil"", ""Ferrous Sulfate"", ""Humulin N""]",,"{
+  ""doctor_name"": ""Ram Colla"",
+  ""patient_name"": ""Vazquez Ramon"",
+  ""date"": ""1995-06-23"",
+  ""medicines"": [
+    ""Zendil"",
+    ""Ferrous Sulfate"",
+    ""Humulin N""
+  ],
+  ""dosages"": [
+    ""20mg by mouth every 6 hours"",
+    ""300mg by mouth three times daily with meals"",
+    ""30 units subcutaneously every morning""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+27.jpg,PASS,0.0,9.186,0,0%,,,,,,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+28.jpg,PASS,1.0,6.672,5,100%,Dr. Amol Anandrao Patil,,,"[""Liposomal Amphotericin B""]",,"{
+  ""doctor_name"": ""Dr. Amol Anandrao Patil"",
+  ""patient_name"": ""Mr. Subhash Kumar Kulshreshtha"",
+  ""date"": ""2021-05-16"",
+  ""medicines"": [
+    ""Liposomal Amphotericin B""
+  ],
+  ""dosages"": [
+    ""50mg, 6 vials per day (total 300mg)""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+29.jpg,PASS,1.0,19.483,5,100%,Jack R. Frost LCDR. MD. USNR,,,"[""Belladonna and Amphogel Solution""]",,"{
+  ""doctor_name"": ""Jack R. Frost LCDR. MD. USNR"",
+  ""patient_name"": ""John R. Doe, HM3, USN"",
+  ""date"": ""1999-01-23"",
+  ""medicines"": [
+    ""Belladonna and Amphogel Solution""
+  ],
+  ""dosages"": [
+    ""5ml three times daily before meals""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+3.jpg,PASS,1.2,13.058,6,120%,N.M. Rhodes M.D.,,,"[""Cocaine Hydrochloride"", ""Adrenalin Chloride"", ""Saline Solution (Normal)""]",,"{
+  ""doctor_name"": ""N.M. Rhodes M.D."",
+  ""patient_name"": ""C.B. Frouard"",
+  ""date"": ""1921-04-01"",
+  ""medicines"": [
+    ""Cocaine Hydrochloride"",
+    ""Adrenalin Chloride"",
+    ""Saline Solution (Normal)""
+  ],
+  ""dosages"": [
+    ""9 grains"",
+    ""3 minims"",
+    ""sufficient quantity to make 3 drams""
+  ],
+  ""instructions"": ""Apply locally."",
+  ""diagnosis"": null
+}"
+30.jpg,PASS,1.0,15.112,5,100%,,,,"[""Phexin"", ""Zeedol PT"", ""Stolin gum paint"", ""Colgate Plax mouthwash""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": ""Ms. Fiza Mozawala"",
+  ""date"": ""2022-10-13"",
+  ""medicines"": [
+    ""Phexin"",
+    ""Zeedol PT"",
+    ""Stolin gum paint"",
+    ""Colgate Plax mouthwash""
+  ],
+  ""dosages"": [
+    ""500mg twice daily for 5 days"",
+    ""Twice daily for 5 days"",
+    ""Apply twice daily for 5 days"",
+    ""For 1 week""
+  ],
+  ""instructions"": ""Oral B Pro 2 2000N electric brush."",
+  ""diagnosis"": null
+}"
+31.jpg,PASS,0.8,7.682,4,80%,Dr. Alfred Sauls,,,"[""Erythromycin ethylsuccinate""]",,"{
+  ""doctor_name"": ""Dr. Alfred Sauls"",
+  ""patient_name"": ""Alan Johnson"",
+  ""date"": null,
+  ""medicines"": [
+    ""Erythromycin ethylsuccinate""
+  ],
+  ""dosages"": [
+    ""400 mg/5 mL, 1 teaspoon (5 mL) four times daily until all 100 mL medication is taken""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+32.jpg,PASS,0.8,6.878,4,80%,Milton Friedman,,,,,"{
+  ""doctor_name"": ""Milton Friedman"",
+  ""patient_name"": ""Mrs A Denison"",
+  ""date"": ""2011-11-14"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""WRITE OUT ONE THOUSAND TIMES, CAPITALISM IS WONDERFUL."",
+  ""diagnosis"": null
+}"
+33.jpg,PASS,0.8,11.0,4,80%,,,,"[""Azee"", ""Tusq"", ""Pan"", ""Dolo 650""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": ""Rahul"",
+  ""date"": null,
+  ""medicines"": [
+    ""Azee"",
+    ""Tusq"",
+    ""Pan"",
+    ""Dolo 650""
+  ],
+  ""dosages"": [
+    ""500mg once daily for 7 days"",
+    ""1 teaspoon once daily"",
+    ""40mg once daily for 7 days"",
+    ""650mg as needed for fever and pain""
+  ],
+  ""instructions"": ""Follow up in Medical OPD with reports. Ensure oral fluids."",
+  ""diagnosis"": null
+}"
+34.jpg,PASS,0.6,24.487,3,60%,Jumana,,,"[""Sibax 120g"", ""Jedovan qff""]",,"{
+  ""doctor_name"": ""Jumana"",
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Sibax 120g"",
+    ""Jedovan qff""
+  ],
+  ""dosages"": [
+    ""1 daily for 5 days"",
+    ""1 daily for 5 days""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+35.jpg,PASS,0.2,6.366,1,20%,,,,,,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": ""1929-06-05"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+36.jpg,PASS,1.4,48.502,7,140%,Dr. Ravindra Kumar,,"History of Covid-19 positive with complaints of shortness of breath, chest pain, and fever.","[""Clexane"", ""Doxycycline"", ""Azithromycin"", ""Montair-FX"", ""Vitamin C + Zinc"", ""Zinacet"", ""Metocardial"", ""Ecosprin"", ""Regard"", ""Xoteas"", ""Fosfene"", ""Budecort"", ""Duraline""]",,"{
+  ""doctor_name"": ""Dr. Ravindra Kumar"",
+  ""patient_name"": ""Mrs. Machles Devu"",
+  ""date"": ""2021-05-06"",
+  ""medicines"": [
+    ""Clexane"",
+    ""Doxycycline"",
+    ""Azithromycin"",
+    ""Montair-FX"",
+    ""Vitamin C + Zinc"",
+    ""Zinacet"",
+    ""Metocardial"",
+    ""Ecosprin"",
+    ""Regard"",
+    ""Xoteas"",
+    ""Fosfene"",
+    ""Budecort"",
+    ""Duraline""
+  ],
+  ""dosages"": [
+    ""60mg subcutaneous"",
+    ""100mg twice daily"",
+    ""16mg twice daily"",
+    ""Once daily"",
+    ""Twice daily"",
+    ""Once daily"",
+    ""25mg once daily"",
+    ""Once daily"",
+    ""10 units three times daily (every 8 hours)"",
+    ""RA 40mg subcutaneous"",
+    null,
+    null,
+    null
+  ],
+  ""instructions"": ""Prescribed lab tests: CBC, CK/CKMB, Troponin-I, PRO-BNP, Liver Function Test, CRP. Rule out malignancy. Complete Fosfene for 5 days. Nebulizer with Budecort and Duraline."",
+  ""diagnosis"": ""History of Covid-19 positive with complaints of shortness of breath, chest pain, and fever.""
+}"
+37.jpg,PASS,1.0,10.552,5,100%,Dr. W. P. Baker,,Sick headache,"[""Extract Cannabis Indica"", ""Croton chloral""]",,"{
+  ""doctor_name"": ""Dr. W. P. Baker"",
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Extract Cannabis Indica"",
+    ""Croton chloral""
+  ],
+  ""dosages"": [
+    ""4 grains"",
+    ""15 grains""
+  ],
+  ""instructions"": ""Make 16 capsules. Give one capsule, repeat in 1/2 hour."",
+  ""diagnosis"": ""Sick headache""
+}"
+38.jpg,PASS,1.0,15.429,5,100%,Dr. Soumen Das,,"Patient presented with a Right Breast lump 2 months back. Clinical examination revealed a Right Breast T3N1 Lesion. Prior ultrasound showed a Right Breast BI-RADS 4 lesion, and FNAC confirmed Invasive Ductal Carcinoma.",,,"{
+  ""doctor_name"": ""Dr. Soumen Das"",
+  ""patient_name"": ""Shila Dasgupta"",
+  ""date"": ""2022-04-16"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Suggested procedures/investigations: 1. Core Biopsy (Right) Breast, 2. PET CT Scan, 3. Rns. For next follow-up, Blood Fasting Blood Sugar test is required."",
+  ""diagnosis"": ""Patient presented with a Right Breast lump 2 months back. Clinical examination revealed a Right Breast T3N1 Lesion. Prior ultrasound showed a Right Breast BI-RADS 4 lesion, and FNAC confirmed Invasive Ductal Carcinoma.""
+}"
+39.jpg,PASS,0.4,13.362,2,40%,"Leonidas H. Berry, M. D.",,,,,"{
+  ""doctor_name"": ""Leonidas H. Berry, M. D."",
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Good Book. Purple Just. Current Just in Business Before War, some Teachers are now school integrated. We all Present Both ways. School called State Chicago. Rebel & Had Co-ed classes."",
+  ""diagnosis"": null
+}"
+4.jpg,PASS,1.2,39.297,6,120%,,,"Chief Complaint: Pain in abdomen, Vomiting. Provisional Diagnosis: Choledocholithiasis with moderate dilation of extrahepatic and intrahepatic bile ducts; multiple pancreatic parenchymal periportal, pericholedochal and peri-choledochal lymph nodes - metastasis; gallbladder Malignancy.","[""Diclo Anae"", ""Pantoprazole"", ""Senager"", ""Chim""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": ""LAXMI"",
+  ""date"": ""2021-07-18"",
+  ""medicines"": [
+    ""Diclo Anae"",
+    ""Pantoprazole"",
+    ""Senager"",
+    ""Chim""
+  ],
+  ""dosages"": [
+    ""75mg intramuscular immediately"",
+    ""40mg intravenous immediately"",
+    ""S/R"",
+    null
+  ],
+  ""instructions"": ""No safe drinking alcohol, it is harmful in any way."",
+  ""diagnosis"": ""Chief Complaint: Pain in abdomen, Vomiting. Provisional Diagnosis: Choledocholithiasis with moderate dilation of extrahepatic and intrahepatic bile ducts; multiple pancreatic parenchymal periportal, pericholedochal and peri-choledochal lymph nodes - metastasis; gallbladder Malignancy.""
+}"
+40.jpg,PASS,1.2,5.446,6,120%,Dr. HARI KISHAN BOORUGU,,,"[""Liposomal Amphotericin B""]",,"{
+  ""doctor_name"": ""Dr. HARI KISHAN BOORUGU"",
+  ""patient_name"": ""Ramachandra Rao"",
+  ""date"": ""2026-05-13"",
+  ""medicines"": [
+    ""Liposomal Amphotericin B""
+  ],
+  ""dosages"": [
+    ""300mg IV infusion in 5% Dextrose over 5 hours, once daily for 15 days""
+  ],
+  ""instructions"": ""Patient is currently admitted."",
+  ""diagnosis"": null
+}"
+41.jpg,PASS,1.2,10.934,6,120%,Dr B. Who,,,"[""Amoxicillin""]",,"{
+  ""doctor_name"": ""Dr B. Who"",
+  ""patient_name"": ""Patient 29"",
+  ""date"": ""1994-11-01"",
+  ""medicines"": [
+    ""Amoxicillin""
+  ],
+  ""dosages"": [
+    ""50 mg/ml suspension, 5 ml three times daily. Finish course.""
+  ],
+  ""instructions"": ""Add 5 ml spoon."",
+  ""diagnosis"": null
+}"
+42.jpg,PASS,1.0,5.898,5,100%,Dr. Bill Andrew Balmer,,,"[""Paracetamol"", ""Ibuprofen""]",,"{
+  ""doctor_name"": ""Dr. Bill Andrew Balmer"",
+  ""patient_name"": ""Mario Carlos van der Vaart"",
+  ""date"": ""2025-01-20"",
+  ""medicines"": [
+    ""Paracetamol"",
+    ""Ibuprofen""
+  ],
+  ""dosages"": [
+    ""50mg"",
+    ""150mg""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+43.jpg,PASS,1.2,26.213,6,120%,G. F. L.,,,"[""Liquor Strychnine"", ""Acid Hydrobromic Dilute"", ""Glycerin"", ""Chloroform Water""]",,"{
+  ""doctor_name"": ""G. F. L."",
+  ""patient_name"": ""Dr. R. W. Little"",
+  ""date"": ""1918-01-25"",
+  ""medicines"": [
+    ""Liquor Strychnine"",
+    ""Acid Hydrobromic Dilute"",
+    ""Glycerin"",
+    ""Chloroform Water""
+  ],
+  ""dosages"": [
+    ""120 minims"",
+    ""120 minims"",
+    ""120 minims"",
+    ""add to 6 fluid drams""
+  ],
+  ""instructions"": ""Take 1 fluid dram three times daily in water before meals."",
+  ""diagnosis"": null
+}"
+44.jpg,PASS,0.6,7.805,3,60%,,,"Diabetes mellitus, Diarrhoea, chronic articular Rheumatism",,,"{
+  ""doctor_name"": null,
+  ""patient_name"": ""Leonard F. Whitcomb"",
+  ""date"": null,
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""We recommend that he be placed on the 3rd class pension Roll."",
+  ""diagnosis"": ""Diabetes mellitus, Diarrhoea, chronic articular Rheumatism""
+}"
+45.jpg,PASS,1.0,30.293,5,100%,डॉ. शेखर जैन,,,"[""Croxim"", ""Cleaf"", ""Bacill"", ""Astracof"", ""Polymal"", ""Mazia""]",,"{
+  ""doctor_name"": ""डॉ. शेखर जैन"",
+  ""patient_name"": ""Keviy"",
+  ""date"": ""2019-10-05"",
+  ""medicines"": [
+    ""Croxim"",
+    ""Cleaf"",
+    ""Bacill"",
+    ""Astracof"",
+    ""Polymal"",
+    ""Mazia""
+  ],
+  ""dosages"": [
+    ""0.5 units twice daily for 1 day"",
+    ""⅓ teaspoon three times daily for 6 days"",
+    ""7 units three times daily for 6 days"",
+    ""6 units three times daily for 1 day"",
+    ""10 units three times daily for 1 day"",
+    ""5 units twice daily for 1 day""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+46.jpg,PASS,1.0,9.702,5,100%,Dr. Saukeeth,,,"[""AmbiSome""]",,"{
+  ""doctor_name"": ""Dr. Saukeeth"",
+  ""patient_name"": ""Ratna Harisri"",
+  ""date"": ""2021-05-15"",
+  ""medicines"": [
+    ""AmbiSome""
+  ],
+  ""dosages"": [
+    ""30mg""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+47.jpg,PASS,1.0,8.502,5,100%,"B. Harris, M.D.",,,"[""Stilbestrol""]",,"{
+  ""doctor_name"": ""B. Harris, M.D."",
+  ""patient_name"": ""Mrs. J. Parks"",
+  ""date"": ""1951-07-17"",
+  ""medicines"": [
+    ""Stilbestrol""
+  ],
+  ""dosages"": [
+    ""25mg, 1 tablet every 4 hours for 8 days, then 1/2 tablet four times daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+48.jpg,PASS,0.6,25.595,3,60%,,,,"[""Pulmersie"", ""Asthacut"", ""Pelle""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Pulmersie"",
+    ""Asthacut"",
+    ""Pelle""
+  ],
+  ""dosages"": [
+    ""1 dose immediately by mouth"",
+    ""Twice daily as needed"",
+    ""Every 4 days""
+  ],
+  ""instructions"": ""Red Flow to BP. May ant > 75%."",
+  ""diagnosis"": null
+}"
+49.jpg,PASS,0.2,11.834,1,20%,Munen Juma,,,,,"{
+  ""doctor_name"": ""Munen Juma"",
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+5.jpg,PASS,0.8,14.608,4,80%,,,,"[""Syp Ephedrex"", ""Syp Crocin DS"", ""Syp Meftal-P"", ""Syp Ephedrex""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": ""2019-07-19"",
+  ""medicines"": [
+    ""Syp Ephedrex"",
+    ""Syp Crocin DS"",
+    ""Syp Meftal-P"",
+    ""Syp Ephedrex""
+  ],
+  ""dosages"": [
+    ""3.5ml twice daily"",
+    ""4ml"",
+    ""4ml"",
+    ""4ml twice daily""
+  ],
+  ""instructions"": ""Maintain temperature chart."",
+  ""diagnosis"": null
+}"
+50.jpg,PASS,0.6,8.109,3,60%,"Rojoson, M.D.",,,,,"{
+  ""doctor_name"": ""Rojoson, M.D."",
+  ""patient_name"": null,
+  ""date"": ""2020-10-06"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Bed rest for 2 days while waiting for all lab results. Fit to work from October 7, 2020."",
+  ""diagnosis"": null
+}"
+51.jpg,PASS,1.0,17.103,5,100%,Dr. Mahesh Kumar Revoori,,"COVID-19 Positive, Invasive Rhinocerebral Mucomycosis",,,"{
+  ""doctor_name"": ""Dr. Mahesh Kumar Revoori"",
+  ""patient_name"": ""Ismail Shaik"",
+  ""date"": ""2021-04-26"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Patient is COVID-19 positive. Medical history includes Diabetes Mellitus (on Insulin) and Hypertension. Plan: Functional Endoscopic Sinus Surgery (FESS) and debridement. Investigations and Consults: MRI brain and orbit, CT Paranasal Sinuses, Ophthalmology opinion (from Dr. Pramodith), Major surgical profile, 2D Echocardiography, Pulmonology fitness for anaesthesia, Pre-Anesthetic Check-up (PAC), CT Chest HRCT, Rapid Antigen Test."",
+  ""diagnosis"": ""COVID-19 Positive, Invasive Rhinocerebral Mucomycosis""
+}"
+52.jpg,PASS,1.2,19.19,6,120%,Schoell,,"Headache, Nervousness","[""Potassium Bromide"", ""Spiritus Ammonia Aromaticus"", ""Elixir Simplex""]",,"{
+  ""doctor_name"": ""Schoell"",
+  ""patient_name"": null,
+  ""date"": ""1910-03-23"",
+  ""medicines"": [
+    ""Potassium Bromide"",
+    ""Spiritus Ammonia Aromaticus"",
+    ""Elixir Simplex""
+  ],
+  ""dosages"": [
+    ""2 drams"",
+    ""3 drams"",
+    ""quantity sufficient to make up to 3 drams""
+  ],
+  ""instructions"": ""Mix to make a solution. Take two teaspoonfuls every 3 hours."",
+  ""diagnosis"": ""Headache, Nervousness""
+}"
+53.jpg,PASS,1.0,18.923,5,100%,Dr. Dhananjay Gupta,,Osteoarthritis with Lower Back Ache,,,"{
+  ""doctor_name"": ""Dr. Dhananjay Gupta"",
+  ""patient_name"": ""CHITRA AGGARWAL"",
+  ""date"": ""2003-01-01"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""1. X-Ray LS Spine (AP & Lateral views). 2. Avoid over-posture for more than 30 minutes. 3. Avoid low seats and stairs. 4. Perform exercises: Static Hamstring Curls, Simple Exercises, Spine Flexion, Hip Abduction sets. 5. Screening for nutritional need; quality diet advised. For appointment, call mobile number: +91 8800010740."",
+  ""diagnosis"": ""Osteoarthritis with Lower Back Ache""
+}"
+54.jpg,PASS,1.2,9.536,6,120%,Jon Hallberg,,,"[""Atenolol""]",,"{
+  ""doctor_name"": ""Jon Hallberg"",
+  ""patient_name"": ""Mickey Mouse"",
+  ""date"": ""2006-11-28"",
+  ""medicines"": [
+    ""Atenolol""
+  ],
+  ""dosages"": [
+    ""25mg, take 1 tablet by mouth once daily, quantity 30""
+  ],
+  ""instructions"": ""Prescription is VOID. May be refilled 6 times."",
+  ""diagnosis"": null
+}"
+55.jpg,PASS,1.0,14.109,5,100%,,,"Eosinophil 12% in DLC, dilated left heart with mild PSA, needs further evaluation, may prescribe CT Angiography, to treat LATT at present.","[""Augmentin Duo"", ""Ambrodil-S"", ""NASOCLEAR NASAL drops"", ""LCZ (Levocetirizine)""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": ""2017-01-01"",
+  ""medicines"": [
+    ""Augmentin Duo"",
+    ""Ambrodil-S"",
+    ""NASOCLEAR NASAL drops"",
+    ""LCZ (Levocetirizine)""
+  ],
+  ""dosages"": [
+    ""6ml twice daily for 7 days"",
+    ""4ml twice daily"",
+    ""Once daily"",
+    ""1/2 tablet twice daily (5mg)""
+  ],
+  ""instructions"": ""Continue nebulization. Review after 2 weeks, once LIS settles."",
+  ""diagnosis"": ""Eosinophil 12% in DLC, dilated left heart with mild PSA, needs further evaluation, may prescribe CT Angiography, to treat LATT at present.""
+}"
+56.jpg,PASS,1.0,13.579,5,100%,Ram Kallen,,,"[""Plendil"", ""Ferrous Sulfate"", ""Humalin N""]",,"{
+  ""doctor_name"": ""Ram Kallen"",
+  ""patient_name"": ""Vazquez Ramon"",
+  ""date"": ""1995-06-23"",
+  ""medicines"": [
+    ""Plendil"",
+    ""Ferrous Sulfate"",
+    ""Humalin N""
+  ],
+  ""dosages"": [
+    ""20mg P.O. Q6hrs"",
+    ""300mg P.O. TID with meals"",
+    ""30 units SQ Q PM""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+57.jpg,PASS,1.2,8.954,6,120%,Dr B. Who,,,"[""Digoxin""]",,"{
+  ""doctor_name"": ""Dr B. Who"",
+  ""patient_name"": ""Patient 30"",
+  ""date"": ""1994-11-01"",
+  ""medicines"": [
+    ""Digoxin""
+  ],
+  ""dosages"": [
+    ""0.125 mg, 1 tablet once daily""
+  ],
+  ""instructions"": ""Dispense 7 tablets"",
+  ""diagnosis"": null
+}"
+58.jpg,PASS,0.8,27.704,4,80%,,,Anemia (microcytic hypochromic) and infection/inflammation,"[""Cefelac"", ""RB Tone Kid"", ""Wikoryl""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": ""2019-08-28"",
+  ""medicines"": [
+    ""Cefelac"",
+    ""RB Tone Kid"",
+    ""Wikoryl""
+  ],
+  ""dosages"": [
+    ""100mg/5ml syrup, 3ml twice daily for 7 days"",
+    ""80mg/5ml syrup, 2.5ml once daily for 2 months"",
+    ""3ml twice daily for 3 days""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": ""Anemia (microcytic hypochromic) and infection/inflammation""
+}"
+59.jpg,PASS,1.0,8.662,5,100%,Geetika,,,"[""Clohex Plus Mouthwash"", ""Ketorol DT""]",,"{
+  ""doctor_name"": ""Geetika"",
+  ""patient_name"": null,
+  ""date"": ""2020-01-22"",
+  ""medicines"": [
+    ""Clohex Plus Mouthwash"",
+    ""Ketorol DT""
+  ],
+  ""dosages"": [
+    ""Twice daily for 15 days"",
+    ""Tablet as needed""
+  ],
+  ""instructions"": ""IOPA DT 48. Warm saline rinses three times daily for 15 days. Next appointment: 2020-01-26 at 1:30 PM."",
+  ""diagnosis"": null
+}"
+6.jpg,PASS,1.2,8.801,6,120%,Dr. Abhishek,,COVID Pneumonia,"[""Remdesivir""]",,"{
+  ""doctor_name"": ""Dr. Abhishek"",
+  ""patient_name"": ""Manmohan"",
+  ""date"": null,
+  ""medicines"": [
+    ""Remdesivir""
+  ],
+  ""dosages"": [
+    ""200mg IV immediately, then 100mg IV once daily for 4 days""
+  ],
+  ""instructions"": ""Total 6 vials"",
+  ""diagnosis"": ""COVID Pneumonia""
+}"
+60.jpg,PASS,0.8,29.332,4,80%,Dr. Gaveau,,,"[""Liposomal Amphotericin B"", ""Amphotericin B"", ""Isavuconazole"", ""Isavuconazole""]",,"{
+  ""doctor_name"": ""Dr. Gaveau"",
+  ""patient_name"": ""Thummareddy"",
+  ""date"": null,
+  ""medicines"": [
+    ""Liposomal Amphotericin B"",
+    ""Amphotericin B"",
+    ""Isavuconazole"",
+    ""Isavuconazole""
+  ],
+  ""dosages"": [
+    ""350mg once daily for 4 weeks"",
+    ""70mg once daily for 4 weeks"",
+    ""200mg (100mg in morning, 200mg in afternoon, 200mg in evening) for 2 weeks"",
+    ""200mg (1 capsule in morning, 1 capsule in evening) for 2 days""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+61.jpg,PASS,1.2,7.049,6,120%,Dr Jones,,Coronary artery disease,"[""Acetaminophen"", ""Aspirin"", ""Clopidogrel""]",,"{
+  ""doctor_name"": ""Dr Jones"",
+  ""patient_name"": ""John Hubbard"",
+  ""date"": ""2017-12-01"",
+  ""medicines"": [
+    ""Acetaminophen"",
+    ""Aspirin"",
+    ""Clopidogrel""
+  ],
+  ""dosages"": [
+    ""650mg every 4 hours as needed"",
+    ""81mg by mouth daily"",
+    ""75mg by mouth daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": ""Coronary artery disease""
+}"
+62.jpg,PASS,0.8,14.08,4,80%,Dr. Rahul Thakur,,,"[""Monoroy 500-8mef"", ""Syr Floxa"", ""Tab Frison (Spl) 10"", ""Syp Tonoferon""]",,"{
+  ""doctor_name"": ""Dr. Rahul Thakur"",
+  ""patient_name"": ""Jabuli Singh"",
+  ""date"": null,
+  ""medicines"": [
+    ""Monoroy 500-8mef"",
+    ""Syr Floxa"",
+    ""Tab Frison (Spl) 10"",
+    ""Syp Tonoferon""
+  ],
+  ""dosages"": [
+    ""3/4 vial in 12 hours"",
+    ""6 ml for a few days"",
+    ""1/2 tablet twice daily"",
+    ""2.5ml twice daily after""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+63.jpg,PASS,1.0,21.131,5,100%,Dr. Sachin Kumar SG,,Allergic Rhinitis and Severe throat,"[""Neurokind plus"", ""Oro T gargles""]",,"{
+  ""doctor_name"": ""Dr. Sachin Kumar SG"",
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Neurokind plus"",
+    ""Oro T gargles""
+  ],
+  ""dosages"": [
+    null,
+    null
+  ],
+  ""instructions"": ""For Oro T gargles: Use 2 teaspoons in ½ glass of lukewarm water."",
+  ""diagnosis"": ""Allergic Rhinitis and Severe throat""
+}"
+64.jpg,PASS,0.2,7.266,1,20%,,,,,,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""It is reported that more than 7000 people die every year due to Doctor's handwriting. It's being called \""DEATH BY PRESCRIPTION\"". Dear Doctors, I'm not saying your writing needs to be fine or anything like that, but for the love of all that is holy, at least make it legible - @FEMMY466."",
+  ""diagnosis"": null
+}"
+65.jpg,PASS,1.0,6.612,5,100%,"Reynaldo O. Joson, MD, MHA, MHPED, MSc Surg",,,"[""Tramadol + Paracetamol""]",,"{
+  ""doctor_name"": ""Reynaldo O. Joson, MD, MHA, MHPED, MSc Surg"",
+  ""patient_name"": ""LINA CRUZ"",
+  ""date"": ""2017-01-24"",
+  ""medicines"": [
+    ""Tramadol + Paracetamol""
+  ],
+  ""dosages"": [
+    ""1 tablet every 6 hours, quantity 20 tablets""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+66.jpg,PASS,0.8,31.739,4,80%,Dr. Ravi Shankar,,"Chief complaints: Abdominal pain, vomiting. No history of Type 2 Diabetes Mellitus or Hypertension. Provisional diagnosis: Rule out Choledocholithiasis with moderate dilation of extrahepatic and intrahepatic biliary system. Multiple pancreatic head mass, pre-caval and peri-choledochal lymph nodes - metastatic.",,,"{
+  ""doctor_name"": ""Dr. Ravi Shankar"",
+  ""patient_name"": ""Laxmi"",
+  ""date"": ""2021-07-18"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": null,
+  ""diagnosis"": ""Chief complaints: Abdominal pain, vomiting. No history of Type 2 Diabetes Mellitus or Hypertension. Provisional diagnosis: Rule out Choledocholithiasis with moderate dilation of extrahepatic and intrahepatic biliary system. Multiple pancreatic head mass, pre-caval and peri-choledochal lymph nodes - metastatic.""
+}"
+67.jpg,PASS,1.4,17.65,7,140%,Dr. Y. Lavanya,,"Known case of Hypertension and Hypothyroidism, complaining of fever since 3 days","[""Stamlo"", ""Arvant"", ""Thyrox"", ""Bplex fort""]",,"{
+  ""doctor_name"": ""Dr. Y. Lavanya"",
+  ""patient_name"": ""Tet"",
+  ""date"": ""2022-10-19"",
+  ""medicines"": [
+    ""Stamlo"",
+    ""Arvant"",
+    ""Thyrox"",
+    ""Bplex fort""
+  ],
+  ""dosages"": [
+    ""5mg once daily at night for 30 days"",
+    ""5mg once daily at night for 30 days"",
+    ""75mcg once daily at night for 30 days"",
+    ""once daily in the morning for 30 days""
+  ],
+  ""instructions"": ""Investigations to be done: Complete Blood Picture, Complete Urine Examination, Electrocardiogram, 2-Dimensional Echocardiography, Thyroid profile, Blood Urea, Serum Creatinine, Dengue IgG and IgM."",
+  ""diagnosis"": ""Known case of Hypertension and Hypothyroidism, complaining of fever since 3 days""
+}"
+68.jpg,PASS,0.0,6.652,0,0%,,,,,,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+69.jpg,PASS,0.8,8.654,4,80%,Doctor,,,"[""PABRINEX""]",,"{
+  ""doctor_name"": ""Doctor"",
+  ""patient_name"": null,
+  ""date"": ""2012-01-01"",
+  ""medicines"": [
+    ""PABRINEX""
+  ],
+  ""dosages"": [
+    ""2 pairs, intravenous, three times daily for 5-7 days""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+7.jpg,PASS,1.2,21.47,6,120%,Dr. D. Ravi Shankar,,Cold and cough for 2 days,"[""T-mimic dryp"", ""Anthakind dryp"", ""Advent dryp"", ""Nanodean menaldrys"", ""HHZole cream""]",,"{
+  ""doctor_name"": ""Dr. D. Ravi Shankar"",
+  ""patient_name"": ""Shanaya"",
+  ""date"": ""2019-01-22"",
+  ""medicines"": [
+    ""T-mimic dryp"",
+    ""Anthakind dryp"",
+    ""Advent dryp"",
+    ""Nanodean menaldrys"",
+    ""HHZole cream""
+  ],
+  ""dosages"": [
+    ""0.3ml three times daily for 3 days"",
+    ""0.4ml three times daily for 3 days"",
+    ""0.8ml three times daily for 3 days"",
+    ""2 drops"",
+    ""Apply twice daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": ""Cold and cough for 2 days""
+}"
+70.jpg,PASS,1.2,6.59,6,120%,Dr B. Who,,,"[""Amoxicillin""]",,"{
+  ""doctor_name"": ""Dr B. Who"",
+  ""patient_name"": ""Patient 29"",
+  ""date"": ""1994-11-01"",
+  ""medicines"": [
+    ""Amoxicillin""
+  ],
+  ""dosages"": [
+    ""50 mg/ml suspension, 5ml three times daily, finish course""
+  ],
+  ""instructions"": ""Add 5 ml spoon."",
+  ""diagnosis"": null
+}"
+71.jpg,PASS,0.2,8.05,1,20%,,,,,,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": ""2003-05-24"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+72.jpg,PASS,1.4,33.44,7,140%,Dr. S.K.M. Zainal Abedin,,"Right knee pain for 1 month, difficulty going up stairs, no bony lesion","[""Diclofenac 50mg"", ""Ultracal-D"", ""Omeproz 20mg""]",,"{
+  ""doctor_name"": ""Dr. S.K.M. Zainal Abedin"",
+  ""patient_name"": ""Zahidul Hashan"",
+  ""date"": ""2010-12-11"",
+  ""medicines"": [
+    ""Diclofenac 50mg"",
+    ""Ultracal-D"",
+    ""Omeproz 20mg""
+  ],
+  ""dosages"": [
+    ""50mg, 2 tablets twice daily for 10 days"",
+    ""2 tablets at noon after lunch"",
+    ""20mg, 2 capsules once daily in the morning""
+  ],
+  ""instructions"": ""Advised X-ray of the Right knee (AP, Lateral, Axial, Tunnel view). Advised Right Knee Cap. Advised physiotherapy including Shortwave Diathermy (SWD) and exercise for the Right Knee."",
+  ""diagnosis"": ""Right knee pain for 1 month, difficulty going up stairs, no bony lesion""
+}"
+73.jpg,PASS,0.8,12.719,4,80%,,,Multiple vomiting since 4 days,"[""Omeset"", ""Lanzol"", ""Enterogermina"", ""Relent plus""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Omeset"",
+    ""Lanzol"",
+    ""Enterogermina"",
+    ""Relent plus""
+  ],
+  ""dosages"": [
+    ""Syrup, 4ml twice daily for 2 days (30min before meals)"",
+    ""Tablet, 15mg once daily for 3 days"",
+    ""5ml once daily for 5 days"",
+    ""Syrup, 2.5ml twice daily for 3 days""
+  ],
+  ""instructions"": ""Oral Rehydration Solution (ORS) / coconut water advised."",
+  ""diagnosis"": ""Multiple vomiting since 4 days""
+}"
+74.jpg,PASS,1.2,8.703,6,120%,Dr. Jayaprakash Hebbar,,,"[""Lanor - ER"", ""Dompan""]",,"{
+  ""doctor_name"": ""Dr. Jayaprakash Hebbar"",
+  ""patient_name"": ""Mrs. Kamini"",
+  ""date"": ""2019-03-17"",
+  ""medicines"": [
+    ""Lanor - ER"",
+    ""Dompan""
+  ],
+  ""dosages"": [
+    ""1 tablet after food for 5 days"",
+    ""1 tablet before food for 5 days""
+  ],
+  ""instructions"": ""Fluid: Electral / Glucose"",
+  ""diagnosis"": null
+}"
+75.jpg,PASS,1.0,10.531,5,100%,Adela Cruz,,,"[""Amoxicillin""]",,"{
+  ""doctor_name"": ""Adela Cruz"",
+  ""patient_name"": ""Armando Coquia"",
+  ""date"": ""1990-12-03"",
+  ""medicines"": [
+    ""Amoxicillin""
+  ],
+  ""dosages"": [
+    ""500mg, 1 capsule three times a day for seven days""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+76.jpg,PASS,0.4,6.152,2,40%,,,,"[""Metadake""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Metadake""
+  ],
+  ""dosages"": [
+    ""10mg once daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+77.jpg,PASS,0.8,16.597,4,80%,Dr B. Who,,,"[""Paracetamol"", ""Metoclopramide""]",,"{
+  ""doctor_name"": ""Dr B. Who"",
+  ""patient_name"": null,
+  ""date"": ""1994-11-01"",
+  ""medicines"": [
+    ""Paracetamol"",
+    ""Metoclopramide""
+  ],
+  ""dosages"": [
+    ""500mg, take 2 tablets as needed, at least 20 minutes after the metoclopramide"",
+    ""10mg, one suppository as soon as an attack is felt""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+78.jpg,PASS,0.6,11.776,3,60%,,,Small Calculus in lower Calyx of Left Kidney without hydronephrosis,,,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": ""2015-07-06"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""A small radio opaque shadow seen in the left Renal region. Two radiopaque shadows seen in pelvis likely to be of calcification clips. Both kidneys are excreting contrast normally. Bilateral partial duplex moiety. Bilateral ureters are normal. Bladder is normal. Post void residual urine insignificant in patient."",
+  ""diagnosis"": ""Small Calculus in lower Calyx of Left Kidney without hydronephrosis""
+}"
+79.jpg,PASS,0.8,11.827,4,80%,MONICIT DUROSEM M.D.,,,,,"{
+  ""doctor_name"": ""MONICIT DUROSEM M.D."",
+  ""patient_name"": ""ROBLE VIRGIE"",
+  ""date"": ""2015-12-08"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""DEAR MOM ROBLE, PROFESSIONAL FEE - PAID 22 YEARS AGO (ONE OF MY FAVORITE TEACHER!) S=25, N=25, A=25, P=25 100%."",
+  ""diagnosis"": null
+}"
+8.jpg,PASS,1.2,11.521,6,120%,Dr. Sudip Roy,,Functional Dyspepsia,"[""Sompraz"", ""Normatin""]",,"{
+  ""doctor_name"": ""Dr. Sudip Roy"",
+  ""patient_name"": null,
+  ""date"": ""2022-04-22"",
+  ""medicines"": [
+    ""Sompraz"",
+    ""Normatin""
+  ],
+  ""dosages"": [
+    ""40mg once daily before breakfast for 1 month"",
+    ""Once daily at night for 1 month""
+  ],
+  ""instructions"": ""Neurology Consultation. Glycemic control. Cardiac evaluation not done."",
+  ""diagnosis"": ""Functional Dyspepsia""
+}"
+80.jpg,PASS,0.8,15.172,4,80%,Dr. CM. Singh,,"High grade fever, loss of appetite, vomiting, left leg swelling, generalized weakness, left-sided limb weakness with severe rigidity. History of left basal ganglia bleed, chronic headache, and deep vein thrombosis in lower limb (August 2020).",,,"{
+  ""doctor_name"": ""Dr. CM. Singh"",
+  ""patient_name"": ""Mr. Gnukaran Singh"",
+  ""date"": null,
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Vital monitoring. Random Blood Sugar charting every 8 hourly."",
+  ""diagnosis"": ""High grade fever, loss of appetite, vomiting, left leg swelling, generalized weakness, left-sided limb weakness with severe rigidity. History of left basal ganglia bleed, chronic headache, and deep vein thrombosis in lower limb (August 2020).""
+}"
+81.jpg,PASS,1.0,14.333,5,100%,Dr. Ramesh S.,,,"[""Megacoborte"", ""Obugeria"", ""Recid"", ""Anmol rectal suppository""]",,"{
+  ""doctor_name"": ""Dr. Ramesh S."",
+  ""patient_name"": ""Abdel Mallik"",
+  ""date"": ""2019-08-21"",
+  ""medicines"": [
+    ""Megacoborte"",
+    ""Obugeria"",
+    ""Recid"",
+    ""Anmol rectal suppository""
+  ],
+  ""dosages"": [
+    ""Syrup, 4ml twice daily"",
+    ""Syrup, 2ml as needed if fever > 102°F"",
+    ""Syrup, 3.5ml three times daily for 5 days"",
+    ""120mg, one suppository once daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+82.jpg,PASS,0.8,20.574,4,80%,,,Otitis media,"[""Candibiotic ear drops"", ""Tanim O drops"", ""Nasoclear nasal drops"", ""Bonnisan drops""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": ""Baby"",
+  ""date"": null,
+  ""medicines"": [
+    ""Candibiotic ear drops"",
+    ""Tanim O drops"",
+    ""Nasoclear nasal drops"",
+    ""Bonnisan drops""
+  ],
+  ""dosages"": [
+    ""1 drop three times daily"",
+    ""0.4ml twice daily"",
+    ""1 drop as needed"",
+    ""0.5ml""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": ""Otitis media""
+}"
+83.jpg,PASS,1.4,11.051,7,140%,"W.E. Hansen, MD",,Hypertension,"[""Losartan""]",,"{
+  ""doctor_name"": ""W.E. Hansen, MD"",
+  ""patient_name"": ""Harry Hypertensive"",
+  ""date"": ""2010-04-10"",
+  ""medicines"": [
+    ""Losartan""
+  ],
+  ""dosages"": [
+    ""50mg tablets, take one by mouth daily in the morning""
+  ],
+  ""instructions"": ""Dispense 30 tablets. Refill 6 times. Generic substitution OK. Take for blood pressure control."",
+  ""diagnosis"": ""Hypertension""
+}"
+84.jpg,PASS,1.4,14.233,7,140%,Dr. Raja Yasser Shahbaz,,"GERD, Hypothyroid, Migraine, Irritable Bowel Syndrome, Fever (99°F - 103°F), Appendectomy, Ruptured ovarian cyst, Endometriosis, Partial cardiac arrest (after CT contrast), Double lumen catheter passed, Asthma, Allergic Rhinitis, Anxiety, Depression, Heavy Menstrual Bleeding (12 hours), Rectal ulcer, Primary Biliary Cirrhosis.","[""Tramal"", ""Gavinate"", ""Avil"", ""Solu-Cortef"", ""Risele""]",,"{
+  ""doctor_name"": ""Dr. Raja Yasser Shahbaz"",
+  ""patient_name"": ""Maleeha Qureshi"",
+  ""date"": ""2020-10-26"",
+  ""medicines"": [
+    ""Tramal"",
+    ""Gavinate"",
+    ""Avil"",
+    ""Solu-Cortef"",
+    ""Risele""
+  ],
+  ""dosages"": [
+    ""Injection in 10cc immediately and as needed"",
+    ""Injection in 10cc immediately and as needed"",
+    ""Injection 250mg as needed"",
+    ""Injection 250mg as needed"",
+    ""40mg intravenously as needed""
+  ],
+  ""instructions"": ""Patient is allergic to: onset, roxen, Naproxen, amikacin, levofloxacin, cefixime, ceftriaxone, Nerkid, Azomax, Tramal."",
+  ""diagnosis"": ""GERD, Hypothyroid, Migraine, Irritable Bowel Syndrome, Fever (99°F - 103°F), Appendectomy, Ruptured ovarian cyst, Endometriosis, Partial cardiac arrest (after CT contrast), Double lumen catheter passed, Asthma, Allergic Rhinitis, Anxiety, Depression, Heavy Menstrual Bleeding (12 hours), Rectal ulcer, Primary Biliary Cirrhosis.""
+}"
+85.jpg,PASS,1.0,16.056,5,100%,Dr AK Dewan,,"Carcinoma Left Breast, cT4N0M0",,,"{
+  ""doctor_name"": ""Dr AK Dewan"",
+  ""patient_name"": ""Mrs. Meena Dixit"",
+  ""date"": ""2020-01-18"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Neo-adjuvant Chemotherapy followed by reassessment for Surgery and Adjuvant Radiation Therapy. Please take prior appointment for next visit."",
+  ""diagnosis"": ""Carcinoma Left Breast, cT4N0M0""
+}"
+86.jpg,PASS,0.4,27.658,2,40%,,,,"[""Paregoric"", ""Hydrargyrum Impurum"", ""Glauber's Salt"", ""Tincture"", ""Calomel"", ""Dover's Powder"", ""Bismuth Subnitrate"", ""Spiritus Aurantii"", ""Bismuth Subnitrate Powder""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Paregoric"",
+    ""Hydrargyrum Impurum"",
+    ""Glauber's Salt"",
+    ""Tincture"",
+    ""Calomel"",
+    ""Dover's Powder"",
+    ""Bismuth Subnitrate"",
+    ""Spiritus Aurantii"",
+    ""Bismuth Subnitrate Powder""
+  ],
+  ""dosages"": [
+    ""3 drams"",
+    null,
+    ""3 doses"",
+    ""20 drops"",
+    ""Let it be made"",
+    ""2 powders"",
+    ""2 doses"",
+    null,
+    ""2 grains""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+87.jpg,PASS,0.8,6.069,4,80%,Dr. G. Harsha,,Bilateral Medical renal disease Grade II,,,"{
+  ""doctor_name"": ""Dr. G. Harsha"",
+  ""patient_name"": null,
+  ""date"": ""2021-03-25"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Please correlate clinically."",
+  ""diagnosis"": ""Bilateral Medical renal disease Grade II""
+}"
+88.jpg,PASS,0.0,4.953,0,0%,,,,,,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+89.jpg,PASS,1.0,7.354,5,100%,Ram Collen,,,"[""Zendil"", ""Ferrous Sulfate"", ""Humulin N""]",,"{
+  ""doctor_name"": ""Ram Collen"",
+  ""patient_name"": ""Vaguer Ramon"",
+  ""date"": ""1995-06-23"",
+  ""medicines"": [
+    ""Zendil"",
+    ""Ferrous Sulfate"",
+    ""Humulin N""
+  ],
+  ""dosages"": [
+    ""20mg by mouth every 6 hours"",
+    ""300mg by mouth three times daily with meals"",
+    ""30 units subcutaneously every morning""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+9.jpg,PASS,1.2,13.681,6,120%,"C.O. Jones, ARNP",,,"[""Azithromycin""]",,"{
+  ""doctor_name"": ""C.O. Jones, ARNP"",
+  ""patient_name"": ""Joseph McIntyre"",
+  ""date"": ""2009-03-10"",
+  ""medicines"": [
+    ""Azithromycin""
+  ],
+  ""dosages"": [
+    ""200 mg/smL, 15 mL on Day 1, 7.5 mL on Day 2""
+  ],
+  ""instructions"": ""Dispense 5 mg/mL solution, 30 mL. Refills: 0."",
+  ""diagnosis"": null
+}"
+90.jpg,PASS,0.8,7.591,4,80%,Dr B. Who,,,"[""Paracetamol"", ""Metoclopramide""]",,"{
+  ""doctor_name"": ""Dr B. Who"",
+  ""patient_name"": null,
+  ""date"": ""1994-11-01"",
+  ""medicines"": [
+    ""Paracetamol"",
+    ""Metoclopramide""
+  ],
+  ""dosages"": [
+    ""500 mg, dispense 20 tablets. Take 2 tablets at least 20 minutes after the metoclopramide."",
+    ""10 mg, dispense 5 suppositories. Take one suppository as soon as an attack is felt.""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+91.jpg,PASS,0.8,15.296,4,80%,Dr. Swati Sinha,,"Gunshot injury on 2020-08-24, presenting with paraplegia and loss of sensation (Grade 0/5 in bilateral lower limbs) below the periumbilical area, secondary to spinal injury.",,,"{
+  ""doctor_name"": ""Dr. Swati Sinha"",
+  ""patient_name"": null,
+  ""date"": ""2020-03-06"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""Seen by Department of Neurosurgery. Advised MRI Dorso-lumbar spine with contrast. Review and report. Note: We do not take Medico-Legal Cases."",
+  ""diagnosis"": ""Gunshot injury on 2020-08-24, presenting with paraplegia and loss of sensation (Grade 0/5 in bilateral lower limbs) below the periumbilical area, secondary to spinal injury.""
+}"
+92.jpg,PASS,1.0,10.08,5,100%,Dr.M VENKATESWARA RAO,,,"[""Liposomal Amphotericin B"", ""(Conventional) Amphotericin B""]",,"{
+  ""doctor_name"": ""Dr.M VENKATESWARA RAO"",
+  ""patient_name"": ""Mr. Venkateshwar Papiri"",
+  ""date"": ""2021-05-18"",
+  ""medicines"": [
+    ""Liposomal Amphotericin B"",
+    ""(Conventional) Amphotericin B""
+  ],
+  ""dosages"": [
+    ""300mg IV once daily for 2 weeks"",
+    ""50mg IV once daily for 2 weeks""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+93.jpg,PASS,0.6,24.992,3,60%,,,,"[""Apomorphine Muriate crystalline"", ""Morphine Muriate"", ""Bitter Almond Water"", ""Pectoral Elixir"", ""Distilled Water"", ""Simple Syrup""]",,"{
+  ""doctor_name"": null,
+  ""patient_name"": null,
+  ""date"": null,
+  ""medicines"": [
+    ""Apomorphine Muriate crystalline"",
+    ""Morphine Muriate"",
+    ""Bitter Almond Water"",
+    ""Pectoral Elixir"",
+    ""Distilled Water"",
+    ""Simple Syrup""
+  ],
+  ""dosages"": [
+    ""0.04g"",
+    ""0.02g"",
+    ""3.0g"",
+    ""20.0g"",
+    ""30.0g"",
+    ""15.0g""
+  ],
+  ""instructions"": ""Take 7 drops 4 times daily as needed."",
+  ""diagnosis"": null
+}"
+94.jpg,PASS,1.2,6.712,6,120%,Dr Jones,,Coronary artery disease,"[""Acetaminophen"", ""Aspirin"", ""Clopidogrel""]",,"{
+  ""doctor_name"": ""Dr Jones"",
+  ""patient_name"": ""John Hubbard"",
+  ""date"": ""2017-12-01"",
+  ""medicines"": [
+    ""Acetaminophen"",
+    ""Aspirin"",
+    ""Clopidogrel""
+  ],
+  ""dosages"": [
+    ""650mg every 4 hours as needed"",
+    ""81mg by mouth daily"",
+    ""75mg by mouth daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": ""Coronary artery disease""
+}"
+95.jpg,PASS,1.0,9.232,5,100%,DR. SAMPURNA GHOSH,,Bilateral Profound Hearing Loss,,,"{
+  ""doctor_name"": ""DR. SAMPURNA GHOSH"",
+  ""patient_name"": ""BABYRITI DUBEY"",
+  ""date"": ""2020-01-10"",
+  ""medicines"": [],
+  ""dosages"": [],
+  ""instructions"": ""CT scan temporal bone & MRI - Cochlear Implant Protocol."",
+  ""diagnosis"": ""Bilateral Profound Hearing Loss""
+}"
+96.jpg,PASS,1.2,5.936,6,120%,Dr. Montgomery,,,"[""Ferrous Sulfate""]",,"{
+  ""doctor_name"": ""Dr. Montgomery"",
+  ""patient_name"": ""Kevin Zadnick"",
+  ""date"": ""2009-03-10"",
+  ""medicines"": [
+    ""Ferrous Sulfate""
+  ],
+  ""dosages"": [
+    ""4 mL by mouth three times daily""
+  ],
+  ""instructions"": ""Dispense one bottle. Refills: 6 months."",
+  ""diagnosis"": null
+}"
+97.jpg,PASS,1.0,7.665,5,100%,Dr. Steve Johnson,,,"[""Betaloc"", ""Dorzolamidum"", ""Cimetidine"", ""Oxprelol""]",,"{
+  ""doctor_name"": ""Dr. Steve Johnson"",
+  ""patient_name"": ""John Smith"",
+  ""date"": ""2012-09-11"",
+  ""medicines"": [
+    ""Betaloc"",
+    ""Dorzolamidum"",
+    ""Cimetidine"",
+    ""Oxprelol""
+  ],
+  ""dosages"": [
+    ""100mg one tablet twice daily"",
+    ""10mg one tablet twice daily"",
+    ""50mg two tablets three times daily"",
+    ""50mg one tablet once daily""
+  ],
+  ""instructions"": null,
+  ""diagnosis"": null
+}"
+98.jpg,PASS,1.2,7.993,6,120%,Dr. Guru,,,"[""Remdesivir""]",,"{
+  ""doctor_name"": ""Dr. Guru"",
+  ""patient_name"": ""Shailendra Kumar"",
+  ""date"": ""2021-04-24"",
+  ""medicines"": [
+    ""Remdesivir""
+  ],
+  ""dosages"": [
+    ""Injection 200mg intravenous on Day 1, followed by 100mg intravenous for 4 days (Day 2 to Day 5)""
+  ],
+  ""instructions"": ""In case of any adverse reactions contact your doctor immediately. Phone: 2360 8888."",
+  ""diagnosis"": null
+}"
+99.jpg,PASS,1.2,15.721,6,120%,Dr. Bathri Reddy,,"Left eye pain and Left facial pain, revealed Mucomycosis infestation","[""Liposomal Amphotericin B""]",,"{
+  ""doctor_name"": ""Dr. Bathri Reddy"",
+  ""patient_name"": ""Mr. Akula Varin"",
+  ""date"": null,
+  ""medicines"": [
+    ""Liposomal Amphotericin B""
+  ],
+  ""dosages"": [
+    ""350mg (7 vials) once daily for 4 weeks""
+  ],
+  ""instructions"": ""Kindly do the needful."",
+  ""diagnosis"": ""Left eye pain and Left facial pain, revealed Mucomycosis infestation""
+}"

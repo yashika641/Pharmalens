@@ -37,17 +37,14 @@ def _join_list(items: list[str]) -> str:
 
 
 # ✅ Fixed: was `supabase: supabase` (module ref) → now `supabase: Client`
-def _fetch_profile_row(user_id: str, supabase: Client) -> dict:
+def _fetch_profile_row(user_id: str, supabase: Client) -> dict | None:
     res = (
         supabase.table("user_profile")
         .select("*")
         .eq("user_id", user_id)
-        .single()
         .execute()
     )
-    if not res.data:
-        raise HTTPException(status_code=404, detail="Profile not found")
-    return res.data
+    return res.data[0] if res.data else None
 
 
 # ─── Schemas ──────────────────────────────────────────────────────────────────
@@ -69,7 +66,7 @@ class UpdateProfilePayload(BaseModel):
 
 @router.get("/details")
 def get_profile(user_id: str = Depends(get_user_id)):
-    """Return the full user profile row."""
+    """Return the full user profile row, or null data if no profile exists yet."""
     supabase = get_supabase()
     row = _fetch_profile_row(user_id, supabase)
     return {"data": row}
@@ -105,6 +102,8 @@ def update_profile(payload: UpdateProfilePayload, user_id: str = Depends(get_use
 def add_allergy(payload: AllergyPayload, user_id: str = Depends(get_user_id)):
     supabase = get_supabase()
     row = _fetch_profile_row(user_id, supabase)
+    if row is None:
+        raise HTTPException(status_code=404, detail="Profile not found")
 
     current  = _parse_list(row.get("allergies"))
     new_item = payload.allergy.strip()
@@ -129,6 +128,8 @@ def add_allergy(payload: AllergyPayload, user_id: str = Depends(get_user_id)):
 def remove_allergy(payload: AllergyPayload, user_id: str = Depends(get_user_id)):
     supabase = get_supabase()
     row = _fetch_profile_row(user_id, supabase)
+    if row is None:
+        raise HTTPException(status_code=404, detail="Profile not found")
 
     current   = _parse_list(row.get("allergies"))
     to_remove = payload.allergy.strip()
@@ -151,6 +152,8 @@ def remove_allergy(payload: AllergyPayload, user_id: str = Depends(get_user_id))
 def add_condition(payload: ConditionPayload, user_id: str = Depends(get_user_id)):
     supabase = get_supabase()
     row = _fetch_profile_row(user_id, supabase)
+    if row is None:
+        raise HTTPException(status_code=404, detail="Profile not found")
 
     current  = _parse_list(row.get("conditions"))
     new_item = payload.condition.strip()
@@ -175,6 +178,8 @@ def add_condition(payload: ConditionPayload, user_id: str = Depends(get_user_id)
 def remove_condition(payload: ConditionPayload, user_id: str = Depends(get_user_id)):
     supabase = get_supabase()
     row = _fetch_profile_row(user_id, supabase)
+    if row is None:
+        raise HTTPException(status_code=404, detail="Profile not found")
 
     current   = _parse_list(row.get("conditions"))
     to_remove = payload.condition.strip()

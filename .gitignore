@@ -212,6 +212,12 @@ node_modules
 C:\Users\palya\Desktop\pharmalens\Pharmalens\ocr_debug\
 # Ignore OCR debug folder
 ocr_debug/
+# Large binary files — too big for GitHub
+backend/chunks.parquet
+backend/models/chatbot/faiss_compressed.index
+backend/models/chatbot/chunks_meta.jsonl
+duckdb/pharmalens.duckdb
+
 # Large analytics data
 # *.parquet
 # models/drug_interaction_checker/parquet/

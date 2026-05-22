@@ -100,9 +100,13 @@ def build_gemini_payload(drugs: List[str]) -> Optional[Dict]:
 
     for drug_a, drug_b in combinations(drugs_clean, 2):
         pair_label = f"{drug_a} + {drug_b}"
-        if faiss_results := search_drug_interaction_faiss(
-            drug_a, drug_b, top_k=5
-        ):
+        faiss_results = []
+        try:
+            faiss_results = search_drug_interaction_faiss(drug_a, drug_b, top_k=5)
+        except Exception as faiss_err:
+            print(f"[Drug Interaction] FAISS unavailable for {pair_label}: {faiss_err}")
+
+        if faiss_results:
             all_faiss_results.append({
                 "pair": pair_label,
                 "source": "faiss",

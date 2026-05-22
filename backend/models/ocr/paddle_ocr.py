@@ -19,6 +19,8 @@ from backend.models.ocr.exceptions import OCREngineError
 
 _paddle_client = None
 
+PREDICT_TIMEOUT = 90  # seconds to wait for inference result
+
 def get_paddle_client():
     global _paddle_client
     if _paddle_client is None:
@@ -26,7 +28,6 @@ def get_paddle_client():
             raise OCREngineError("gradio_client is not installed. Please run 'pip install gradio_client'.")
         _paddle_client = Client(
             "PaddlePaddle/PaddleOCR-VL-1.5_Online_Demo",
-            # timeout=60,
         )
     return _paddle_client
 
@@ -54,13 +55,14 @@ def run_paddle_ocr(image_bytes: bytes) -> tuple[str, float]:
             if not temp_path:
                 temp_path = _save_temp_image(image_bytes)
 
-            markdown_output, _, _ = client.predict(
+            job = client.submit(
                 fp=handle_file(temp_path),
                 ch=False,
                 uw=False,
                 do=True,
                 api_name="/parse_doc"
             )
+            markdown_output, _, _ = job.result(timeout=PREDICT_TIMEOUT)
 
             if not markdown_output:
                 return "", 0.0
@@ -77,7 +79,8 @@ def run_paddle_ocr(image_bytes: bytes) -> tuple[str, float]:
             return text, round(confidence, 3)
 
         except Exception as e:
-            if "504" in str(e) and attempt < max_retries - 1:
+            retryable = "504" in str(e) or "TimeoutError" in type(e).__name__ or "timeout" in str(e).lower()
+            if retryable and attempt < max_retries - 1:
                 print(f"PaddleOCR timeout, retrying... ({attempt + 1}/{max_retries})")
                 time.sleep(5)
                 continue

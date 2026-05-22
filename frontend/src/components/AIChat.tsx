@@ -22,7 +22,7 @@ const PAGE_STRINGS = [
   "How to take antibiotics?",
   "Drug interaction information",
   "Ask me anything about medications...",
-  "Powered by Gemma 3n LLM • Always consult your doctor for medical decisions",
+  "Powered by Gemini AI • Always consult your doctor for medical decisions",
 ];
 
 export function AIChat() {
@@ -74,6 +74,18 @@ export function AIChat() {
       eventSource.close();
       setIsTyping(false);
     });
+
+    eventSource.onerror = () => {
+      eventSource.close();
+      setIsTyping(false);
+      setMessages(prev =>
+        prev.map(m =>
+          m.id === aiId && m.text === ""
+            ? { ...m, text: "Sorry, I couldn't connect to the server. Please try again." }
+            : m
+        )
+      );
+    };
   };
 
   const startListening = () => {
@@ -122,6 +134,7 @@ export function AIChat() {
       if (!token) return;
       const res = await fetch(`${API_URL}/chat/history`, { headers: { Authorization: `Bearer ${token}` } });
       const data = await res.json();
+      if (!data || data.length === 0) return; // keep welcome message
       const formatted: Message[] = [];
       data.forEach((row: any) => {
         formatted.push({ id: crypto.randomUUID(), text: row.query, sender: "user", timestamp: new Date(row.timestamp) });
@@ -308,7 +321,7 @@ export function AIChat() {
           </div>
 
           <p className="text-[#334155] text-[10px] text-center mt-2">
-            {t("Powered by Gemma 3n LLM • Always consult your doctor for medical decisions")}
+            {t("Powered by Gemini AI • Always consult your doctor for medical decisions")}
           </p>
         </div>
       </div>

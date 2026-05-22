@@ -8,43 +8,40 @@ export function AuthCallback({ setUser }: { setUser: (user: any) => void }) {
   useEffect(() => {
     const handleAuth = async () => {
       try {
-        // On Android, tokens arrive in the URL hash e.g:
-        // pharmalens://auth/callback#access_token=...&refresh_token=...
-        const {hash} = window.location;
+        const { hash } = window.location;
 
         if (hash && hash.includes("access_token")) {
-          // Let Supabase parse the hash and establish the session
-          const { data, error } = await supabase.auth.getSession();
+          // detectSessionInUrl: false means Supabase won't auto-process the hash.
+          // Parse it manually and call setSession to establish the session.
+          const params = new URLSearchParams(hash.substring(1));
+          const accessToken = params.get("access_token");
+          const refreshToken = params.get("refresh_token");
 
-          if (error) throw error;
+          if (accessToken && refreshToken) {
+            const { data, error } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken,
+            });
 
-          if (data?.session?.user) {
-            setUser(data.session.user);
-            navigate("/", { replace: true });
-            return;
+            if (error) throw error;
+
+            if (data?.session?.user) {
+              setUser(data.session.user);
+              navigate("/", { replace: true });
+              return;
+            }
           }
         }
 
-        // Fallback: listen for the auth state change event
-        // This fires when Supabase processes the URL automatically
-        const { data: listenerData } = supabase.auth.onAuthStateChange(
-          async (event, session) => {
-            if (event === "SIGNED_IN" && session?.user) {
-              setUser(session.user);
-              listenerData.subscription.unsubscribe();
-              navigate("/", { replace: true });
-            }
-          }
-        );
-
-        // Also try getting session directly as last resort
+        // No hash — check if we already have a valid session (e.g. refresh)
         const { data: sessionData } = await supabase.auth.getSession();
         if (sessionData?.session?.user) {
           setUser(sessionData.session.user);
-          listenerData.subscription.unsubscribe();
           navigate("/", { replace: true });
+          return;
         }
 
+        navigate("/", { replace: true });
       } catch (err) {
         console.error("Auth callback error:", err);
         navigate("/", { replace: true });

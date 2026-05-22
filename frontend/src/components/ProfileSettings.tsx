@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { Switch } from "./ui/switch";
 import { useLanguage, Language, LANGUAGES, LANG_NATIVE } from "./language_context";
 import { scheduleDailyReminder, cancelDailyReminder } from "../lib/notifications";
+import { Capacitor } from "@capacitor/core";
+import { toast } from "sonner";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -229,6 +231,13 @@ export function ProfileSettings() {
   };
 
   const handleNotificationsToggle = async (enabled: boolean) => {
+    if (enabled && !Capacitor.isNativePlatform()) {
+      toast.info("Notifications work on the Android app only", {
+        description: "Daily reminders are scheduled via the PharmaLens Android app.",
+        duration: 4000,
+      });
+      return; // don't flip the toggle on web
+    }
     updateSettings({ notificationsEnabled: enabled });
     if (enabled) {
       await scheduleDailyReminder();
@@ -489,47 +498,29 @@ export function ProfileSettings() {
             {t("Selecting a language translates the entire app automatically")}
           </p>
 
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-            {LANGUAGES.map((lang, index) => {
-              const isActive = language === lang;
-              return (
-                <motion.button
-                  key={lang}
-                  initial={{ opacity: 0, scale: 0.85 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 + index * 0.02 }}
-                  whileTap={{ scale: 0.94 }}
-                  onClick={() => setLanguage(lang)}
-                  className={`relative glass-card rounded-xl p-2.5 transition-all duration-300 flex flex-col items-center gap-1 text-center ${
-                    isActive
-                      ? "neon-border-cyan bg-[#4fd1c5]/10"
-                      : "border border-white/5 hover:border-[#4fd1c5]/40"
-                  }`}
-                >
-                  {/* Native script */}
-                  <span
-                    className={`text-sm font-semibold leading-tight ${
-                      isActive ? "text-[#4fd1c5]" : "text-[#e8f0ff]"
-                    }`}
-                    style={{ fontFamily: "system-ui, sans-serif" }}
-                  >
-                    {LANG_NATIVE[lang]}
-                  </span>
-
-                  {/* English name */}
-                  <span className="text-[10px] text-[#8a9ab8] leading-none">{lang}</span>
-
-                  {/* Active dot */}
-                  {isActive && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#4fd1c5] rounded-full neon-glow-cyan border border-[#0a0e1a]"
-                    />
-                  )}
-                </motion.button>
-              );
-            })}
+          <div className="relative">
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value as Language)}
+              className="w-full appearance-none rounded-xl px-4 py-3 pr-10 text-sm text-white outline-none cursor-pointer transition-all"
+              style={{
+                background: "rgba(17,25,40,0.8)",
+                border: "1px solid rgba(79,209,197,0.35)",
+                color: "#e2e8f0",
+              }}
+            >
+              {LANGUAGES.map((lang) => (
+                <option key={lang} value={lang} style={{ background: "#0f1929" }}>
+                  {LANG_NATIVE[lang]}  —  {lang}
+                </option>
+              ))}
+            </select>
+            {/* Chevron icon */}
+            <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#4fd1c5]">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
           </div>
 
           {/* Current language indicator */}
@@ -537,7 +528,7 @@ export function ProfileSettings() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-4 flex items-center gap-2 text-xs text-[#4fd1c5]"
+              className="mt-3 flex items-center gap-2 text-xs text-[#4fd1c5]"
             >
               <div className="w-1.5 h-1.5 bg-[#4fd1c5] rounded-full neon-glow-cyan" />
               Active: <span className="font-medium">{language}</span>

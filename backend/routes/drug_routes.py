@@ -1,16 +1,26 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Header
+from typing import Optional
+from backend.utils.supabase import get_supabase
 from backend.models.drug_interaction_checker.drug_iteraction import build_gemini_payload
 from backend.models.drug_interaction_checker.gemini_checking import explain_interaction_with_gemini
 
 router = APIRouter(prefix="/drug-interactions", tags=["Drug Interactions"])
 
 @router.post("/check")
-def check_interactions(payload: dict):
+def check_interactions(payload: dict, authorization: Optional[str] = Header(None)):
     """
     payload = {
       "drugs": ["Aspirin", "Warfarin"]
     }
     """
+
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing Authorization header")
+    token = authorization.removeprefix("Bearer ").strip()
+    supabase = get_supabase()
+    user_response = supabase.auth.get_user(token)
+    if not user_response or not user_response.user:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
 
     drugs = payload.get("drugs")
 

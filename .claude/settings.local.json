@@ -10,7 +10,17 @@
       "Bash(findstr \"status-bar\\\\|capacitor\")",
       "Bash(npx cap *)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\palya\\\\Desktop\\\\pharmalens\\\\Pharmalens\" -Recurse -Directory -Filter \"training\")",
-      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\palya\\\\Desktop\\\\pharmalens\\\\Pharmalens\\\\training_data\" -File | Select-Object Name, @{Name=\"Extension\"; Expression={$_.Extension}}, Length | Sort-Object Name)"
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\palya\\\\Desktop\\\\pharmalens\\\\Pharmalens\\\\training_data\" -File | Select-Object Name, @{Name=\"Extension\"; Expression={$_.Extension}}, Length | Sort-Object Name)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\palya\\\\Desktop\\\\pharmalens\\\\Pharmalens\\\\backend\" -Recurse -Directory)",
+      "Bash(grep -E \"\\\\.py$|\\\\.env\")",
+      "Bash(Get-ChildItem \"C:\\\\Users\\\\palya\\\\Desktop\\\\pharmalens\\\\Pharmalens\\\\backend\" -Name)",
+      "Bash(Select-Object -First 30)",
+      "Bash(pip show *)",
+      "Bash(python)",
+      "Bash(python -m py_compile backend/main.py backend/routes/login_routes.py backend/routes/scan_routes.py backend/routes/user_profile_routes.py backend/routes/drug_routes.py backend/routes/chatbot_routes.py backend/routes/user_history_routes.py backend/routes/profile_settings.py backend/routes/translate_router.py)",
+      "Bash(git check-ignore *)",
+      "Bash(grep -v \"//.*key\")",
+      "Bash(grep -v \"VITE_API_URL\\\\|\\\\.env\\\\|comment\\\\|//\")"
     ]
   }
 }

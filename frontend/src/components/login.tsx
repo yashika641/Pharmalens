@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, Mail, Lock, User, Github } from "lucide-react";
+import { X, Mail, Lock, User, Github, Chrome } from "lucide-react";
 import { supabase } from "../supabase";
-import { Chrome } from "lucide-react"; // Google icon substitute
-import { setAuthCookie } from "../autocookies";
+import { Capacitor } from "@capacitor/core";
 import { useLanguage } from "./language_context";
+
+function getOAuthRedirectUrl(): string {
+    if (Capacitor.isNativePlatform()) {
+        return "pharmalens://auth/callback";
+    }
+    return `${window.location.origin}/auth/callback`;
+}
 
 interface AuthModalProps {
     open: boolean;
@@ -75,7 +81,6 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
                     throw new Error("Login failed. No session returned.");
                 }
 
-                setAuthCookie(data.session.access_token);
                 onLogin(data.session.user);
             }
 
@@ -94,7 +99,6 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
 
                 // ⚠️ Signup may NOT return a session (email verification)
                 if (data.session) {
-                    setAuthCookie(data.session.access_token);
                     onLogin(data.session.user);
                 }
             }
@@ -111,27 +115,19 @@ export function AuthModal({ open, onClose, onLogin }: AuthModalProps) {
     // GITHUB OAUTH
     // =========================
     async function handleGithubAuth() {
-        const { data, error } = await supabase.auth.signInWithOAuth({
+        const { error } = await supabase.auth.signInWithOAuth({
             provider: "github",
-            options: {
-                redirectTo: `pharmalens://auth/callback`,
-            },
+            options: { redirectTo: getOAuthRedirectUrl() },
         });
-
-        if (error) throw error;
-        // Note: OAuth redirects to callback, so onLogin will be handled there
+        if (error) alert(error.message);
     }
 
     async function handleGoogleAuth() {
-        const { data, error } = await supabase.auth.signInWithOAuth({
+        const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
-            options: {
-                redirectTo: `pharmalens://auth/callback`,
-            },
+            options: { redirectTo: getOAuthRedirectUrl() },
         });
-
-        if (error) throw error;
-        // Note: OAuth redirects to callback, so onLogin will be handled there
+        if (error) alert(error.message);
     }
 
     return (

@@ -1,0 +1,205 @@
+file,image_type,paddle_confidence,paddle_time_s,paddle_raw_text,ocrspace_triggered,ocrspace_confidence,ocrspace_time_s,ocrspace_raw_text,gemini_triggered,gemini_time_s,final_engine,final_confidence,fallback_used,final_raw_text,medicine_name,dosage,composition,medicine_type,expiry_date,mfg_date,precautions
+21atpU0Hc9L._AC_UY218_.jpg,medicine,0.65,12.096,Vildagliptin 50 mg & Metformin Hydrochloride 500 mg Tablets GLIPY MET 500 ལིང་ཀ་ཐོང་ཏུ་ཁ Alembic 10 x 10 tablets,Yes,0.6,1.421,"Vildagliptin 50 mg & Metformin
+Hydrochloride 500 mg Tablets
+GLIPY
+""MET 500
+Alembicy
+10 x 30 L9-",Yes,4.709,paddleocr+gemini,0.65,Yes,Vildagliptin 50 mg & Metformin Hydrochloride 500 mg Tablets GLIPY MET 500 ལིང་ཀ་ཐོང་ཏུ་ཁ Alembic 10 x 10 tablets,Glipy Met 500,50mg,Vildagliptin 50mg + Metformin Hydrochloride 500mg,tablet,,,
+41jH9Wz2A6L._AC_UY218_.jpg,medicine,0.61,5.282,,Yes,0.6,1.263,"BACFOSO
+ACIBAC
+ACIBAC",Yes,6.051,paddleocr+gemini,0.61,Yes,,Acibac,,,tablet,,,
+51-kyOzqrBL._AC_UY218_.jpg,medicine,0.64,8.0,## Multi-enzyme Tablets Aristozyme Gold,Yes,0.6,1.65,"Multi-enzyme Tablets
+Aristozyme
+Gold
+10
+TABLETS",Yes,4.775,paddleocr+gemini,0.64,Yes,## Multi-enzyme Tablets Aristozyme Gold,Aristozyme Gold,,,tablet,,,
+51drO9yNxOL._AC_UY218_.jpg,medicine,0.62,4.92,Natural Micronized Progesterone Sustained Release Tablets 300 mg,Yes,0.6,1.28,"Natural Micronized Progesterone
+Sustained Release Tablets 300 mg
+SUGEST *300
+1x10 Tablets",Yes,4.765,paddleocr+gemini,0.62,Yes,Natural Micronized Progesterone Sustained Release Tablets 300 mg,Sugest 300 SR,300mg,Natural Micronized Progesterone 300mg,tablet,,,
+51Vky80e5TL._AC_UY218_.jpg,medicine,0.66,5.637,# Rx SITAGLIPTIN PHOSPHATE & METFORMIN HYDROCHLORIDE TABLETS istamet $ ^{TM} $ 50mg/1000mg (Film-costed Tablets) Far Oral Use Only. 15 tablets each,Yes,0.6,1.278,"Rx
+SITAGLIPTIN PHOSPHATE
+& METFORMIN HYDROCHLORIDE
+TABLETS
+istamet™ 50mg/1000mg
+For Oral Use Only.
+SUN
+PHARMA",Yes,4.141,paddleocr+gemini,0.66,Yes,# Rx SITAGLIPTIN PHOSPHATE & METFORMIN HYDROCHLORIDE TABLETS istamet $ ^{TM} $ 50mg/1000mg (Film-costed Tablets) Far Oral Use Only. 15 tablets each,Istamet,50mg,Sitagliptin Phosphate 50mg + Metformin Hydrochloride 1000mg,tablet,,,For Oral Use Only.
+615ql59bqLL._AC_PT0_BL0_SX320_SY720_.jpg,medicine,0.66,12.991,,Yes,0.6,2.494,"KUEOS""
+tolcbod
+KUOCE
+GE OL""
+soak komd
+KUROS*
+Gã OL
+fonds Bosed
+KUOOS""
+NaSe
+SUROE
+GB Qui
+KURCE
+GosOes
+KưOỚS
+sond tod",Yes,7.112,paddleocr+gemini,0.66,Yes,,Kudos Amrut Gas-Ona Churna,,,powder,,,
+618M7GJZDuL._AC_UY218_.jpg,medicine,0.61,11.029,,Yes,0.6,1.945,"Glimdal
+Glimnda-1
+Glimepiride Tables IP Ing
+Glimda 1
+Glimda-1
+Glimada 1
+Glinda 1
+Gtimda-l
+Glimda 1
+Glimda -1
+Glimda:1
+Glimda:!",Yes,8.265,paddleocr+gemini,0.61,Yes,,Glimda-1,1mg,Glimepiride 1mg,tablet,,,Dosage: As directed by the physician. Store in a cool and dry place. Schedule H drug. Warning: To be sold by retail on the prescription of a Registered Medical Practitioner only.
+61FLd7WVkdL._AC_UY218_.jpg,medicine,0.61,4.151,,Yes,0.6,1.129,"ANTADIO ANTIGAS GEL
+DIGENE
+450ml",Yes,3.695,paddleocr+gemini,0.61,Yes,,Digene,450ml,,gel,,,
+61FYV+hiNzL._AC_UY218_.jpg,medicine,0.63,4.508,TATA விவரி Antacid & Antigas Liquid,Yes,0.6,1.116,"TATA TN
+Antacid &
+Antigas Liquid",Yes,6.133,paddleocr+gemini,0.63,Yes,TATA விவரி Antacid & Antigas Liquid,TATA 1mg Antacid & Antigas Liquid,,,solution,,,
+61KNeYtvwML._AC_UY218_.jpg,medicine,0.74,8.427,"Each uncoated tablet contains Everolimus 0.25 mg Storage: Store at a temperature not more than $ 25^{\circ} $C. Protect from light and moisture. KEEP THE MEDICINE OUT OF REACH OF CHILDREN. TM = Trade Mark Under Registration Mfg. Lic. No.: MB/05/203 For further information: Please call our 24*7 Helpline Number for Organ Transplant Patients 011-41169080 Manufactured & Marketed by: Panacea Biotec Pharma Ltd. Wholly-owned Subsidiary of Panacea Biotec Ltd. Malpur, Baddi, Distt. Solan (H.P.) & 173 205, India As Everolimus Tablets 0.25 mo",Yes,0.6,1.797,"Mio Lic No. MB/05/203
+# Everolimus Tablets 0.25 mg
+Ever Graf 0.25
+Each uncoated tablet confains:
+Everolimus
+025 mg
+Dosage: As directed by the Physician:
+Storage: Store at a temperature not more
+than 25°C. Protect from light and moisture.
+KEEP THE MEDICINE OUT OF REACH
+OF CHILDREN:
+TM = Trade Mark Under Registration
+Mfg. Lic. No.:M8/05/203
+Re
+for Organ Transplant Patients
+011-41169080
+Manufactured & Marketed by
+Wholly-owned Subsidiary of Panacea Biotec Ltd.
+Mafpur Baddi Osit Sotan LP):173 205 India:
+Ever Graf 0.25
+AS",Yes,9.517,paddleocr+gemini,0.74,Yes,"Each uncoated tablet contains Everolimus 0.25 mg Storage: Store at a temperature not more than $ 25^{\circ} $C. Protect from light and moisture. KEEP THE MEDICINE OUT OF REACH OF CHILDREN. TM = Trade Mark Under Registration Mfg. Lic. No.: MB/05/203 For further information: Please call our 24*7 Helpline Number for Organ Transplant Patients 011-41169080 Manufactured & Marketed by: Panacea Biotec Pharma Ltd. Wholly-owned Subsidiary of Panacea Biotec Ltd. Malpur, Baddi, Distt. Solan (H.P.) & 173 205, India As Everolimus Tablets 0.25 mo",EverGraf,25mg,everolimus 0.25 mg,Tablet,,,Store at a temperature not more than 25°C. Protect from light and moisture. KEEP THE MEDICINE OUT OF REACH OF CHILDREN. Not to be sold by retail without the prescription of a Registered Medical Practitioner.
+61MBCfCe2fL._AC_UY218_.jpg,medicine,0.64,5.431,"Girnepinide, Pioglitrazone Hydrochloride & Meffonmin Hydrochloride Extended Release Tablets ## OZOMET $ ^{\circledR} $-PG2 ཨོཾ་ཨིཙྪ་ཨི་ཊ",Yes,0.6,1.32,"•Girmepide, Pingliazone tydrochloride & Mefomin
+Hydrochloride Extended Reease Tablets
+OZOMET-PG2
+COLSTR
+PG2
+OZONE",Yes,8.266,paddleocr+gemini,0.64,Yes,"Girnepinide, Pioglitrazone Hydrochloride & Meffonmin Hydrochloride Extended Release Tablets ## OZOMET $ ^{\circledR} $-PG2 ཨོཾ་ཨིཙྪ་ཨི་ཊ",Ozomet-PG2,,,tablet,,,
+61mS7nYrnCL._AC_UY218_.jpg,medicine,0.61,4.086,(Empty result),Yes,0.6,1.134,DIGENE,Yes,3.961,paddleocr+gemini,0.61,Yes,(Empty result),Digene,,Antacid Antigas,suspension,,,
+61qOGb2N3JL._AC_UY218_.jpg,medicine,0.62,4.49,TATA 1mg Antacid & Antigas Liquid,Yes,0.6,1.156,"TATA 1mg
+Antacid &
+Antigas Liquid",Yes,5.531,paddleocr+gemini,0.62,Yes,TATA 1mg Antacid & Antigas Liquid,Antacid & Antigas Liquid,1mg,,solution,,,Sugar Free.
+61U833aF5sL._AC_UY218_.jpg,medicine,0.61,4.931,,Yes,0.6,1.95,"Baidyanath
+38 yers of carig
+Suwamamalini
+Vasant Ras (Briat,
+arodkpass
+• Aheaive & tonik
+Mousty
+Serepndes n
+netioed e seate
+-aihot",Yes,6.501,paddleocr+gemini,0.61,Yes,,Suwarnamalini Vasant Ras (Brihat),,Gold + Pearl,tablet,,,To be taken under Medical Supervision.
+713mB7d81iL._AC_UY218_.jpg,medicine,0.62,5.212,,Yes,0.6,2.076,"rogesterone Sustaina
+macgest sE 300
+lease Tablets",Yes,7.545,paddleocr+gemini,0.62,Yes,,Macgest SR 300,300mg,Progesterone 300mg,tablet,2026-07-31,2023-08-01,Keep out of reach of children. Store below 25°C in a dry & dark place and away from direct sunlight. Do not remove tablet from the pack till just before use. Dosage as directed by the Physician. This tablet should be swallowed whole and not to be broken or crushed.
+71g-EpxGstL._AC_UY218_.jpg,medicine,0.76,13.795,"# *Progesterone Sustained Release Tablets dicalural Micronized) Dosage: As directed by the Physician. Susten 400 Susten 400 M.L. 27/UNSC/P-2016 Manufactured as inks by: Synokem Pharmaceuticals Ltd. Pilot No. 56-57, Sector - 6A, 11.E, SIDCUL, Ranipur (BHEL), Haridwar - 249103, Uttarakhand, Susten Markted by: Sun pharma laboratories Ltd. Acme Plaza, Andhen-Kuria Road, Andheri (E), Mumbai-400 059 Susten 400 Susten 400 *Progesterone Sustained Release Tablets",Yes,0.6,1.748,"Chapa, As directed sy
+Susten -o
+Sustene
+Antacke Mumbai 400.0593
+Susten 60-0
+Susten wo
+Sustangoe
+* Progesterone Sustained Release Tablets
+Susten
+Tablet should Se swallowed whole
+400 and not to be chewed or crushed.
+25°C. protected from light and
+atlet containe
+Pictesterone iP
+ML 27UNSOR 2016
+Natural Micronized)
+Manufactured & Wata by.
+Motted by.
+Synokem Pram
+Colour: Titanium Dioxide IP
+Piot No. 56-57 Sector - 6A
+sun pharma laboratories ltd
+LLE. SIDCUL, Ranipur (BHEL).
+Dosage: As directed by the Physician.
+Hardwar - 243903
+Rome Plaza, Andhieni-Kurta Raed.
+Susten CO«c
+Susten Go
+Susten e
+Ancheri(E), Mumbai-400 059;
+Susten ©-o
+Susten @+
+Susten COco
+* Progesterone Sustained Release Tablets",Yes,7.137,paddleocr+gemini,0.76,Yes,"# *Progesterone Sustained Release Tablets dicalural Micronized) Dosage: As directed by the Physician. Susten 400 Susten 400 M.L. 27/UNSC/P-2016 Manufactured as inks by: Synokem Pharmaceuticals Ltd. Pilot No. 56-57, Sector - 6A, 11.E, SIDCUL, Ranipur (BHEL), Haridwar - 249103, Uttarakhand, Susten Markted by: Sun pharma laboratories Ltd. Acme Plaza, Andhen-Kuria Road, Andheri (E), Mumbai-400 059 Susten 400 Susten 400 *Progesterone Sustained Release Tablets",Susten SR 400,400mg,Progesterone IP (Natural Micronized) 400mg,tablet,,,"Tablet should be swallowed whole and not to be chewed or crushed. Store at temperature not exceeding 25°C, protected from light and moisture. SCHEDULE H PRESCRIPTION DRUG - CAUTION: Not to be sold by retail without the prescription of a Registered Medical Practitioner."
+71ISfgKFsHL._AC_UY218_.jpg,medicine,0.61,6.468,,Yes,0.6,1.268,"Digeplex
+ogmade
+(233 ANAN
+Digeplex
+honds fonet",Yes,6.174,paddleocr+gemini,0.61,Yes,,Digeplex Readymade,,,syrup,,,
+71kesLt00uL._AC_UY218_.jpg,medicine,0.62,7.973,,Yes,0.6,0.95,,Yes,7.046,paddleocr+gemini,0.62,Yes,,Letpro,2.5 mg,Letrozole 2.5mg,tablet,2025-07-31,2023-08-01,Dosage: As directed by the Gynaecologist/ Physician. Keep out of reach of children. Store below 30°C. Protect from light & moisture.
+71NtgUEsbzL._AC_UY218_.jpg,medicine,0.77,8.115,# Simethicone & Activated Charcoal Tablets GASVENZ Diesel layer (Sulfur-coated for plastic release) Sodium Chloride (Sodium Chloride) 80 mg Water layer (Sulfur-coated for intestinal release) 250 mg Calcium Sulfate (Calcium Sulfate) Plastic Dioxide (PDD) Nitric Oxide (NOx) Chloride (Chloride) Dissolving Alumina (Alumina) Starch (Starch) Protein (Protein) Water (Water) Phosphorus (Phosphorus) Simethicone & Activated Charcoal Tablets CASUMZ™ (Müden),Yes,0.6,1.734,"Simethicone & Activated Charcoal Tablets
+* GASVENZ
+• еветя
+Simetticone & Activated Charooal Tablets
+а сленсик",Yes,6.715,paddleocr+gemini,0.77,Yes,# Simethicone & Activated Charcoal Tablets GASVENZ Diesel layer (Sulfur-coated for plastic release) Sodium Chloride (Sodium Chloride) 80 mg Water layer (Sulfur-coated for intestinal release) 250 mg Calcium Sulfate (Calcium Sulfate) Plastic Dioxide (PDD) Nitric Oxide (NOx) Chloride (Chloride) Dissolving Alumina (Alumina) Starch (Starch) Protein (Protein) Water (Water) Phosphorus (Phosphorus) Simethicone & Activated Charcoal Tablets CASUMZ™ (Müden),Gasvenz,80mg,Simethicone IP 80mg + Activated Charcoal IP 250mg,tablet,,,Store at a temperature not exceeding 30°C. Protect from light and moisture. Keep out of reach of children. To be sold by retail on the prescription of a Registered Medical Practitioner only.
+71PlxoKxYrL._AC_UY218_.jpg,medicine,0.61,4.989,,Yes,0.6,1.333,"Digeplex:
+Digeplex:",Yes,12.616,paddleocr+gemini,0.61,Yes,,Digeplex,,Alpha Amylase (Bacterial) 18.75mg + Pepsin 12.5mg + D-Panthenol 2.5mg + Niacinamide 2.5mg + Pyridoxine Hydrochloride 0.75mg + Thiamine Hydrochloride 0.75mg + Riboflavin (as Riboflavin Sodium Phosphate) 0.5mg + Cyanocobalamin 0.5mcg per 5ml,solution,,,Store in a cool and dry place. Protect from moisture and light.
+71rjGKOUFtL._AC_UY218_.jpg,medicine,0.69,28.482,## DIGENE $ ^{\circledR} $ INSTA ON THE GO • Antacid • Antigas ACTS IN 2 SECONDS $ ^{*} $ IMPROVED FORMULA $ ^{*} $ JUST TEAR & SIP MINT FLAVOUR 5 SHOTS of 10 ml each,Yes,0.6,1.32,"DIGENE
+ON THE GO
+• Antacid • Antigas
+ACTS IN
+SECONDS*
+2 SECONDS
+JUST TEAR & SIP
+MINT
+FLAVOUR
+5 SHOTS
+of 10 ml each",Yes,6.664,paddleocr+gemini,0.69,Yes,## DIGENE $ ^{\circledR} $ INSTA ON THE GO • Antacid • Antigas ACTS IN 2 SECONDS $ ^{*} $ IMPROVED FORMULA $ ^{*} $ JUST TEAR & SIP MINT FLAVOUR 5 SHOTS of 10 ml each,Digene On The Go Insta,10ml,,sachet,,,
+71SA38XB6tL._AC_UY218_.jpg,medicine,0.61,5.418,Sugar Free,Yes,0.6,1.291,"ORANGE
+GAS O FAST
+plus
+Sugar
+Free",Yes,3.699,paddleocr+gemini,0.61,Yes,Sugar Free,Gas-O-Fast Plus,,Papain + Fungal Diastase + Simethicone,tablet,,,
+71vqkjcWRgL._AC_UY218_.jpg,medicine,0.61,4.797,,Yes,0.6,1.28,,Yes,2.467,paddleocr+gemini,0.61,Yes,,Digene,,,tablet,,,
+71YAo8VdiSL._AC_UY218_.jpg,medicine,0.61,4.231,,Yes,0.6,1.265,TOMOISTNPHOSPHATE METORM,Yes,6.322,paddleocr+gemini,0.61,Yes,,Janumet,50mg/1000mg,Sitagliptin 50mg + Metformin Hydrochloride 1000mg,tablet,2024-09-30,2022-10-01,Keep out of the reach of and sight of children. Store below 30°C. Protect from moisture. To be dispensed only on the prescription of a registered medical practitioner.
+81D5eYUTZNL._AC_UY218_.jpg,medicine,0.62,6.143,,Yes,0.6,0.995,,Yes,7.896,paddleocr+gemini,0.62,Yes,,Pio MF-15,15mg/500mg,Pioglitazone 15mg + Metformin Hydrochloride 500mg (SR),tablet,,,SCHEDULE H PRESCRIPTION DRUG - CAUTION: It is dangerous to take this preparation except under medical supervision. Store in a cool & dry place. Protect from light & moisture. Keep out of reach of children.
+81EfYVqCGPL._AC_UY218_.jpg,medicine,0.72,5.999,"METFORMIN HYDROCHLORIDE SUSTAINED RELEASE TABLETS IP 500 MG GLYCOMET-500 S.R. Presence is not closed, tight-realigned, classical- and store at constructed room temperature. MEFORMIN HYDROCHLORIDE SUSTAINED RELEASE TABLETS IP 500 MG GLYCOMET-500 S.R.",Yes,0.6,1.474,"030
+METFORMIN HYOROCHLORIDE
+SUSTAINED RELEASE TABLETS
+USD
+METFORMIN HYOROCHLORIDE
+SUSTAINED RELEASE TABLETS
+IP 500 MG",Yes,8.337,paddleocr+gemini,0.72,Yes,"METFORMIN HYDROCHLORIDE SUSTAINED RELEASE TABLETS IP 500 MG GLYCOMET-500 S.R. Presence is not closed, tight-realigned, classical- and store at constructed room temperature. MEFORMIN HYDROCHLORIDE SUSTAINED RELEASE TABLETS IP 500 MG GLYCOMET-500 S.R.",Glycomet-500 S.R.,500mg,Metformin Hydrochloride 500mg,tablet,,,"As directed by the Physician. Preserve in well-closed, light-resistant containers and store at controlled room temperature."
+81l7xVkxZRL._AC_UY218_.jpg,medicine,0.65,4.736,Himalaya SINCE 1930 Diabecori DS TABLETS 60 Compliance Compliance Code,Yes,0.6,1.148,"Himalaya
+SINCE 1930
+Diabecon DS
+TABLETS CO
+Correlate • Conflies Celed",Yes,3.329,paddleocr+gemini,0.65,Yes,Himalaya SINCE 1930 Diabecori DS TABLETS 60 Compliance Compliance Code,Diabecon DS,,,tablet,,,
+81LobB9dIgL._AC_UY218_.jpg,medicine,0.62,5.721,# 31TAGUPTIN PHOSPHATE & METFORMIN HYDROCHLORIDE TABLETS,Yes,0.6,1.247,TACUPAN PHOSPHATE,Yes,7.632,paddleocr+gemini,0.62,Yes,# 31TAGUPTIN PHOSPHATE & METFORMIN HYDROCHLORIDE TABLETS,Istamet,50mg/500mg,Sitagliptin 50mg + Metformin Hydrochloride 500mg,tablet,2026-03-31,2023-07-01,CAUTION: To be sold by retail on the prescription of a Registered Medical Practitioner only. Keep out of the reach and sight of children. Store below 30°C. Protect from light and moisture. For Oral Use Only.
+81pbXHpN7tL._AC_UY218_.jpg,medicine,0.62,4.459,,Yes,0.6,1.296,,Yes,6.005,paddleocr+gemini,0.62,Yes,,Dcramicf X R,10mg/1000mg,Dapagliflozin 10mg + Metformin HCl 1000mg,tablet,2026-04-30,2024-03-01,"Dosage: As directed by the physician. Store in a cool, dry place. Protect from moisture & light. Keep out of reach of children. To be sold by retail on the prescription of a registered medical practitioner only. Schedule H prescription drug – caution. Do not chew, crush or break the tablet. Swallow the whole tablet. Dispense in original container. Discard the desiccant pouch provided in the pack. Do not consume."
+81QJmDV+qxL._AC_UY218_.jpg,medicine,0.62,4.552,,Yes,0.6,1.287,,Yes,7.856,paddleocr+gemini,0.62,Yes,,Glycomet,500mg,Metformin Hydrochloride 500mg,tablet,2027-05-31,2024-06-01,FOR ORAL USE ONLY. SCHEDULE H PRESCRIPTION DRUG - CAUTION: It is dangerous to take this preparation except under medical supervision. Keep out of reach of children. Store at a temperature not exceeding 30°C. Protect from light and moisture. DOSAGE: As directed by the physician. Warning: To be sold by retail on the prescription of a Registered Medical Practitioner only.
+91+2ghWgqcL._AC_UY218_.jpg,medicine,0.62,5.14,,Yes,0.6,1.315,,Yes,9.202,paddleocr+gemini,0.62,Yes,,Pan 40,40mg,Pantoprazole Sodium Sesquihydrate equivalent to Pantoprazole 40mg,tablet,2026-09-30,2023-10-01,Dosage: As directed by the physician. Store in a cool dry place. Protect from moisture & light. Keep medicine out of reach of children. Read the package insert carefully before use.
+91+u7cNNo5L._AC_UY218_.jpg,medicine,0.61,17.151,,Yes,0.6,1.407,"GASTICA-FIZ
+CHERVECOC10005
+GASTICA-FIZ
+GASTICA-FIZ
+GASTICA-FIZ
+GASTICA-FIZ
+GASTICA-FIZ",Yes,4.886,paddleocr+gemini,0.61,Yes,,Gastica-Fiz,,,tablet,,,
+916JrSv40KL._AC_UY218_.jpg,medicine,0.62,8.234,,Yes,0.6,1.339,,Yes,7.954,paddleocr+gemini,0.62,Yes,,Arimidex,1mg,Anastrozole 1mg,tablet,,,Store below 30°C. Protect from moisture and light. Keep medicines away from children. To be sold by retail on the prescription of a Registered Medical Practitioner only.
+919bY8QpnaL._AC_UY218_.jpg,medicine,0.67,6.252,Poglizione HCl with Metformin HCl Sustained Reke zur Gliederungs-Tabels 0,Yes,0.6,1.749,,Yes,13.765,paddleocr+gemini,0.67,Yes,Poglizione HCl with Metformin HCl Sustained Reke zur Gliederungs-Tabels 0,Triglynase-E 1,15mg/1000mg/1mg,Pioglitazone 15mg + Metformin Hydrochloride (Sustained Release) 1000mg + Glimepiride 1mg,tablet,,,Dosage as directed by the Physician. Store in a cool dry & dark place. Tablets should be swallowed whole and not to be chewed or crushed. WARNING: SCHEDULE H PRESCRIPTION DRUG. CAUTION: It is dangerous to take this preparation except in accordance with the prescription of a registered medical practitioner. WARNING FOR PRODUCTS CONTAINING PIOGLITAZONE HYDROCHLORIDE.
+91ApMWDemVL._AC_UY218_.jpg,medicine,0.62,5.987,,Yes,0.6,1.271,,Yes,6.994,paddleocr+gemini,0.62,Yes,,Glimiprex MF Forte 2,500mg/2mg,Metformin Hydrochloride Prolonged-release 500mg + Glimepiride 2mg,tablet,,,Not to be sold without the prescription of a Registered Medical Practitioner. Keep out of reach of children. Store below 30°C. Protect from moisture and light.
+91dUzZTIlmL._AC_UY218_.jpg,medicine,0.68,5.619,"# Progesterone Vaginal Inserts Susten $ ^{®} $ VT 200 for signal use only Fashionable signal text names: Puppetre P 200 mg Natural, Morsant Origins:",Yes,0.6,1.397,"*Progesterone Vaginal inserts
+Sustent a",Yes,5.637,paddleocr+gemini,0.68,Yes,"# Progesterone Vaginal Inserts Susten $ ^{®} $ VT 200 for signal use only Fashionable signal text names: Puppetre P 200 mg Natural, Morsant Origins:",Susten VT 200,200mg,Progesterone 200mg,suppository,,,"For vaginal use only. Vaginal applicator supplied free with this pack. Refer patient information leaflet before use. Store at room temperature, protected from light and moisture."
+91fhAHqnesL._AC_UY218_.jpg,medicine,0.62,4.908,,Yes,0.6,1.307,,Yes,9.757,paddleocr+gemini,0.62,Yes,,Glimer-Forte 1,1mg/500mg,Glimepiride 1mg + Metformin Hydrochloride 500mg (as prolonged release),tablet,,,Store protected from moisture and light at a temperature not exceeding 30°C.
+91HLHLcfjdL._AC_UY218_.jpg,medicine,0.61,5.374,,Yes,0.6,1.311,,Yes,6.985,paddleocr+gemini,0.61,Yes,,Gelusil MPS,,,tablet,,,
+91jwfgoYB8L._AC_UY218_.jpg,medicine,0.62,8.801,,Yes,0.6,0.968,,Yes,5.778,paddleocr+gemini,0.62,Yes,,Glinestar PM2,,Glimepiride 2mg + Pioglitazone 15mg + Metformin Hydrochloride (ER) 500mg,tablet,2026-04-30,2023-05-01,SCHEDULE H PRESCRIPTION DRUG - CAUTION: Not to be sold by retail without the prescription of a Registered Medical Practitioner. Store below 30°C. Protect from light and moisture. Keep medicine out of reach of children.
+91Kdp+1a8ZL._AC_UY218_.jpg,medicine,0.62,6.689,,Yes,0.6,1.475,"26013100/00
+BLIMEPIRIDE TABLETS P
+GNE 3513188-039N01086",Yes,4.976,paddleocr+gemini,0.62,Yes,,Glycomet GP 2,500mg/2mg,Metformin Hydrochloride Prolonged-Release 500mg + Glimepiride 2mg,tablet,,,SCHEDULE H PRESCRIPTION DRUG - CAUTION: It is dangerous to take this preparation except under medical supervision. Store in a cool dry place. Protect from moisture and excessive heat. Keep out of reach of children.

@@ -1,0 +1,361 @@
+file,status,confidence,elapsed,fields_found,fill_pct,medicine_name,dosage,composition,medicine_type,expiry_date,mfg_date,precautions,raw_json
+21atpU0Hc9L._AC_UY218_.jpg,PASS,0.5714,5.416,4,57%,Glipy Met 500,50mg/500mg,Vildagliptin 50mg + Metformin Hydrochloride 500mg,tablet,,,,"{
+  ""medicine_name"": ""Glipy Met 500"",
+  ""dosage"": ""50mg/500mg"",
+  ""composition"": ""Vildagliptin 50mg + Metformin Hydrochloride 500mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""tablet""
+}"
+41jH9Wz2A6L._AC_UY218_.jpg,PASS,0.2857,4.98,2,29%,Acibac,,,tablet,,,,"{
+  ""medicine_name"": ""Acibac"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""tablet""
+}"
+51-kyOzqrBL._AC_UY218_.jpg,PASS,0.4286,4.974,3,43%,Aristozyme Gold,,Multi-enzyme,tablet,,,,"{
+  ""medicine_name"": ""Aristozyme Gold"",
+  ""dosage"": null,
+  ""composition"": ""Multi-enzyme"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""tablet""
+}"
+51drO9yNxOL._AC_UY218_.jpg,PASS,0.5714,4.238,4,57%,Sugest 300 SR,300 mg,Natural Micronized Progesterone 300 mg,tablet,,,,"{
+  ""medicine_name"": ""Sugest 300 SR"",
+  ""dosage"": ""300 mg"",
+  ""composition"": ""Natural Micronized Progesterone 300 mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""tablet""
+}"
+51Vky80e5TL._AC_UY218_.jpg,PASS,0.7143,4.393,5,71%,Istamet,50mg/1000mg,Sitagliptin Phosphate 50mg + Metformin Hydrochloride 1000mg,tablet,,,For Oral Use Only.,"{
+  ""medicine_name"": ""Istamet"",
+  ""dosage"": ""50mg/1000mg"",
+  ""composition"": ""Sitagliptin Phosphate 50mg + Metformin Hydrochloride 1000mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""For Oral Use Only."",
+  ""medicine_type"": ""tablet""
+}"
+615ql59bqLL._AC_PT0_BL0_SX320_SY720_.jpg,PASS,0.4286,6.505,3,43%,KUDOS Gas ONA Churna,50g,,powder,,,,"{
+  ""medicine_name"": ""KUDOS Gas ONA Churna"",
+  ""dosage"": ""50g"",
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""powder""
+}"
+618M7GJZDuL._AC_UY218_.jpg,PASS,0.7143,6.855,5,71%,Glimda-1,1mg,Glimepiride IP 1mg,tablet,,,As directed by the physician. Store in a cool dry place. Schedule H drug. Warning: To be sold by retail on the prescription of a Registered Medical Practitioner only.,"{
+  ""medicine_name"": ""Glimda-1"",
+  ""dosage"": ""1mg"",
+  ""composition"": ""Glimepiride IP 1mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""As directed by the physician. Store in a cool dry place. Schedule H drug. Warning: To be sold by retail on the prescription of a Registered Medical Practitioner only."",
+  ""medicine_type"": ""tablet""
+}"
+61FLd7WVkdL._AC_UY218_.jpg,PASS,0.2857,8.969,2,29%,Digene,,,gel,,,,"{
+  ""medicine_name"": ""Digene"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""gel""
+}"
+61FYV+hiNzL._AC_UY218_.jpg,PASS,0.2857,8.907,2,29%,TATA 1mg Antacid & Antigas Liquid,,,solution,,,,"{
+  ""medicine_name"": ""TATA 1mg Antacid & Antigas Liquid"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""solution""
+}"
+61KNeYtvwML._AC_UY218_.jpg,PASS,0.7143,7.974,5,71%,EverGraf,0.25 mg,Everolimus 0.25mg,tablet,,,Store at a temperature not more than 25°C. Protect from light and moisture. KEEP THE MEDICINE OUT OF REACH OF CHILDREN. Not to be sold by retail without the prescription of a Registered Medical Practitioner.,"{
+  ""medicine_name"": ""EverGraf"",
+  ""dosage"": ""0.25 mg"",
+  ""composition"": ""Everolimus 0.25mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""Store at a temperature not more than 25°C. Protect from light and moisture. KEEP THE MEDICINE OUT OF REACH OF CHILDREN. Not to be sold by retail without the prescription of a Registered Medical Practitioner."",
+  ""medicine_type"": ""tablet""
+}"
+61MBCfCe2fL._AC_UY218_.jpg,PASS,0.2857,11.826,2,29%,Ozomet-PG2,,,tablet,,,,"{
+  ""medicine_name"": ""Ozomet-PG2"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""tablet""
+}"
+61mS7nYrnCL._AC_UY218_.jpg,PASS,0.2857,8.046,2,29%,Digene,,,solution,,,,"{
+  ""medicine_name"": ""Digene"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""solution""
+}"
+61qOGb2N3JL._AC_UY218_.jpg,PASS,0.2857,6.662,2,29%,Antacid & Antigas Liquid,,,solution,,,,"{
+  ""medicine_name"": ""Antacid & Antigas Liquid"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""solution""
+}"
+61U833aF5sL._AC_UY218_.jpg,PASS,0.4286,6.292,3,43%,Suwarnamalini Vasant Ras (Brihat),,,tablet,,,To be taken under Medical Supervision.,"{
+  ""medicine_name"": ""Suwarnamalini Vasant Ras (Brihat)"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""To be taken under Medical Supervision."",
+  ""medicine_type"": ""tablet""
+}"
+713mB7d81iL._AC_UY218_.jpg,PASS,1.0,7.818,7,100%,Macgest SR 300,300mg,Progesterone 300mg,tablet,2026-03-31,2023-04-01,"Store below 25°C. Protect from light & moisture. Keep out of reach of children. For oral use only. The tablet should be swallowed whole and not to be broken, chewed or crushed. It is dangerous to take this preparation except under medical supervision.","{
+  ""medicine_name"": ""Macgest SR 300"",
+  ""dosage"": ""300mg"",
+  ""composition"": ""Progesterone 300mg"",
+  ""expiry_date"": ""2026-03-31"",
+  ""mfg_date"": ""2023-04-01"",
+  ""precautions"": ""Store below 25°C. Protect from light & moisture. Keep out of reach of children. For oral use only. The tablet should be swallowed whole and not to be broken, chewed or crushed. It is dangerous to take this preparation except under medical supervision."",
+  ""medicine_type"": ""tablet""
+}"
+71g-EpxGstL._AC_UY218_.jpg,PASS,0.7143,9.069,5,71%,Susten SR 400,400mg,Progesterone (Natural Micronized) 400mg,tablet,,,"Tablet should be swallowed whole and not to be chewed or crushed. Store at temperature not exceeding 25°C, protected from light and moisture. SCHEDULE H PRESCRIPTION DRUG - CAUTION: Not to be sold by retail without the prescription of a Registered Medical Practitioner.","{
+  ""medicine_name"": ""Susten SR 400"",
+  ""dosage"": ""400mg"",
+  ""composition"": ""Progesterone (Natural Micronized) 400mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""Tablet should be swallowed whole and not to be chewed or crushed. Store at temperature not exceeding 25°C, protected from light and moisture. SCHEDULE H PRESCRIPTION DRUG - CAUTION: Not to be sold by retail without the prescription of a Registered Medical Practitioner."",
+  ""medicine_type"": ""tablet""
+}"
+71ISfgKFsHL._AC_UY218_.jpg,PASS,0.2857,8.134,2,29%,Digeplex Readymade,,,syrup,,,,"{
+  ""medicine_name"": ""Digeplex Readymade"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""syrup""
+}"
+71kesLt00uL._AC_UY218_.jpg,PASS,0.7143,6.477,5,71%,Letpro,2.5mg,Letrozole 2.5mg,tablet,,,"Dosage: As directed by the Gynaecologist/Physician. Keep out of reach of children. Store in a cool, dry place. Protect from moisture & light. Caution: To be sold by retail on the prescription of a Registered Medical Practitioner only.","{
+  ""medicine_name"": ""Letpro"",
+  ""dosage"": ""2.5mg"",
+  ""composition"": ""Letrozole 2.5mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""Dosage: As directed by the Gynaecologist/Physician. Keep out of reach of children. Store in a cool, dry place. Protect from moisture & light. Caution: To be sold by retail on the prescription of a Registered Medical Practitioner only."",
+  ""medicine_type"": ""tablet""
+}"
+71NtgUEsbzL._AC_UY218_.jpg,PASS,0.8571,7.442,6,86%,Gasvenz,80mg/250mg,Simethicone IP 80mg + Activated Charcoal IP 250mg,tablet,2027-03-31,,Store at a temperature not exceeding 30°C. Protect from light and moisture. Keep out of reach of children. WARNING: To be sold by retail on the prescription of a Registered Medical Practitioner only.,"{
+  ""medicine_name"": ""Gasvenz"",
+  ""dosage"": ""80mg/250mg"",
+  ""composition"": ""Simethicone IP 80mg + Activated Charcoal IP 250mg"",
+  ""expiry_date"": ""2027-03-31"",
+  ""mfg_date"": null,
+  ""precautions"": ""Store at a temperature not exceeding 30°C. Protect from light and moisture. Keep out of reach of children. WARNING: To be sold by retail on the prescription of a Registered Medical Practitioner only."",
+  ""medicine_type"": ""tablet""
+}"
+71PlxoKxYrL._AC_UY218_.jpg,PASS,0.2857,7.8,2,29%,Digeplex,,,syrup,,,,"{
+  ""medicine_name"": ""Digeplex"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""syrup""
+}"
+71rjGKOUFtL._AC_UY218_.jpg,PASS,0.4286,6.961,3,43%,Digene Insta On The Go,10ml,,sachet,,,,"{
+  ""medicine_name"": ""Digene Insta On The Go"",
+  ""dosage"": ""10ml"",
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""sachet""
+}"
+71SA38XB6tL._AC_UY218_.jpg,PASS,0.5714,5.762,4,57%,Gas-O-Fast Plus,,Papain + Fungal Diastase + Simethicone,tablet,,,Sugar Free.,"{
+  ""medicine_name"": ""Gas-O-Fast Plus"",
+  ""dosage"": null,
+  ""composition"": ""Papain + Fungal Diastase + Simethicone"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""Sugar Free."",
+  ""medicine_type"": ""tablet""
+}"
+71vqkjcWRgL._AC_UY218_.jpg,PASS,0.2857,3.761,2,29%,Digene,,,tablet,,,,"{
+  ""medicine_name"": ""Digene"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""tablet""
+}"
+71YAo8VdiSL._AC_UY218_.jpg,PASS,1.0,7.431,7,100%,Janumet,50mg/1000mg,Sitagliptin 50mg + Metformin Hydrochloride 1000mg,tablet,2026-08-31,2024-09-01,Keep out of reach of children. Store below 30°C. Protect from moisture and light. Do not swallow desiccant. To be dispensed only on the prescription of a registered medical practitioner.,"{
+  ""medicine_name"": ""Janumet"",
+  ""dosage"": ""50mg/1000mg"",
+  ""composition"": ""Sitagliptin 50mg + Metformin Hydrochloride 1000mg"",
+  ""expiry_date"": ""2026-08-31"",
+  ""mfg_date"": ""2024-09-01"",
+  ""precautions"": ""Keep out of reach of children. Store below 30°C. Protect from moisture and light. Do not swallow desiccant. To be dispensed only on the prescription of a registered medical practitioner."",
+  ""medicine_type"": ""tablet""
+}"
+81D5eYUTZNL._AC_UY218_.jpg,PASS,1.0,7.699,7,100%,Pioz Mf-15,15mg/500mg,Pioglitazone Hydrochloride 15mg + Metformin Hydrochloride (SR) 500mg,tablet,2025-08-31,2022-09-01,Store at a temperature not exceeding 30°C. Protect from light and moisture.,"{
+  ""medicine_name"": ""Pioz Mf-15"",
+  ""dosage"": ""15mg/500mg"",
+  ""composition"": ""Pioglitazone Hydrochloride 15mg + Metformin Hydrochloride (SR) 500mg"",
+  ""expiry_date"": ""2025-08-31"",
+  ""mfg_date"": ""2022-09-01"",
+  ""precautions"": ""Store at a temperature not exceeding 30°C. Protect from light and moisture."",
+  ""medicine_type"": ""tablet""
+}"
+81EfYVqCGPL._AC_UY218_.jpg,PASS,0.8571,9.032,6,86%,Glycomet-500 S.R.,500mg,Metformin Hydrochloride 500mg,tablet,,2015-01-30,"Store in well-closed, light-resistant containers and store at controlled room temperature.","{
+  ""medicine_name"": ""Glycomet-500 S.R."",
+  ""dosage"": ""500mg"",
+  ""composition"": ""Metformin Hydrochloride 500mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": ""2015-01-30"",
+  ""precautions"": ""Store in well-closed, light-resistant containers and store at controlled room temperature."",
+  ""medicine_type"": ""tablet""
+}"
+81l7xVkxZRL._AC_UY218_.jpg,PASS,0.2857,4.621,2,29%,Diabecon DS,,,tablet,,,,"{
+  ""medicine_name"": ""Diabecon DS"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""tablet""
+}"
+81LobB9dIgL._AC_UY218_.jpg,PASS,1.0,11.312,7,100%,Istamet,50mg/500mg,Sitagliptin Phosphate eq. to Sitagliptin 50mg + Metformin Hydrochloride 500mg (as sustained release),tablet,2024-12-31,2023-02-01,CAUTION: Not to be sold by retail without the prescription of a Registered Medical Practitioner. WARNING: Schedule H drug - To be sold on the prescription of a Registered Medical Practitioner only. Dosage: As directed by the physician. Store below 30°C. Keep out of the reach and sight of children. For Oral use only.,"{
+  ""medicine_name"": ""Istamet"",
+  ""dosage"": ""50mg/500mg"",
+  ""composition"": ""Sitagliptin Phosphate eq. to Sitagliptin 50mg + Metformin Hydrochloride 500mg (as sustained release)"",
+  ""expiry_date"": ""2024-12-31"",
+  ""mfg_date"": ""2023-02-01"",
+  ""precautions"": ""CAUTION: Not to be sold by retail without the prescription of a Registered Medical Practitioner. WARNING: Schedule H drug - To be sold on the prescription of a Registered Medical Practitioner only. Dosage: As directed by the physician. Store below 30°C. Keep out of the reach and sight of children. For Oral use only."",
+  ""medicine_type"": ""tablet""
+}"
+81pbXHpN7tL._AC_UY218_.jpg,PASS,1.0,9.659,7,100%,Oxramet XR,10mg/1000mg,Dapagliflozin 10mg + Metformin HCl 1000mg,tablet,2025-12-31,2023-05-01,"Store below 25°C, protect from light & moisture. KEEP OUT OF REACH OF CHILDREN. Caution: Careful consideration should be given to the dosage of OXRAMET XR (Dapagliflozin & Metformin HCl Extended Release Tablets) and its effect on renal function prior to initiation of therapy and periodically thereafter. The dosage should be individualized based on the patient's current regimen, effectiveness and tolerability, while not exceeding the maximum recommended daily dose of 10mg of Dapagliflozin. Warning: To be sold by retail on the prescription of a Registered Medical Practitioner only. Dosage: As directed by the physician.","{
+  ""medicine_name"": ""Oxramet XR"",
+  ""dosage"": ""10mg/1000mg"",
+  ""composition"": ""Dapagliflozin 10mg + Metformin HCl 1000mg"",
+  ""expiry_date"": ""2025-12-31"",
+  ""mfg_date"": ""2023-05-01"",
+  ""precautions"": ""Store below 25°C, protect from light & moisture. KEEP OUT OF REACH OF CHILDREN. Caution: Careful consideration should be given to the dosage of OXRAMET XR (Dapagliflozin & Metformin HCl Extended Release Tablets) and its effect on renal function prior to initiation of therapy and periodically thereafter. The dosage should be individualized based on the patient's current regimen, effectiveness and tolerability, while not exceeding the maximum recommended daily dose of 10mg of Dapagliflozin. Warning: To be sold by retail on the prescription of a Registered Medical Practitioner only. Dosage: As directed by the physician."",
+  ""medicine_type"": ""tablet""
+}"
+81QJmDV+qxL._AC_UY218_.jpg,PASS,1.0,7.163,7,100%,Glycomet,500mg,Metformin Hydrochloride 500mg,tablet,2019-12-31,2017-01-01,To be sold by retail on the prescription of a Registered Medical Practitioner only. Do not accept if seal is broken. Read enclosed leaflet before use. Keep out of reach of children. Store at a temperature not exceeding 30°C. Protect from light and moisture.,"{
+  ""medicine_name"": ""Glycomet"",
+  ""dosage"": ""500mg"",
+  ""composition"": ""Metformin Hydrochloride 500mg"",
+  ""expiry_date"": ""2019-12-31"",
+  ""mfg_date"": ""2017-01-01"",
+  ""precautions"": ""To be sold by retail on the prescription of a Registered Medical Practitioner only. Do not accept if seal is broken. Read enclosed leaflet before use. Keep out of reach of children. Store at a temperature not exceeding 30°C. Protect from light and moisture."",
+  ""medicine_type"": ""tablet""
+}"
+91+2ghWgqcL._AC_UY218_.jpg,PASS,1.0,7.539,7,100%,Pan 40,40mg,Pantoprazole 40mg,tablet,2026-02-28,2023-03-01,Store below 25°C. Protect from moisture and light. Keep medicine out of reach of children. To be sold by retail on the prescription of a Registered Medical Practitioner only.,"{
+  ""medicine_name"": ""Pan 40"",
+  ""dosage"": ""40mg"",
+  ""composition"": ""Pantoprazole 40mg"",
+  ""expiry_date"": ""2026-02-28"",
+  ""mfg_date"": ""2023-03-01"",
+  ""precautions"": ""Store below 25°C. Protect from moisture and light. Keep medicine out of reach of children. To be sold by retail on the prescription of a Registered Medical Practitioner only."",
+  ""medicine_type"": ""tablet""
+}"
+91+u7cNNo5L._AC_UY218_.jpg,PASS,0.2857,6.234,2,29%,Gastica-Fiz,,,tablet,,,,"{
+  ""medicine_name"": ""Gastica-Fiz"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""tablet""
+}"
+916JrSv40KL._AC_UY218_.jpg,PASS,0.7143,8.348,5,71%,Arimidex,1mg,Anastrozole 1mg,tablet,,,"Keep out of reach of children. To be taken orally only. Do not accept if seal broken. If desiccant sachet is enclosed, do not swallow desiccant.","{
+  ""medicine_name"": ""Arimidex"",
+  ""dosage"": ""1mg"",
+  ""composition"": ""Anastrozole 1mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""Keep out of reach of children. To be taken orally only. Do not accept if seal broken. If desiccant sachet is enclosed, do not swallow desiccant."",
+  ""medicine_type"": ""tablet""
+}"
+919bY8QpnaL._AC_UY218_.jpg,PASS,0.7143,13.521,5,71%,Triglynase-1,15mg/500mg/1mg,Pioglitazone (as Hydrochloride) 15mg + Metformin Hydrochloride (Sustained Release) 500mg + Glimepiride 1mg,tablet,,,Store in a cool dry place. Protect from moisture and light. Keep out of reach of children. Tablet should be swallowed whole and not to be chewed or crushed. Not to be sold by retail without the prescription of a Registered Medical Practitioner.,"{
+  ""medicine_name"": ""Triglynase-1"",
+  ""dosage"": ""15mg/500mg/1mg"",
+  ""composition"": ""Pioglitazone (as Hydrochloride) 15mg + Metformin Hydrochloride (Sustained Release) 500mg + Glimepiride 1mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""Store in a cool dry place. Protect from moisture and light. Keep out of reach of children. Tablet should be swallowed whole and not to be chewed or crushed. Not to be sold by retail without the prescription of a Registered Medical Practitioner."",
+  ""medicine_type"": ""tablet""
+}"
+91ApMWDemVL._AC_UY218_.jpg,PASS,0.7143,5.351,5,71%,Glimiprex MF Forte 2,500mg/2mg,Metformin Hydrochloride Prolonged-release 500mg + Glimepiride 2mg,tablet,,,Store in a cool dry place. Protect from moisture and light.,"{
+  ""medicine_name"": ""Glimiprex MF Forte 2"",
+  ""dosage"": ""500mg/2mg"",
+  ""composition"": ""Metformin Hydrochloride Prolonged-release 500mg + Glimepiride 2mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""Store in a cool dry place. Protect from moisture and light."",
+  ""medicine_type"": ""tablet""
+}"
+91dUzZTIlmL._AC_UY218_.jpg,PASS,0.7143,7.188,5,71%,Susten VT 200,200mg,Progesterone 200mg,suppository,,,"For vaginal use only. Vaginal applicator supplied free with this pack. Refer patient information leaflet before use. Store at room temperature, protected from light and moisture.","{
+  ""medicine_name"": ""Susten VT 200"",
+  ""dosage"": ""200mg"",
+  ""composition"": ""Progesterone 200mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""For vaginal use only. Vaginal applicator supplied free with this pack. Refer patient information leaflet before use. Store at room temperature, protected from light and moisture."",
+  ""medicine_type"": ""suppository""
+}"
+91fhAHqnesL._AC_UY218_.jpg,PASS,1.0,6.201,7,100%,Gemee-Forte 1,1000mg/1mg,Metformin Hydrochloride Prolonged Release 1000mg + Glimepiride 1mg,tablet,2026-01-31,2023-02-01,Store protected from moisture and light at a temperature not exceeding 30°C. KEEP OUT OF REACH OF CHILDREN.,"{
+  ""medicine_name"": ""Gemee-Forte 1"",
+  ""dosage"": ""1000mg/1mg"",
+  ""composition"": ""Metformin Hydrochloride Prolonged Release 1000mg + Glimepiride 1mg"",
+  ""expiry_date"": ""2026-01-31"",
+  ""mfg_date"": ""2023-02-01"",
+  ""precautions"": ""Store protected from moisture and light at a temperature not exceeding 30°C. KEEP OUT OF REACH OF CHILDREN."",
+  ""medicine_type"": ""tablet""
+}"
+91HLHLcfjdL._AC_UY218_.jpg,PASS,0.2857,5.34,2,29%,Gelusil,,,tablet,,,,"{
+  ""medicine_name"": ""Gelusil"",
+  ""dosage"": null,
+  ""composition"": null,
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": null,
+  ""medicine_type"": ""tablet""
+}"
+91jwfgoYB8L._AC_UY218_.jpg,PASS,1.0,9.018,7,100%,Glinestar PM2,2mg/15mg/500mg,Glimepiride 2mg + Pioglitazone 15mg + Metformin Hydrochloride 500mg (ER),tablet,2025-09-30,2023-10-01,Store in a cool & dry place. Protect from moisture & light.,"{
+  ""medicine_name"": ""Glinestar PM2"",
+  ""dosage"": ""2mg/15mg/500mg"",
+  ""composition"": ""Glimepiride 2mg + Pioglitazone 15mg + Metformin Hydrochloride 500mg (ER)"",
+  ""expiry_date"": ""2025-09-30"",
+  ""mfg_date"": ""2023-10-01"",
+  ""precautions"": ""Store in a cool & dry place. Protect from moisture & light."",
+  ""medicine_type"": ""tablet""
+}"
+91Kdp+1a8ZL._AC_UY218_.jpg,PASS,0.7143,9.27,5,71%,Glycomet-GP 2,500mg/2mg,Metformin Hydrochloride Prolonged-Release 500mg + Glimepiride 2mg,tablet,,,SCHEDULE H PRESCRIPTION DRUG - CAUTION: It is dangerous to take this preparation except under medical supervision. Store in a cool dry place. Protect from moisture and excessive light.,"{
+  ""medicine_name"": ""Glycomet-GP 2"",
+  ""dosage"": ""500mg/2mg"",
+  ""composition"": ""Metformin Hydrochloride Prolonged-Release 500mg + Glimepiride 2mg"",
+  ""expiry_date"": null,
+  ""mfg_date"": null,
+  ""precautions"": ""SCHEDULE H PRESCRIPTION DRUG - CAUTION: It is dangerous to take this preparation except under medical supervision. Store in a cool dry place. Protect from moisture and excessive light."",
+  ""medicine_type"": ""tablet""
+}"

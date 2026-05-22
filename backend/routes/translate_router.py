@@ -10,12 +10,21 @@ router = APIRouter(prefix="/translate", tags=["Translation"])
 GOOGLE_API_KEY = os.environ.get("GOOGLE_TRANSLATE_API_KEY", "")
 
 LANG_CODE = {
+    # Original set
     "english": "en", "spanish": "es", "french": "fr", "german": "de",
     "chinese": "zh", "arabic": "ar", "hindi": "hi", "japanese": "ja",
     "portuguese": "pt", "russian": "ru",
+    # Indian languages (matching frontend LANG_CODE)
+    "bengali": "bn", "telugu": "te", "marathi": "mr", "tamil": "ta",
+    "urdu": "ur", "gujarati": "gu", "kannada": "kn", "odia": "or",
+    "malayalam": "ml", "punjabi": "pa", "assamese": "as", "maithili": "mai",
+    "sanskrit": "sa", "santali": "sat", "kashmiri": "ks", "nepali": "ne",
+    "sindhi": "sd", "dogri": "doi", "manipuri": "mni", "bodo": "brx",
+    "konkani": "gom", "bhojpuri": "bho", "mizo": "lus",
 }
 
-VALID_CODES = set(LANG_CODE.values())  # {"en", "es", "fr", ...}
+# Accept both full language names AND ISO codes directly from the frontend
+VALID_CODES = set(LANG_CODE.values())
 
 
 class TranslateRequest(BaseModel):

@@ -5,10 +5,10 @@ from tqdm import tqdm
 # =====================================================
 # CONFIG
 # =====================================================
-INPUT_CSV = r"C:\Users\palya\Desktop\pharmalens\DATA\TWOSIDES.csv"
-OUTPUT_DIR = r"C:\Users\palya\Desktop\pharmalens\Pharmalens\models\chatbot\output_chunks"
+INPUT_CSV = r"C:\Users\palya\Desktop\pharmalens\Pharmalens\training_data\openfda_warnings_dosage_raw.csv"
+OUTPUT_DIR = r"C:\Users\palya\Desktop\pharmalens\Pharmalens\training_data"
 
-ROWS_PER_FILE = 1000000
+ROWS_PER_FILE = 50000
 
 Path(OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
 

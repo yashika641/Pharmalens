@@ -94,7 +94,7 @@ def _extracted_from_run_ocr_space_8(image_bytes):
     full_text = "\n".join(text_blocks).strip()
 
     avg_confidence = (
-        sum(confidences) / len(confidences)/100
+        sum(confidences) / len(confidences)
         if confidences else 0.6  # safe default
     )
 

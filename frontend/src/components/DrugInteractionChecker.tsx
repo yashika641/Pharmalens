@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { useLanguage } from "./language_context";
 import { fireInteractionAlert } from "../lib/notifications";
+import { supabase } from "../supabase";
 
 interface Drug { id: string; name: string; }
 interface EvidenceInteraction {
@@ -83,9 +84,10 @@ export function DrugInteractionChecker({ initialDrugs = [] }: DrugInteractionChe
     setError(null);
     setShowResults(false);
     try {
+      const { data: { session } } = await supabase.auth.getSession();
       const response = await fetch(`${API_URL}/drug-interactions/check`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("access_token")}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token}` },
         body: JSON.stringify({ drugs: drugs.map((d) => d.name) }),
       });
       if (!response.ok) throw new Error("Failed to fetch interaction data");
